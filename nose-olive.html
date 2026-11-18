@@ -604,6 +604,9 @@ main section [id]{scroll-margin-top:150px}
 .nd-block.band-g{--bandc:var(--green);color:#fff}
 .nd-block.band-w+.nd-block,.nd-block.band-g+.nd-block{border-top:0}
 .nd-more .nd-block.band-w{--bandc:#fff}
+/* 연한 띠(band-w) 위 목록 칸은 띠와 같은 색이라 구분이 안 됨 → 흰 칸 (흰 띠인 nd-more 안에서는 반대로 연한 칸) */
+.nd-block.band-w .nd-who li{background:#fff}
+.nd-more .nd-block.band-w .nd-who li{background:var(--warm)}
 .nd-block.band-g+.nd-block.band-g{box-shadow:0 0 0 100vmax var(--bandc),inset 0 1px rgba(255,255,255,.14)}
 .band-g .nd-h .k{color:var(--moss-soft)}
 .band-g .nd-h h3,.band-g .nd-lead{color:#fff}
@@ -1201,7 +1204,7 @@ body.is-authed .ba-lock{display:none}
   </div>
 </section>
 <nav class="snb" aria-label="코성형 하위 메뉴">
-  <ul><li><a href="nose.html">올리브 코성형</a></li><li><a class="on" aria-current="page" href="nose-olive.html">진단·안전 시스템</a></li><li><a href="nose-types.html">유형별 코성형</a></li><li><a href="nose-revision.html">코재수술</a></li><li><a href="nose-natural.html">무보형물·자가조직</a></li><li><a href="nose-function.html">기능성 코수술</a></li><li><a href="nose-guide.html">알쓸코잡</a></li></ul>
+  <ul><li><a href="nose.html">올리브 코성형</a></li><li><a class="on" aria-current="page" href="nose-olive.html">진단·안전 시스템</a></li><li><a href="nose-types.html">유형별 코성형</a></li><li><a href="nose-men.html">남자 코성형</a></li><li><a href="nose-revision.html">코재수술</a></li><li><a href="nose-natural.html">무보형물·자가조직</a></li><li><a href="nose-function.html">기능성 코수술</a></li><li><a href="nose-guide.html">알쓸코잡</a></li></ul>
 </nav>
 <section class="sec" id="care"><div class="wrap">
   <div class="nd-top">
@@ -1290,7 +1293,7 @@ document.querySelectorAll('.nose-mobile-nav a').forEach(a=>a.addEventListener('c
       ["올리브 소개", "intro.html"], ["의료진 소개", "doctor.html"], ["올리브 시스템", "system.html"],
       ["올리브 둘러보기", "tour.html"], ["찾아오시는 길", "location.html"]] },
     { t: "코성형", h: "nose.html", items: [
-      ["올리브 코성형", "nose.html"], ["진단·안전 시스템", "nose-olive.html"], ["유형별 코성형", "nose-types.html"], ["코재수술", "nose-revision.html"],
+      ["올리브 코성형", "nose.html"], ["진단·안전 시스템", "nose-olive.html"], ["유형별 코성형", "nose-types.html"], ["남자 코성형", "nose-men.html"], ["코재수술", "nose-revision.html"],
       ["무보형물·자가조직", "nose-natural.html"], ["기능성 코수술", "nose-function.html"], ["알쓸코잡", "nose-guide.html"]] },
     // 수술 과목은 원래 사이트처럼 각각 상단 메뉴로(하위 이름도 원본 /js/sitemap.js 그대로, 페이지가 생기면 주소만 바꿈)
     { t: "눈성형", h: "eye-double.html", items: [

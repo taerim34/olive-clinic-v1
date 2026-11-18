@@ -604,6 +604,9 @@ main section [id]{scroll-margin-top:150px}
 .nd-block.band-g{--bandc:var(--green);color:#fff}
 .nd-block.band-w+.nd-block,.nd-block.band-g+.nd-block{border-top:0}
 .nd-more .nd-block.band-w{--bandc:#fff}
+/* 연한 띠(band-w) 위 목록 칸은 띠와 같은 색이라 구분이 안 됨 → 흰 칸 (흰 띠인 nd-more 안에서는 반대로 연한 칸) */
+.nd-block.band-w .nd-who li{background:#fff}
+.nd-more .nd-block.band-w .nd-who li{background:var(--warm)}
 .nd-block.band-g+.nd-block.band-g{box-shadow:0 0 0 100vmax var(--bandc),inset 0 1px rgba(255,255,255,.14)}
 .band-g .nd-h .k{color:var(--moss-soft)}
 .band-g .nd-h h3,.band-g .nd-lead{color:#fff}
@@ -1297,6 +1300,7 @@ a:focus-visible,summary:focus-visible,button:focus-visible{outline:2px solid var
     <li><a class="on" aria-current="page" href="nose.html">올리브 코성형</a></li>
     <li><a href="nose-olive.html">진단·안전 시스템</a></li>
     <li><a href="nose-types.html">유형별 코성형</a></li>
+    <li><a href="nose-men.html">남자 코성형</a></li>
     <li><a href="nose-revision.html">코재수술</a></li>
     <li><a href="nose-natural.html">무보형물·자가조직</a></li>
     <li><a href="nose-function.html">기능성 코수술</a></li>
@@ -1307,7 +1311,7 @@ a:focus-visible,summary:focus-visible,button:focus-visible{outline:2px solid var
 <section class="sec cc-sec" id="concerns" data-section-bg="white"><div class="wrap">
   <div class="nose-heading"><div><p class="sec-label">01 · Find your concern</p><h2 class="h-en">Your Concern</h2><h2 class="ko">어떤 <b>고민</b>으로 오셨나요?</h2></div><p>수술 이름을 몰라도 괜찮습니다.<br>지금 나의 고민에서 시작해 보세요.</p></div>
   <div class="cc-grid">
-    <div class="cc"><a class="cc-hit" href="nose-types.html" aria-label="유형별 코성형"></a><span class="n">01</span><h3>코 모양이<br>고민이에요</h3><ul><li><a href="nose-types.html#low">낮은 코</a></li><li><a href="nose-types.html#hump">매부리코</a></li><li><a href="nose-types.html#bulbous">복코</a></li><li><a href="nose-types.html#short">들창코</a></li><li><a href="nose-types.html#long">화살코</a></li><li><a href="nose-types.html#alar">콧볼</a></li><li><a href="nose-types.html#men">남자 코</a></li></ul><a class="go" href="nose-types.html">유형별 코성형 <b aria-hidden="true"><svg class="ui-arrow" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M4 12h16m-6-6 6 6-6 6"/></svg></b></a></div>
+    <div class="cc"><a class="cc-hit" href="nose-types.html" aria-label="유형별 코성형"></a><span class="n">01</span><h3>코 모양이<br>고민이에요</h3><ul><li><a href="nose-types.html#low">낮은 코</a></li><li><a href="nose-types.html#hump">매부리코</a></li><li><a href="nose-types.html#bulbous">복코</a></li><li><a href="nose-types.html#short">들창코</a></li><li><a href="nose-types.html#long">화살코</a></li><li><a href="nose-types.html#alar">콧볼</a></li><li><a href="nose-men.html">남자 코</a></li></ul><a class="go" href="nose-types.html">유형별 코성형 <b aria-hidden="true"><svg class="ui-arrow" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M4 12h16m-6-6 6 6-6 6"/></svg></b></a></div>
     <div class="cc"><a class="cc-hit" href="nose-revision.html" aria-label="코재수술"></a><span class="n">02</span><h3>재수술을<br>알아보고 있어요</h3><ul><li><a href="nose-revision.html#contract">구축코</a></li><li><a href="nose-revision.html#septum">비중격 재건</a></li><li><a href="nose-revision.html#easy">간편 교정</a></li><li><a href="nose-revision.html#cases">재수술 사례</a></li></ul><a class="go" href="nose-revision.html">코재수술 <b aria-hidden="true"><svg class="ui-arrow" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M4 12h16m-6-6 6 6-6 6"/></svg></b></a></div>
     <div class="cc"><a class="cc-hit" href="nose-natural.html" aria-label="무보형물·자가조직"></a><span class="n">03</span><h3>보형물이<br>부담돼요</h3><ul><li><a href="nose-natural.html#ear">귀연골</a></li><li><a href="nose-natural.html#rib">자가늑연골</a></li><li><a href="nose-natural.html#particle">늑입자</a></li></ul><a class="go" href="nose-natural.html">무보형물·자가조직 <b aria-hidden="true"><svg class="ui-arrow" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M4 12h16m-6-6 6 6-6 6"/></svg></b></a></div>
     <div class="cc"><a class="cc-hit" href="nose-function.html" aria-label="기능성 코수술"></a><span class="n">04</span><h3>코 기능도<br>고민이에요</h3><ul><li><a href="nose-types.html#crooked">휜코</a></li><li><a href="nose-function.html">비중격만곡</a></li><li><a href="nose-function.html">비염·코막힘</a></li></ul><a class="go" href="nose-function.html">기능성 코수술 <b aria-hidden="true"><svg class="ui-arrow" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M4 12h16m-6-6 6 6-6 6"/></svg></b></a></div>
@@ -1471,7 +1475,7 @@ document.querySelectorAll('.nose-mobile-nav a').forEach(a=>a.addEventListener('c
       ["올리브 소개", "intro.html"], ["의료진 소개", "doctor.html"], ["올리브 시스템", "system.html"],
       ["올리브 둘러보기", "tour.html"], ["찾아오시는 길", "location.html"]] },
     { t: "코성형", h: "nose.html", items: [
-      ["올리브 코성형", "nose.html"], ["진단·안전 시스템", "nose-olive.html"], ["유형별 코성형", "nose-types.html"], ["코재수술", "nose-revision.html"],
+      ["올리브 코성형", "nose.html"], ["진단·안전 시스템", "nose-olive.html"], ["유형별 코성형", "nose-types.html"], ["남자 코성형", "nose-men.html"], ["코재수술", "nose-revision.html"],
       ["무보형물·자가조직", "nose-natural.html"], ["기능성 코수술", "nose-function.html"], ["알쓸코잡", "nose-guide.html"]] },
     // 수술 과목은 원래 사이트처럼 각각 상단 메뉴로(하위 이름도 원본 /js/sitemap.js 그대로, 페이지가 생기면 주소만 바꿈)
     { t: "눈성형", h: "eye-double.html", items: [
