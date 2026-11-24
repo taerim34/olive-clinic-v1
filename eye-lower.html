@@ -467,9 +467,13 @@ body.nav-open .mnav-in{transform:none}
   .snb a.on::after{left:20px;right:20px}
 }
 @media (max-width:860px){
-  .sv{margin-top:64px;height:300px}
+  .sub-page{padding-top:64px}
+  /* Keep the page heading available to screen readers inside the collapsed banner. */
+  .sub-page > .sv{height:0;margin:0;overflow:hidden}
+  .sub-page > .sv::before,.sub-page > .sv::after,.sub-page > .sv p{display:none}
   .snb{top:64px}
-  .snb ul{justify-content:flex-start;overflow-x:auto;padding:0 8px}
+  .snb ul{justify-content:flex-start;overflow-x:auto;padding:0 8px;scrollbar-width:none}
+  .snb ul::-webkit-scrollbar{display:none}
   .snb a{padding:16px 14px;font-size:14.5px}
   .snb a.on::after{left:14px;right:14px}
 }
@@ -548,6 +552,8 @@ body.nav-open .mnav-in{transform:none}
 @media (max-width:1180px){.nd-info{grid-template-columns:repeat(3,1fr)}.nd-info div:nth-child(4){border-left:0}.nd-info div:nth-child(n+4){border-top:1px solid rgba(255,255,255,.14)}.nd-merit{grid-template-columns:1fr 1fr}.nd-merit li:nth-child(2n+1){border-left:0}.nd-merit li:nth-child(n+3){border-top:1px solid var(--line)}}
 @media (max-width:860px){
   .nd-tabs{flex-wrap:nowrap;overflow-x:auto;justify-content:flex-start;margin:32px -20px 0;padding:0 20px}
+  :is(.nd-tabs,.ba-tabs,.tabs,.snb ul,.gal-thumbs,[role="tablist"]){scrollbar-width:none}
+  :is(.nd-tabs,.ba-tabs,.tabs,.snb ul,.gal-thumbs,[role="tablist"])::-webkit-scrollbar{display:none}
   .nd-tabs button,.nd-tabs a{flex:none;height:40px;padding:0 16px}
   .nd-block{padding:56px 0}
   .nd-h{flex-direction:column;gap:10px;margin-bottom:20px}
@@ -643,7 +649,24 @@ main section [id]{scroll-margin-top:150px}
   .nd-how .m{grid-template-columns:1fr;gap:18px;padding:28px 0}
   .nd-how .fig{padding:16px}
   .nd-chk li{padding:14px 16px}
-  .nd-ba{grid-template-columns:1fr 1fr;gap:8px}.nd-ba .ph:nth-child(3){display:none}
+  .nd-ba{grid-template-columns:minmax(0,1fr)}
+  .sub-page .nd-ba:has(> :nth-child(2)){
+    --inset:20px;
+    --gap:12px;
+    grid-template-columns:none;
+    grid-auto-flow:column;
+    grid-auto-columns:calc((100% + var(--inset) - var(--gap)) / 1.3);
+    gap:var(--gap);
+    margin-inline:calc(0px - var(--inset));
+    padding-inline:var(--inset);
+    overflow-x:auto;
+    overscroll-behavior-x:contain;
+    scroll-padding-inline:var(--inset);
+    scroll-snap-type:x proximity;
+    scrollbar-width:none;
+  }
+  .nd-ba::-webkit-scrollbar{display:none}
+  .nd-ba > *{min-width:0;scroll-snap-align:start}
   .ph span{display:none}
 }
 /* 원장 칼럼 사진 */
@@ -732,7 +755,6 @@ main section [id]{scroll-margin-top:150px}
 .nd-ba.eye .ba-pic img{aspect-ratio:3/1}
 .nd-case .nd-card img{aspect-ratio:auto;object-fit:contain;background:#fff;border-bottom:1px solid var(--line)}
 @media (max-width:860px){
-  .nd-ba.eye{grid-template-columns:1fr}
   .nd-vs{font-size:13px}.nd-vs td,.nd-vs tbody th{padding:10px 6px}
 }
 
@@ -1280,6 +1302,12 @@ body.is-authed .ba-lock{display:none}
 #safety .safety-reason-grid>li{border:0}
 @media(min-width:861px){#safety .safety-reason-grid>li:nth-child(2),#safety .safety-reason-grid>li:nth-child(3),#safety .safety-reason-grid>li:nth-child(5){border-left:1px solid rgba(255,255,255,.18)}#safety .safety-reason-grid>li:nth-child(n+4){border-top:1px solid rgba(255,255,255,.18)}}
 @media(max-width:860px){#safety .safety-reason-grid>li+li{border-top:1px solid rgba(255,255,255,.18)}}
+@media(max-width:860px){
+  .sub-page :is(.nd-card .b,.nd-who>li,.nd-merit>li,.ct-case-copy,.ct-flow>li,
+    .safety-card>div,.safety-method article,.safety-checks article,.safety-guide-points article,
+    .tr-body,.cc,.why>li,.sp-end){padding:18px 16px}
+}
+
 
 /* Individually framed illustrations retain original clinical drawings. */
 .nd-how .fig.type-steps{padding:0;background:transparent;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;align-items:start}
@@ -1303,6 +1331,40 @@ body.is-authed .ba-lock{display:none}
 @media(max-width:860px){#men .nd-lead+.nd-who{margin-top:24px}.men-line-photo svg{max-height:300px}}
 .men-line-photo svg{overflow:hidden}
 .men-line-photo svg{width:min(100%,285px);height:auto;max-height:none;margin-inline:auto}
+
+@media(max-width:860px){
+  main.sub-page .detail-card-strip:has(> :nth-child(2)){
+    --strip-inset:20px;
+    --strip-gap:12px;
+    --visible-cards:1.3;
+    display:flex;
+    flex-flow:row nowrap;
+    justify-content:flex-start;
+    align-items:stretch;
+    column-gap:var(--strip-gap);
+    min-width:0;
+    margin-inline:calc(0px - var(--strip-inset));
+    padding-inline:var(--strip-inset);
+    border:0;
+    overflow-x:auto;
+    overscroll-behavior-x:contain;
+    scroll-snap-type:x proximity;
+    scroll-padding-inline:var(--strip-inset);
+    scrollbar-width:none;
+  }
+  .detail-card-strip::-webkit-scrollbar{display:none}
+  .detail-card-strip:has(> :nth-child(2)) > *{
+    flex:0 0 calc((100% + var(--strip-inset) - var(--strip-gap)) / var(--visible-cards));
+    min-width:0;
+    max-width:none;
+    overflow-wrap:anywhere;
+    scroll-snap-align:start;
+  }
+  main.sub-page :is(.nd-steps,.ct-flow,.type-steps).detail-card-strip:has(> :nth-child(2)){--visible-cards:1.5}
+  .detail-card-strip:is(.nd-merit,.why,.phil-list)>li{border:1px solid var(--line)}
+  .band-g .detail-card-strip.nd-merit>li{border-color:rgba(255,255,255,.18)}
+  .nd-areas.detail-card-strip .a{display:flex;flex-direction:column;gap:12px}
+}
 /* Light-gray sections use white cards for clear separation. */
 .nd-block.band-w .nd-merit>li,.nd-block.band-w .nd-card{background:#fff}
 </style>
@@ -1368,7 +1430,7 @@ body.is-authed .ba-lock{display:none}
   <ul><li><a href="eye-double.html">쌍꺼풀</a></li><li><a href="eye-ptosis.html">눈매교정</a></li><li><a href="eye-canthus.html">트임성형</a></li><li><a href="eye-upper.html">상안검성형</a></li><li><a class="on" aria-current="page" href="eye-lower.html">하안검성형</a></li><li><a href="eye-dark.html">다크서클/눈밑지방</a></li><li><a href="eye-revision.html">눈재수술</a></li></ul>
 </nav>
 <section class="sec nd-eye" id="lower"><div class="wrap">
-<div class="nd-block"><div class="nd-sp"><div class="tx"><div class="nd-h"><span class="k">What</span><h3><b>하안검성형</b>이란?</h3></div><p class="nd-lead">눈가는 다른 부위에 비해 지방이 적고 피부가 얇아 <b>가장 먼저 노화가 진행</b>됩니다.</p></div><div class="vis"><figure class="pic"><img src="assets/web-91fda0eaa77362aa.jpg" alt="하안검성형 대표 이미지" loading="lazy"></figure></div></div><dl class="nd-info"><div><dt>수술시간</dt><dd>1시간 정도</dd></div><div><dt>마취방법</dt><dd>단기수면마취</dd></div><div><dt>입원치료</dt><dd>불필요</dd></div><div><dt>실밥제거</dt><dd>5~7일 후</dd></div><div><dt>내원치료</dt><dd>1회</dd></div><div><dt>회복기간</dt><dd>5~7일 후</dd></div></dl></div><div class="nd-block band-w"><div class="nd-sp rev"><div class="tx"><div class="nd-h"><span class="k">Who</span><h3><b>하안검성형</b> 수술대상</h3></div><p class="nd-sub">하안검성형, 이런 분들에게 추천합니다.</p><ul class="nd-chk"><li>눈밑 주름이 심한 경우</li><li>다크서클이 있는경우</li><li>눈밑지방이 볼록해져 피곤 해보이는 경우</li><li>피부 처짐이 심해 노인으로 보이는 경우</li></ul></div><div class="vis"><figure class="pic"><img src="assets/web-ff9bce846fb578e7.jpg" alt="하안검성형 수술대상 이미지" loading="lazy"></figure></div></div></div><div class="nd-block "><div class="nd-h"><span class="k">How</span><h3><b>하안검성형</b> 수술방법</h3></div><div class="nd-how"><div class="m"><div class="t"><span class="n">Method</span><p>아래 속눈썹 라인을 따라 눈꼬리까지절개하여 불룩하게 튀어나온 지방을 제거하거나 필요 따라선 지방을 재배치합니다. 눈물주름 인대를 박리하고 지방을 재배치하면 눈밑 주름이 없어지고 훨씬 젊어지면서 밝은 인상으로 바뀌게 됩니다.</p></div><div class="fig"><img src="assets/web-22368c80a6753ab3.jpg" alt="수술 방법 그림" loading="lazy"></div></div></div></div><div class="nd-block band-g"><div class="nd-h"><span class="k">Merit</span><h3><b>하안검성형</b> 수술의 특징</h3></div><p class="nd-sub">노화로 처진 눈밑을 하안검 성형으로 팽팽하고 깔끔한 눈매로</p><ol class="nd-merit"><li><span class="n">01</span><h4>주름개선</h4><p>느슨해진 근육 및 피부를 제거하여 눈밑을 깨끗이 개선합니다.</p></li><li><span class="n">02</span><h4>동안효과</h4><p>노안 인상을 줄 수 있는 눈밑 지방을 제거하여 환한 눈매를 갖게 됩니다.</p></li><li><span class="n">03</span><h4>다크서클 개선</h4><p>눈밑이 볼록하여 그늘져 보이는 눈밑을 개선합니다.</p></li><li><span class="n">04</span><h4>자연스런 애교살</h4><p>눈밑 지방을 해결하는 동시에 애교살을 살려줍니다.</p></li></ol></div><div class="nd-block "><div class="nd-h"><span class="k">Before &amp; After</span><h3><b>하안검성형</b> 수술 전후</h3></div><div class="nd-ba eye"><figure class="ba-pic free"><img src="assets/web-52250fcfee9abbcc.jpg" alt="하안검성형술 수술 전후 사진" loading="lazy"><figcaption>하안검성형술</figcaption></figure><figure class="ba-pic free"><img src="assets/web-5c0cd3cf643657b8.jpg" alt="하안검 수술 전후 사진" loading="lazy"><figcaption>하안검</figcaption></figure><figure class="ba-pic free"><img src="assets/web-3cba2c80baa3a574.jpg" alt="상안검 + 하안검 수술 전후 사진" loading="lazy"><figcaption>상안검 + 하안검</figcaption></figure></div><p class="nd-more-link"><a class="btn btn-line" href="ba.html#eye">전후사진 더 보기</a></p></div>
+<div class="nd-block"><div class="nd-sp"><div class="tx"><div class="nd-h"><span class="k">What</span><h3><b>하안검성형</b>이란?</h3></div><p class="nd-lead">눈가는 다른 부위에 비해 지방이 적고 피부가 얇아 <b>가장 먼저 노화가 진행</b>됩니다.</p></div><div class="vis"><figure class="pic"><img src="assets/web-91fda0eaa77362aa.jpg" alt="하안검성형 대표 이미지" loading="lazy"></figure></div></div><dl class="nd-info"><div><dt>수술시간</dt><dd>1시간 정도</dd></div><div><dt>마취방법</dt><dd>단기수면마취</dd></div><div><dt>입원치료</dt><dd>불필요</dd></div><div><dt>실밥제거</dt><dd>5~7일 후</dd></div><div><dt>내원치료</dt><dd>1회</dd></div><div><dt>회복기간</dt><dd>5~7일 후</dd></div></dl></div><div class="nd-block band-w"><div class="nd-sp rev"><div class="tx"><div class="nd-h"><span class="k">Who</span><h3><b>하안검성형</b> 수술대상</h3></div><p class="nd-sub">하안검성형, 이런 분들에게 추천합니다.</p><ul class="nd-chk"><li>눈밑 주름이 심한 경우</li><li>다크서클이 있는경우</li><li>눈밑지방이 볼록해져 피곤 해보이는 경우</li><li>피부 처짐이 심해 노인으로 보이는 경우</li></ul></div><div class="vis"><figure class="pic"><img src="assets/web-ff9bce846fb578e7.jpg" alt="하안검성형 수술대상 이미지" loading="lazy"></figure></div></div></div><div class="nd-block "><div class="nd-h"><span class="k">How</span><h3><b>하안검성형</b> 수술방법</h3></div><div class="nd-how"><div class="m"><div class="t"><span class="n">Method</span><p>아래 속눈썹 라인을 따라 눈꼬리까지절개하여 불룩하게 튀어나온 지방을 제거하거나 필요 따라선 지방을 재배치합니다. 눈물주름 인대를 박리하고 지방을 재배치하면 눈밑 주름이 없어지고 훨씬 젊어지면서 밝은 인상으로 바뀌게 됩니다.</p></div><div class="fig"><img src="assets/web-22368c80a6753ab3.jpg" alt="수술 방법 그림" loading="lazy"></div></div></div></div><div class="nd-block band-g"><div class="nd-h"><span class="k">Merit</span><h3><b>하안검성형</b> 수술의 특징</h3></div><p class="nd-sub">노화로 처진 눈밑을 하안검 성형으로 팽팽하고 깔끔한 눈매로</p><ol class="nd-merit detail-card-strip" tabindex="0"><li><span class="n">01</span><h4>주름개선</h4><p>느슨해진 근육 및 피부를 제거하여 눈밑을 깨끗이 개선합니다.</p></li><li><span class="n">02</span><h4>동안효과</h4><p>노안 인상을 줄 수 있는 눈밑 지방을 제거하여 환한 눈매를 갖게 됩니다.</p></li><li><span class="n">03</span><h4>다크서클 개선</h4><p>눈밑이 볼록하여 그늘져 보이는 눈밑을 개선합니다.</p></li><li><span class="n">04</span><h4>자연스런 애교살</h4><p>눈밑 지방을 해결하는 동시에 애교살을 살려줍니다.</p></li></ol></div><div class="nd-block "><div class="nd-h"><span class="k">Before &amp; After</span><h3><b>하안검성형</b> 수술 전후</h3></div><div class="nd-ba eye" tabindex="0" role="region" aria-label="수술 전후 사례"><figure class="ba-pic free"><img src="assets/web-52250fcfee9abbcc.jpg" alt="하안검성형술 수술 전후 사진" loading="lazy"><figcaption>하안검성형술</figcaption></figure><figure class="ba-pic free"><img src="assets/web-5c0cd3cf643657b8.jpg" alt="하안검 수술 전후 사진" loading="lazy"><figcaption>하안검</figcaption></figure><figure class="ba-pic free"><img src="assets/web-3cba2c80baa3a574.jpg" alt="상안검 + 하안검 수술 전후 사진" loading="lazy"><figcaption>상안검 + 하안검</figcaption></figure></div><p class="nd-more-link"><a class="btn btn-line" href="ba.html#eye">전후사진 더 보기</a></p></div>
 </div></section>
 
 <!-- 상담 -->

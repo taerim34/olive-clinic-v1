@@ -467,9 +467,13 @@ body.nav-open .mnav-in{transform:none}
   .snb a.on::after{left:20px;right:20px}
 }
 @media (max-width:860px){
-  .sv{margin-top:64px;height:300px}
+  .sub-page{padding-top:64px}
+  /* Keep the page heading available to screen readers inside the collapsed banner. */
+  .sub-page > .sv{height:0;margin:0;overflow:hidden}
+  .sub-page > .sv::before,.sub-page > .sv::after,.sub-page > .sv p{display:none}
   .snb{top:64px}
-  .snb ul{justify-content:flex-start;overflow-x:auto;padding:0 8px}
+  .snb ul{justify-content:flex-start;overflow-x:auto;padding:0 8px;scrollbar-width:none}
+  .snb ul::-webkit-scrollbar{display:none}
   .snb a{padding:16px 14px;font-size:14.5px}
   .snb a.on::after{left:14px;right:14px}
 }
@@ -548,6 +552,8 @@ body.nav-open .mnav-in{transform:none}
 @media (max-width:1180px){.nd-info{grid-template-columns:repeat(3,1fr)}.nd-info div:nth-child(4){border-left:0}.nd-info div:nth-child(n+4){border-top:1px solid rgba(255,255,255,.14)}.nd-merit{grid-template-columns:1fr 1fr}.nd-merit li:nth-child(2n+1){border-left:0}.nd-merit li:nth-child(n+3){border-top:1px solid var(--line)}}
 @media (max-width:860px){
   .nd-tabs{flex-wrap:nowrap;overflow-x:auto;justify-content:flex-start;margin:32px -20px 0;padding:0 20px}
+  :is(.nd-tabs,.ba-tabs,.tabs,.snb ul,.gal-thumbs,[role="tablist"]){scrollbar-width:none}
+  :is(.nd-tabs,.ba-tabs,.tabs,.snb ul,.gal-thumbs,[role="tablist"])::-webkit-scrollbar{display:none}
   .nd-tabs button,.nd-tabs a{flex:none;height:40px;padding:0 16px}
   .nd-block{padding:56px 0}
   .nd-h{flex-direction:column;gap:10px;margin-bottom:20px}
@@ -643,7 +649,24 @@ main section [id]{scroll-margin-top:150px}
   .nd-how .m{grid-template-columns:1fr;gap:18px;padding:28px 0}
   .nd-how .fig{padding:16px}
   .nd-chk li{padding:14px 16px}
-  .nd-ba{grid-template-columns:1fr 1fr;gap:8px}.nd-ba .ph:nth-child(3){display:none}
+  .nd-ba{grid-template-columns:minmax(0,1fr)}
+  .sub-page .nd-ba:has(> :nth-child(2)){
+    --inset:20px;
+    --gap:12px;
+    grid-template-columns:none;
+    grid-auto-flow:column;
+    grid-auto-columns:calc((100% + var(--inset) - var(--gap)) / 1.3);
+    gap:var(--gap);
+    margin-inline:calc(0px - var(--inset));
+    padding-inline:var(--inset);
+    overflow-x:auto;
+    overscroll-behavior-x:contain;
+    scroll-padding-inline:var(--inset);
+    scroll-snap-type:x proximity;
+    scrollbar-width:none;
+  }
+  .nd-ba::-webkit-scrollbar{display:none}
+  .nd-ba > *{min-width:0;scroll-snap-align:start}
   .ph span{display:none}
 }
 /* 원장 칼럼 사진 */
@@ -732,7 +755,6 @@ main section [id]{scroll-margin-top:150px}
 .nd-ba.eye .ba-pic img{aspect-ratio:3/1}
 .nd-case .nd-card img{aspect-ratio:auto;object-fit:contain;background:#fff;border-bottom:1px solid var(--line)}
 @media (max-width:860px){
-  .nd-ba.eye{grid-template-columns:1fr}
   .nd-vs{font-size:13px}.nd-vs td,.nd-vs tbody th{padding:10px 6px}
 }
 
@@ -1280,6 +1302,12 @@ body.is-authed .ba-lock{display:none}
 #safety .safety-reason-grid>li{border:0}
 @media(min-width:861px){#safety .safety-reason-grid>li:nth-child(2),#safety .safety-reason-grid>li:nth-child(3),#safety .safety-reason-grid>li:nth-child(5){border-left:1px solid rgba(255,255,255,.18)}#safety .safety-reason-grid>li:nth-child(n+4){border-top:1px solid rgba(255,255,255,.18)}}
 @media(max-width:860px){#safety .safety-reason-grid>li+li{border-top:1px solid rgba(255,255,255,.18)}}
+@media(max-width:860px){
+  .sub-page :is(.nd-card .b,.nd-who>li,.nd-merit>li,.ct-case-copy,.ct-flow>li,
+    .safety-card>div,.safety-method article,.safety-checks article,.safety-guide-points article,
+    .tr-body,.cc,.why>li,.sp-end){padding:18px 16px}
+}
+
 
 /* Individually framed illustrations retain original clinical drawings. */
 .nd-how .fig.type-steps{padding:0;background:transparent;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;align-items:start}
@@ -1303,6 +1331,40 @@ body.is-authed .ba-lock{display:none}
 @media(max-width:860px){#men .nd-lead+.nd-who{margin-top:24px}.men-line-photo svg{max-height:300px}}
 .men-line-photo svg{overflow:hidden}
 .men-line-photo svg{width:min(100%,285px);height:auto;max-height:none;margin-inline:auto}
+
+@media(max-width:860px){
+  main.sub-page .detail-card-strip:has(> :nth-child(2)){
+    --strip-inset:20px;
+    --strip-gap:12px;
+    --visible-cards:1.3;
+    display:flex;
+    flex-flow:row nowrap;
+    justify-content:flex-start;
+    align-items:stretch;
+    column-gap:var(--strip-gap);
+    min-width:0;
+    margin-inline:calc(0px - var(--strip-inset));
+    padding-inline:var(--strip-inset);
+    border:0;
+    overflow-x:auto;
+    overscroll-behavior-x:contain;
+    scroll-snap-type:x proximity;
+    scroll-padding-inline:var(--strip-inset);
+    scrollbar-width:none;
+  }
+  .detail-card-strip::-webkit-scrollbar{display:none}
+  .detail-card-strip:has(> :nth-child(2)) > *{
+    flex:0 0 calc((100% + var(--strip-inset) - var(--strip-gap)) / var(--visible-cards));
+    min-width:0;
+    max-width:none;
+    overflow-wrap:anywhere;
+    scroll-snap-align:start;
+  }
+  main.sub-page :is(.nd-steps,.ct-flow,.type-steps).detail-card-strip:has(> :nth-child(2)){--visible-cards:1.5}
+  .detail-card-strip:is(.nd-merit,.why,.phil-list)>li{border:1px solid var(--line)}
+  .band-g .detail-card-strip.nd-merit>li{border-color:rgba(255,255,255,.18)}
+  .nd-areas.detail-card-strip .a{display:flex;flex-direction:column;gap:12px}
+}
 /* Light-gray sections use white cards for clear separation. */
 .nd-block.band-w .nd-merit>li,.nd-block.band-w .nd-card{background:#fff}
 </style>
@@ -1368,7 +1430,7 @@ body.is-authed .ba-lock{display:none}
   <ul><li><a href="br-aug.html">가슴확대</a></li><li><a href="br-red.html">가슴축소</a></li><li><a href="br-lift.html">처진가슴</a></li><li><a href="br-nipple.html">유두/유륜성형</a></li><li><a href="br-lipo.html">바디지방흡입</a></li><li><a class="on" aria-current="page" href="br-mini.html">미니지방흡입</a></li></ul>
 </nav>
 <section class="sec nd-eye" id="mini"><div class="wrap">
-<div class="nd-block"><div class="nd-sp"><div class="tx"><div class="nd-h"><span class="k">What</span><h3><b>미니지방흡입</b>이란?</h3></div><p class="nd-lead">미니지방흡입은 <b>원하는 특정부위의 지방만을 흡입</b>하는 수술방법으로 수술시간이 짧고 회복기간도 짧으며 비용이 비교적 적다는 장점이 있습니다.</p><p class="nd-tx">본인이 원하는 부위의 지방만 흡입하되 전체적인 바디라인을 고려하여 지방흡입을 합니다. 전체 지방흡입술 보다 작은 절개로 수술하고, 수술시간이 짧으며, 흉터 및 통증과 부기가 비교적 적어 회복기간도 짧습니다. 미니지방흡입은 대량의 지방흡입을 하는 것이 아니기 때문에 전체적인 바디라인의 큰 변화는 없으나 전체적인 바디라인의 조화와 균형을 잡아주고 보다 매끈한 몸매를 완성합니다.</p></div><div class="vis"><figure class="pic"><img src="assets/web-694ca870522a499d.jpg" alt="미니지방흡입 대표 이미지" loading="lazy"></figure></div></div><table class="nd-vs"><thead><tr><th scope="col">지방흡입</th><th scope="col">VS</th><th scope="col">미니지방흡입</th></tr></thead><tbody><tr><td>전체적으로</td><th scope="row">흡입부위</th><td>특정부위</td></tr><tr><td>1~2시간</td><th scope="row">시간</th><td>30분</td></tr><tr><td>수면마취</td><th scope="row">마취</th><td>부분마취 or수면마취</td></tr><tr><td>많은 양의 지방제거</td><th scope="row">특징</th><td>특정부위만 흡입하여 수술 후 붓기 통증이 거의 없음</td></tr><tr><td>수술 후 3~4주 착용</td><th scope="row">압박복</th><td>필요 없음</td></tr></tbody></table><dl class="nd-info"><div><dt>수술시간</dt><dd>30분~1시간</dd></div><div><dt>마취방법</dt><dd>부분/수면마취</dd></div><div><dt>입원치료</dt><dd>불필요</dd></div><div><dt>실밥제거</dt><dd>5~7일 후</dd></div><div><dt>내원치료</dt><dd>1~2회</dd></div><div><dt>회복기간</dt><dd>5~7일 후</dd></div></dl></div><div class="nd-block band-w"><div class="nd-sp rev"><div class="tx"><div class="nd-h"><span class="k">Who</span><h3><b>미니지방흡입</b> 수술대상</h3></div><p class="nd-sub">미니지방흡입, 이런 분들에게 추천합니다.</p><ul class="nd-chk"><li>다이어트에도 특정부위가 빠지지 않는 경우</li><li>짧은 시간에 효과를 얻고 싶은 경우</li><li>주사요법에 실패한 경우</li></ul></div><div class="vis"><figure class="pic"><img src="assets/web-63d1af2a52054600.jpg" alt="미니지방흡입 수술대상 이미지" loading="lazy"></figure></div></div></div><div class="nd-block band-w"><div class="nd-h"><span class="k">Where</span><h3><b>미니지방흡입</b> 적용부위</h3></div><div class="nd-areas"><div class="a"><img src="assets/web-69915673e447c4f9.jpg" alt="복부 사진" loading="lazy"><div><h4>복부</h4><p>남녀 성인병의 고민거리인 복부의 지방은 여성의 경우 남성의 비해 하복부 및 옆구리에 더 많은 지방이 축적 됩니다. 복부의 지방은 얕은 천층 지방과 깊은 심층 지방이 모두 발달한 곳으로 지방흡입을 통해 대략 1000~3000cc를 흡입할 수 있으며 두 층의 지방을 골고루 흡입하는 것이 중요하다고 하겠습니다. 수술 후 느껴지는 변화가 상당히 큰 편이며 허리 사이즈가 많이 줄어드는 것을 체감할 수 있습니다.</p></div></div><div class="a"><img src="assets/web-91a35954386d429d.jpg" alt="허벅지, 엉덩이 사진" loading="lazy"><div><h4>허벅지, 엉덩이</h4><p>운동, 식이요법에 대한 반응이 가장 적은 곳입니다. 우리 몸에서 가장 먼저 지방이 축적되지만 가장 늦게 빠지기 때문에 식이나 운동으로는 빼기 힘든 부분입니다. 사타구니와 엉덩이 아래 주름을 따라 작은 절개창을 통해 시술하며 수술 시 피부보호장치를 하여 흉터는 거의 눈에 띄지 않습니다. 전체적으로 허벅지의 두께를 줄여주는 것도 중요하지만 위에 언급한 특정 부위들을 집중적으로 흡입해서 체형을 교정하는 것이 우선입니다.</p></div></div><div class="a"><img src="assets/web-8dfc97aec57cd357.jpg" alt="허리, 옆구리 사진" loading="lazy"><div><h4>허리, 옆구리</h4><p>여성과 남성의 체형의 차이라면 잘록한 허리에서 나오는 S 라인입니다. 다른 부위가 아무리 날씬하다 하더라도 허리가 굵으면 여성 특유의 미적 요소가 살아나지 못하고 뚱뚱하다고 느끼게 되는 것입니다.</p></div></div><div class="a"><img src="assets/web-abc63cdc828ee594.jpg" alt="팔뚝 사진" loading="lazy"><div><h4>팔뚝</h4><p>지방흡입과 팔뚝 안쪽의 피부 자극술로 탄력성을 주면 만족스러운 결과를 얻으실 수 있습니다. 처짐의 정도를 보고 수술하는 편이 좋고 수술 후 5일 정도 지나면 부기가 어느 정도 빠지기 시작하여, 한 달 정도 지나면 완벽히 부기가 빠집니다. 수술 후 체형관리를 4회 정도 받으면 보다 탄력 있는 날씬한 팔뚝을 가질 수 있습니다.</p></div></div><div class="a"><img src="assets/web-786d647f009ad599.jpg" alt="종아리, 발목 사진" loading="lazy"><div><h4>종아리, 발목</h4><p>종아리와 발목 부분도 지방흡입을 통해 많은 개선을 할 수 있습니다. 다른 부위에 비하여 피부가 얇아서 자칫 울퉁불퉁 해지기 쉬워 보다 더 가느다란 흡입관을 이용해야 하며 각별한 주의가 요구됩니다. 종아리가 굵은 이유를 정확히 진단하고 이에 따라 시술하는 것이 가장 중요합니다.</p></div></div><div class="a"><img src="assets/web-e08ad8b9ee158ea1.jpg" alt="얼굴, 턱, 목 사진" loading="lazy"><div><h4>얼굴, 턱, 목</h4><p>볼살과 턱살 그리고 턱에서 목으로 넘어가는 곳은 얼굴선과 목선을 좌우하는데 가장 중요한 요인이며 전체적으로 얼굴형을 결정짓는 중요한 요소입니다. 골격으로 인한 각지고 큰 얼굴형이라면 뼈를 깎는 수술로 해결해야겠지만 뼈의 구조는 정상인데 얼굴의 지방으로 인해 얼굴이 커 보이는 분들이 많습니다. 이때는 얼굴의 지방흡입을 해주어야 합니다.</p></div></div></div></div><div class="nd-block "><div class="nd-h"><span class="k">How</span><h3><b>미니지방흡입</b> 수술방법</h3></div><div class="nd-how"><div class="m"><div class="t"><span class="n">Method</span><p>수술 전 상담 → 수술부위 디자인 → 지방흡입 → 사후관리</p></div><div class="fig"><img src="assets/web-f91033225d8c2d08.jpg" alt="수술 방법 그림" loading="lazy"></div></div></div></div><div class="nd-block band-g"><div class="nd-h"><span class="k">Merit</span><h3><b>미니지방흡입</b> 수술의 특징</h3></div><ol class="nd-merit"><li><span class="n">01</span><h4>균형잡힌 몸매</h4><p>몸매의 균형을 맞춰 아름다운 라인을 만듭니다.</p></li><li><span class="n">02</span><h4>특정부위 군살제거</h4><p>운동으로 해결 못한 군살을 제거합니다.</p></li><li><span class="n">03</span><h4>셀룰라이트 제거</h4><p>셀룰라이트 제거로 매끄러운 피부를 만듭니다.</p></li><li><span class="n">04</span><h4>자신감 상승</h4><p>고민하던 군살부위를 해결하고 자신감을 되찾을 수 있습니다.</p></li></ol></div><div class="nd-block "><div class="nd-h"><span class="k">Before &amp; After</span><h3><b>미니지방흡입</b> 수술 전후</h3></div><div class="nd-ba eye"><figure class="ba-pic free ba-locked"><img src="assets/web-b73b04c7ee6a3557.jpg" alt="종아리축소술 수술 전후 사진" loading="lazy"><button type="button" class="ba-lock" data-auth="수술 전후 사진 보기"><span>로그인 후 확인</span></button><figcaption>종아리축소술</figcaption></figure></div><p class="nd-more-link"><a class="btn btn-line" href="ba.html#breast">전후사진 더 보기</a></p></div>
+<div class="nd-block"><div class="nd-sp"><div class="tx"><div class="nd-h"><span class="k">What</span><h3><b>미니지방흡입</b>이란?</h3></div><p class="nd-lead">미니지방흡입은 <b>원하는 특정부위의 지방만을 흡입</b>하는 수술방법으로 수술시간이 짧고 회복기간도 짧으며 비용이 비교적 적다는 장점이 있습니다.</p><p class="nd-tx">본인이 원하는 부위의 지방만 흡입하되 전체적인 바디라인을 고려하여 지방흡입을 합니다. 전체 지방흡입술 보다 작은 절개로 수술하고, 수술시간이 짧으며, 흉터 및 통증과 부기가 비교적 적어 회복기간도 짧습니다. 미니지방흡입은 대량의 지방흡입을 하는 것이 아니기 때문에 전체적인 바디라인의 큰 변화는 없으나 전체적인 바디라인의 조화와 균형을 잡아주고 보다 매끈한 몸매를 완성합니다.</p></div><div class="vis"><figure class="pic"><img src="assets/web-694ca870522a499d.jpg" alt="미니지방흡입 대표 이미지" loading="lazy"></figure></div></div><table class="nd-vs"><thead><tr><th scope="col">지방흡입</th><th scope="col">VS</th><th scope="col">미니지방흡입</th></tr></thead><tbody><tr><td>전체적으로</td><th scope="row">흡입부위</th><td>특정부위</td></tr><tr><td>1~2시간</td><th scope="row">시간</th><td>30분</td></tr><tr><td>수면마취</td><th scope="row">마취</th><td>부분마취 or수면마취</td></tr><tr><td>많은 양의 지방제거</td><th scope="row">특징</th><td>특정부위만 흡입하여 수술 후 붓기 통증이 거의 없음</td></tr><tr><td>수술 후 3~4주 착용</td><th scope="row">압박복</th><td>필요 없음</td></tr></tbody></table><dl class="nd-info"><div><dt>수술시간</dt><dd>30분~1시간</dd></div><div><dt>마취방법</dt><dd>부분/수면마취</dd></div><div><dt>입원치료</dt><dd>불필요</dd></div><div><dt>실밥제거</dt><dd>5~7일 후</dd></div><div><dt>내원치료</dt><dd>1~2회</dd></div><div><dt>회복기간</dt><dd>5~7일 후</dd></div></dl></div><div class="nd-block band-w"><div class="nd-sp rev"><div class="tx"><div class="nd-h"><span class="k">Who</span><h3><b>미니지방흡입</b> 수술대상</h3></div><p class="nd-sub">미니지방흡입, 이런 분들에게 추천합니다.</p><ul class="nd-chk"><li>다이어트에도 특정부위가 빠지지 않는 경우</li><li>짧은 시간에 효과를 얻고 싶은 경우</li><li>주사요법에 실패한 경우</li></ul></div><div class="vis"><figure class="pic"><img src="assets/web-63d1af2a52054600.jpg" alt="미니지방흡입 수술대상 이미지" loading="lazy"></figure></div></div></div><div class="nd-block band-w"><div class="nd-h"><span class="k">Where</span><h3><b>미니지방흡입</b> 적용부위</h3></div><div class="nd-areas detail-card-strip" tabindex="0"><div class="a"><img src="assets/web-69915673e447c4f9.jpg" alt="복부 사진" loading="lazy"><div><h4>복부</h4><p>남녀 성인병의 고민거리인 복부의 지방은 여성의 경우 남성의 비해 하복부 및 옆구리에 더 많은 지방이 축적 됩니다. 복부의 지방은 얕은 천층 지방과 깊은 심층 지방이 모두 발달한 곳으로 지방흡입을 통해 대략 1000~3000cc를 흡입할 수 있으며 두 층의 지방을 골고루 흡입하는 것이 중요하다고 하겠습니다. 수술 후 느껴지는 변화가 상당히 큰 편이며 허리 사이즈가 많이 줄어드는 것을 체감할 수 있습니다.</p></div></div><div class="a"><img src="assets/web-91a35954386d429d.jpg" alt="허벅지, 엉덩이 사진" loading="lazy"><div><h4>허벅지, 엉덩이</h4><p>운동, 식이요법에 대한 반응이 가장 적은 곳입니다. 우리 몸에서 가장 먼저 지방이 축적되지만 가장 늦게 빠지기 때문에 식이나 운동으로는 빼기 힘든 부분입니다. 사타구니와 엉덩이 아래 주름을 따라 작은 절개창을 통해 시술하며 수술 시 피부보호장치를 하여 흉터는 거의 눈에 띄지 않습니다. 전체적으로 허벅지의 두께를 줄여주는 것도 중요하지만 위에 언급한 특정 부위들을 집중적으로 흡입해서 체형을 교정하는 것이 우선입니다.</p></div></div><div class="a"><img src="assets/web-8dfc97aec57cd357.jpg" alt="허리, 옆구리 사진" loading="lazy"><div><h4>허리, 옆구리</h4><p>여성과 남성의 체형의 차이라면 잘록한 허리에서 나오는 S 라인입니다. 다른 부위가 아무리 날씬하다 하더라도 허리가 굵으면 여성 특유의 미적 요소가 살아나지 못하고 뚱뚱하다고 느끼게 되는 것입니다.</p></div></div><div class="a"><img src="assets/web-abc63cdc828ee594.jpg" alt="팔뚝 사진" loading="lazy"><div><h4>팔뚝</h4><p>지방흡입과 팔뚝 안쪽의 피부 자극술로 탄력성을 주면 만족스러운 결과를 얻으실 수 있습니다. 처짐의 정도를 보고 수술하는 편이 좋고 수술 후 5일 정도 지나면 부기가 어느 정도 빠지기 시작하여, 한 달 정도 지나면 완벽히 부기가 빠집니다. 수술 후 체형관리를 4회 정도 받으면 보다 탄력 있는 날씬한 팔뚝을 가질 수 있습니다.</p></div></div><div class="a"><img src="assets/web-786d647f009ad599.jpg" alt="종아리, 발목 사진" loading="lazy"><div><h4>종아리, 발목</h4><p>종아리와 발목 부분도 지방흡입을 통해 많은 개선을 할 수 있습니다. 다른 부위에 비하여 피부가 얇아서 자칫 울퉁불퉁 해지기 쉬워 보다 더 가느다란 흡입관을 이용해야 하며 각별한 주의가 요구됩니다. 종아리가 굵은 이유를 정확히 진단하고 이에 따라 시술하는 것이 가장 중요합니다.</p></div></div><div class="a"><img src="assets/web-e08ad8b9ee158ea1.jpg" alt="얼굴, 턱, 목 사진" loading="lazy"><div><h4>얼굴, 턱, 목</h4><p>볼살과 턱살 그리고 턱에서 목으로 넘어가는 곳은 얼굴선과 목선을 좌우하는데 가장 중요한 요인이며 전체적으로 얼굴형을 결정짓는 중요한 요소입니다. 골격으로 인한 각지고 큰 얼굴형이라면 뼈를 깎는 수술로 해결해야겠지만 뼈의 구조는 정상인데 얼굴의 지방으로 인해 얼굴이 커 보이는 분들이 많습니다. 이때는 얼굴의 지방흡입을 해주어야 합니다.</p></div></div></div></div><div class="nd-block "><div class="nd-h"><span class="k">How</span><h3><b>미니지방흡입</b> 수술방법</h3></div><div class="nd-how"><div class="m"><div class="t"><span class="n">Method</span><p>수술 전 상담 → 수술부위 디자인 → 지방흡입 → 사후관리</p></div><div class="fig"><img src="assets/web-f91033225d8c2d08.jpg" alt="수술 방법 그림" loading="lazy"></div></div></div></div><div class="nd-block band-g"><div class="nd-h"><span class="k">Merit</span><h3><b>미니지방흡입</b> 수술의 특징</h3></div><ol class="nd-merit detail-card-strip" tabindex="0"><li><span class="n">01</span><h4>균형잡힌 몸매</h4><p>몸매의 균형을 맞춰 아름다운 라인을 만듭니다.</p></li><li><span class="n">02</span><h4>특정부위 군살제거</h4><p>운동으로 해결 못한 군살을 제거합니다.</p></li><li><span class="n">03</span><h4>셀룰라이트 제거</h4><p>셀룰라이트 제거로 매끄러운 피부를 만듭니다.</p></li><li><span class="n">04</span><h4>자신감 상승</h4><p>고민하던 군살부위를 해결하고 자신감을 되찾을 수 있습니다.</p></li></ol></div><div class="nd-block "><div class="nd-h"><span class="k">Before &amp; After</span><h3><b>미니지방흡입</b> 수술 전후</h3></div><div class="nd-ba eye"><figure class="ba-pic free ba-locked"><img src="assets/web-b73b04c7ee6a3557.jpg" alt="종아리축소술 수술 전후 사진" loading="lazy"><button type="button" class="ba-lock" data-auth="수술 전후 사진 보기"><span>로그인 후 확인</span></button><figcaption>종아리축소술</figcaption></figure></div><p class="nd-more-link"><a class="btn btn-line" href="ba.html#breast">전후사진 더 보기</a></p></div>
 </div></section>
 
 <!-- 상담 -->

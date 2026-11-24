@@ -467,9 +467,13 @@ body.nav-open .mnav-in{transform:none}
   .snb a.on::after{left:20px;right:20px}
 }
 @media (max-width:860px){
-  .sv{margin-top:64px;height:300px}
+  .sub-page{padding-top:64px}
+  /* Keep the page heading available to screen readers inside the collapsed banner. */
+  .sub-page > .sv{height:0;margin:0;overflow:hidden}
+  .sub-page > .sv::before,.sub-page > .sv::after,.sub-page > .sv p{display:none}
   .snb{top:64px}
-  .snb ul{justify-content:flex-start;overflow-x:auto;padding:0 8px}
+  .snb ul{justify-content:flex-start;overflow-x:auto;padding:0 8px;scrollbar-width:none}
+  .snb ul::-webkit-scrollbar{display:none}
   .snb a{padding:16px 14px;font-size:14.5px}
   .snb a.on::after{left:14px;right:14px}
 }
@@ -548,6 +552,8 @@ body.nav-open .mnav-in{transform:none}
 @media (max-width:1180px){.nd-info{grid-template-columns:repeat(3,1fr)}.nd-info div:nth-child(4){border-left:0}.nd-info div:nth-child(n+4){border-top:1px solid rgba(255,255,255,.14)}.nd-merit{grid-template-columns:1fr 1fr}.nd-merit li:nth-child(2n+1){border-left:0}.nd-merit li:nth-child(n+3){border-top:1px solid var(--line)}}
 @media (max-width:860px){
   .nd-tabs{flex-wrap:nowrap;overflow-x:auto;justify-content:flex-start;margin:32px -20px 0;padding:0 20px}
+  :is(.nd-tabs,.ba-tabs,.tabs,.snb ul,.gal-thumbs,[role="tablist"]){scrollbar-width:none}
+  :is(.nd-tabs,.ba-tabs,.tabs,.snb ul,.gal-thumbs,[role="tablist"])::-webkit-scrollbar{display:none}
   .nd-tabs button,.nd-tabs a{flex:none;height:40px;padding:0 16px}
   .nd-block{padding:56px 0}
   .nd-h{flex-direction:column;gap:10px;margin-bottom:20px}
@@ -1280,6 +1286,12 @@ body.is-authed .ba-lock{display:none}
 #safety .safety-reason-grid>li{border:0}
 @media(min-width:861px){#safety .safety-reason-grid>li:nth-child(2),#safety .safety-reason-grid>li:nth-child(3),#safety .safety-reason-grid>li:nth-child(5){border-left:1px solid rgba(255,255,255,.18)}#safety .safety-reason-grid>li:nth-child(n+4){border-top:1px solid rgba(255,255,255,.18)}}
 @media(max-width:860px){#safety .safety-reason-grid>li+li{border-top:1px solid rgba(255,255,255,.18)}}
+@media(max-width:860px){
+  .sub-page :is(.nd-card .b,.nd-who>li,.nd-merit>li,.ct-case-copy,.ct-flow>li,
+    .safety-card>div,.safety-method article,.safety-checks article,.safety-guide-points article,
+    .tr-body,.cc,.why>li,.sp-end){padding:18px 16px}
+}
+
 
 /* Individually framed illustrations retain original clinical drawings. */
 .nd-how .fig.type-steps{padding:0;background:transparent;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;align-items:start}
@@ -1303,6 +1315,40 @@ body.is-authed .ba-lock{display:none}
 @media(max-width:860px){#men .nd-lead+.nd-who{margin-top:24px}.men-line-photo svg{max-height:300px}}
 .men-line-photo svg{overflow:hidden}
 .men-line-photo svg{width:min(100%,285px);height:auto;max-height:none;margin-inline:auto}
+
+@media(max-width:860px){
+  main.sub-page .detail-card-strip:has(> :nth-child(2)){
+    --strip-inset:20px;
+    --strip-gap:12px;
+    --visible-cards:1.3;
+    display:flex;
+    flex-flow:row nowrap;
+    justify-content:flex-start;
+    align-items:stretch;
+    column-gap:var(--strip-gap);
+    min-width:0;
+    margin-inline:calc(0px - var(--strip-inset));
+    padding-inline:var(--strip-inset);
+    border:0;
+    overflow-x:auto;
+    overscroll-behavior-x:contain;
+    scroll-snap-type:x proximity;
+    scroll-padding-inline:var(--strip-inset);
+    scrollbar-width:none;
+  }
+  .detail-card-strip::-webkit-scrollbar{display:none}
+  .detail-card-strip:has(> :nth-child(2)) > *{
+    flex:0 0 calc((100% + var(--strip-inset) - var(--strip-gap)) / var(--visible-cards));
+    min-width:0;
+    max-width:none;
+    overflow-wrap:anywhere;
+    scroll-snap-align:start;
+  }
+  main.sub-page :is(.nd-steps,.ct-flow,.type-steps).detail-card-strip:has(> :nth-child(2)){--visible-cards:1.5}
+  .detail-card-strip:is(.nd-merit,.why,.phil-list)>li{border:1px solid var(--line)}
+  .band-g .detail-card-strip.nd-merit>li{border-color:rgba(255,255,255,.18)}
+  .nd-areas.detail-card-strip .a{display:flex;flex-direction:column;gap:12px}
+}
 /* Light-gray sections use white cards for clear separation. */
 .nd-block.band-w .nd-merit>li,.nd-block.band-w .nd-card{background:#fff}
 </style>
@@ -1368,7 +1414,7 @@ body.is-authed .ba-lock{display:none}
   <ul><li><a href="br-aug.html">가슴확대</a></li><li><a href="br-red.html">가슴축소</a></li><li><a class="on" aria-current="page" href="br-lift.html">처진가슴</a></li><li><a href="br-nipple.html">유두/유륜성형</a></li><li><a href="br-lipo.html">바디지방흡입</a></li><li><a href="br-mini.html">미니지방흡입</a></li></ul>
 </nav>
 <section class="sec nd-eye" id="lift"><div class="wrap">
-<div class="nd-block"><div class="nd-sp"><div class="tx"><div class="nd-h"><span class="k">What</span><h3><b>처진가슴</b>이란?</h3></div><p class="nd-lead">탄력 있고 풍만한 가슴도 <b>임신과 출산, 노화 등의 이유로 차츰 탄력을 잃고</b> 가슴이 아래를 늘어지게 됩니다. 수유로 인해 팽창과 수축이 되풀이 되면서 혹은 노화로 인해 피부의 탄력이 떨어지면서 피부가 처지게 되는 것입니다.</p><p class="nd-tx">가슴이 많이 처지게 되면 미용상의 불만뿐 아니라 유방 밑에 피부질환 등의 불편함도 생기기 때문에 이로 인한 정신적인 스트레스를 많이 받게 됩니다. 가슴이 처지게 된 다양한 원인과 조건, 가슴의 상태를 분석하여 늘어진 가슴을 탄력 있고 아름다운 가슴으로 변화시켜 자신감도 상승시킬 수 있습니다.</p></div><div class="vis"><figure class="pic"><img src="assets/web-4ffda38a72227c1e.jpg" alt="처진가슴 대표 이미지" loading="lazy"></figure></div></div><dl class="nd-info"><div><dt>수술시간</dt><dd>2~3시간 정도</dd></div><div><dt>마취방법</dt><dd>전신마취</dd></div><div><dt>입원치료</dt><dd>불필요</dd></div><div><dt>실밥제거</dt><dd>7~10일 후</dd></div><div><dt>내원치료</dt><dd>3~4회</dd></div><div><dt>회복기간</dt><dd>2~3주 후</dd></div></dl></div><div class="nd-block band-w"><div class="nd-sp rev"><div class="tx"><div class="nd-h"><span class="k">Who</span><h3><b>처진가슴</b> 수술대상</h3></div><p class="nd-sub">처진가슴, 이런 분들에게 추천합니다.</p><ul class="nd-chk"><li>급격한 체중 변화로 가슴이 처진 경우</li><li>노화로 인해 가슴이 늘어진 경우</li><li>잦은 수유로 가슴이 처진 경우</li><li>가슴이 작으나 선천적으로 처진 경우</li><li>유두가 가슴 밑 주름보다 내려간 경우</li></ul></div><div class="vis"><figure class="pic"><img src="assets/web-d28a4c2a5f456d05.jpg" alt="처진가슴 수술대상 이미지" loading="lazy"></figure></div></div></div><div class="nd-block band-w"><div class="nd-h"><span class="k">Self Test</span><h3><b>처진가슴</b> 자가진단</h3></div><p class="nd-lead">가슴이 처지는 정도는 <b>유방 밑 주름을 기준으로 판단</b>할 수 있습니다. 정상적으로 유두는 유방 밑 주름에서 4~5cm 위에 있어야 하나 유방 밑 주름보다 더 아래에 있을 경우 수술적 교정이 필요하다고 볼 수 있습니다.</p><figure class="nd-fig nd-eyefig"><img src="assets/web-24b5009c2f86acc9.jpg" alt="처진가슴 자가진단 — 정상가슴, 1단계·2단계·3단계 유방하수" loading="lazy"></figure><ol class="nd-steps c4" style="margin-top:24px"><li><b>정상가슴</b><p>유두가 밑선보다 위쪽에 위치하는 경우</p></li><li><b>1단계 유방하수</b><p>유두가 가슴밑 주름 수준이나 이보다 1cm이내로 내려간 경우</p></li><li><b>2단계 유방하수</b><p>유두가 가슴 밑 주름보다 1~3cm정도 내려가 있지만 가슴 조직의 가장 아래보다는 위에 있는 경우</p></li><li><b>3단계 유방하수</b><p>유두가 가슴 밑 주름보다 3cm이상 내려가 있어 유두가 아래로 향하고 있는 경우</p></li></ol></div><div class="nd-block "><div class="nd-h"><span class="k">How</span><h3><b>처진가슴</b> 수술방법</h3></div><div class="nd-how"><div class="m"><div class="t"><span class="n">Method 01</span><h4>처진 정도가 심하지 않은 경우</h4><p>가슴확대 수술로 가슴의 볼륨을 보충해 주면 쉽게 가슴을 교정할 수 있습니다.</p></div><div class="fig"><img src="assets/web-722fd6d6c174ea66.jpg" alt="처진 정도가 심하지 않은 경우 그림" loading="lazy"></div></div><div class="m"><div class="t"><span class="n">Method 02</span><h4>처진 정도가 심한 경우</h4><p>유륜 주위에 절개를 가하여 가슴 조직을 위로 올려 고정해 주는 방법이 있습니다. 이 방법은 가슴 양측의 남는 피부를 줄여주고 잡아 당겨줌으로써 가슴과 유두를 모두 위로 원하는 위치로 올려줄 수 있습니다. 그리고 유두의 감각 신경을 보존하면서 젊고 탄력 있는 유방 모양을 만들 수 있으며 필요에 따라 유방의 크기를 확대하거나 축소할 수 있습니다.</p></div><div class="fig"><img src="assets/web-501c5d350dd9a064.jpg" alt="처진 정도가 심한 경우 그림" loading="lazy"></div></div></div></div><div class="nd-block band-w merit-neutral"><div class="nd-h"><span class="k">Merit</span><h3><b>처진가슴</b> 수술의 특징</h3></div><ol class="nd-merit"><li><span class="n">01</span><h4>전체 바디와 조화로운 가슴</h4><p>알맞는 크기와 볼륨, 위치로 환자의 몸매에 맞는 가슴라인을 만듭니다.</p></li><li><span class="n">02</span><h4>탄력 있게 올라간 가슴</h4><p>처지고 늘어진 가슴을 탄력 있게 개선합니다.</p></li><li><span class="n">03</span><h4>피부질환 개선</h4><p>처진 가슴으로 인한 피부질환이 개선됩니다.</p></li><li><span class="n">04</span><h4>자신감 상승</h4><p>처진가슴 콤플렉스를 해결하고 자신감을 되찾을 수 있습니다.</p></li></ol></div>
+<div class="nd-block"><div class="nd-sp"><div class="tx"><div class="nd-h"><span class="k">What</span><h3><b>처진가슴</b>이란?</h3></div><p class="nd-lead">탄력 있고 풍만한 가슴도 <b>임신과 출산, 노화 등의 이유로 차츰 탄력을 잃고</b> 가슴이 아래를 늘어지게 됩니다. 수유로 인해 팽창과 수축이 되풀이 되면서 혹은 노화로 인해 피부의 탄력이 떨어지면서 피부가 처지게 되는 것입니다.</p><p class="nd-tx">가슴이 많이 처지게 되면 미용상의 불만뿐 아니라 유방 밑에 피부질환 등의 불편함도 생기기 때문에 이로 인한 정신적인 스트레스를 많이 받게 됩니다. 가슴이 처지게 된 다양한 원인과 조건, 가슴의 상태를 분석하여 늘어진 가슴을 탄력 있고 아름다운 가슴으로 변화시켜 자신감도 상승시킬 수 있습니다.</p></div><div class="vis"><figure class="pic"><img src="assets/web-4ffda38a72227c1e.jpg" alt="처진가슴 대표 이미지" loading="lazy"></figure></div></div><dl class="nd-info"><div><dt>수술시간</dt><dd>2~3시간 정도</dd></div><div><dt>마취방법</dt><dd>전신마취</dd></div><div><dt>입원치료</dt><dd>불필요</dd></div><div><dt>실밥제거</dt><dd>7~10일 후</dd></div><div><dt>내원치료</dt><dd>3~4회</dd></div><div><dt>회복기간</dt><dd>2~3주 후</dd></div></dl></div><div class="nd-block band-w"><div class="nd-sp rev"><div class="tx"><div class="nd-h"><span class="k">Who</span><h3><b>처진가슴</b> 수술대상</h3></div><p class="nd-sub">처진가슴, 이런 분들에게 추천합니다.</p><ul class="nd-chk"><li>급격한 체중 변화로 가슴이 처진 경우</li><li>노화로 인해 가슴이 늘어진 경우</li><li>잦은 수유로 가슴이 처진 경우</li><li>가슴이 작으나 선천적으로 처진 경우</li><li>유두가 가슴 밑 주름보다 내려간 경우</li></ul></div><div class="vis"><figure class="pic"><img src="assets/web-d28a4c2a5f456d05.jpg" alt="처진가슴 수술대상 이미지" loading="lazy"></figure></div></div></div><div class="nd-block band-w"><div class="nd-h"><span class="k">Self Test</span><h3><b>처진가슴</b> 자가진단</h3></div><p class="nd-lead">가슴이 처지는 정도는 <b>유방 밑 주름을 기준으로 판단</b>할 수 있습니다. 정상적으로 유두는 유방 밑 주름에서 4~5cm 위에 있어야 하나 유방 밑 주름보다 더 아래에 있을 경우 수술적 교정이 필요하다고 볼 수 있습니다.</p><figure class="nd-fig nd-eyefig"><img src="assets/web-24b5009c2f86acc9.jpg" alt="처진가슴 자가진단 — 정상가슴, 1단계·2단계·3단계 유방하수" loading="lazy"></figure><ol class="nd-steps c4 detail-card-strip" tabindex="0" style="margin-top:24px"><li><b>정상가슴</b><p>유두가 밑선보다 위쪽에 위치하는 경우</p></li><li><b>1단계 유방하수</b><p>유두가 가슴밑 주름 수준이나 이보다 1cm이내로 내려간 경우</p></li><li><b>2단계 유방하수</b><p>유두가 가슴 밑 주름보다 1~3cm정도 내려가 있지만 가슴 조직의 가장 아래보다는 위에 있는 경우</p></li><li><b>3단계 유방하수</b><p>유두가 가슴 밑 주름보다 3cm이상 내려가 있어 유두가 아래로 향하고 있는 경우</p></li></ol></div><div class="nd-block "><div class="nd-h"><span class="k">How</span><h3><b>처진가슴</b> 수술방법</h3></div><div class="nd-how"><div class="m"><div class="t"><span class="n">Method 01</span><h4>처진 정도가 심하지 않은 경우</h4><p>가슴확대 수술로 가슴의 볼륨을 보충해 주면 쉽게 가슴을 교정할 수 있습니다.</p></div><div class="fig"><img src="assets/web-722fd6d6c174ea66.jpg" alt="처진 정도가 심하지 않은 경우 그림" loading="lazy"></div></div><div class="m"><div class="t"><span class="n">Method 02</span><h4>처진 정도가 심한 경우</h4><p>유륜 주위에 절개를 가하여 가슴 조직을 위로 올려 고정해 주는 방법이 있습니다. 이 방법은 가슴 양측의 남는 피부를 줄여주고 잡아 당겨줌으로써 가슴과 유두를 모두 위로 원하는 위치로 올려줄 수 있습니다. 그리고 유두의 감각 신경을 보존하면서 젊고 탄력 있는 유방 모양을 만들 수 있으며 필요에 따라 유방의 크기를 확대하거나 축소할 수 있습니다.</p></div><div class="fig"><img src="assets/web-501c5d350dd9a064.jpg" alt="처진 정도가 심한 경우 그림" loading="lazy"></div></div></div></div><div class="nd-block band-w merit-neutral"><div class="nd-h"><span class="k">Merit</span><h3><b>처진가슴</b> 수술의 특징</h3></div><ol class="nd-merit detail-card-strip" tabindex="0"><li><span class="n">01</span><h4>전체 바디와 조화로운 가슴</h4><p>알맞는 크기와 볼륨, 위치로 환자의 몸매에 맞는 가슴라인을 만듭니다.</p></li><li><span class="n">02</span><h4>탄력 있게 올라간 가슴</h4><p>처지고 늘어진 가슴을 탄력 있게 개선합니다.</p></li><li><span class="n">03</span><h4>피부질환 개선</h4><p>처진 가슴으로 인한 피부질환이 개선됩니다.</p></li><li><span class="n">04</span><h4>자신감 상승</h4><p>처진가슴 콤플렉스를 해결하고 자신감을 되찾을 수 있습니다.</p></li></ol></div>
 </div></section>
 
 <!-- 상담 -->

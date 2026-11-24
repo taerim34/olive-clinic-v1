@@ -467,9 +467,13 @@ body.nav-open .mnav-in{transform:none}
   .snb a.on::after{left:20px;right:20px}
 }
 @media (max-width:860px){
-  .sv{margin-top:64px;height:300px}
+  .sub-page{padding-top:64px}
+  /* Keep the page heading available to screen readers inside the collapsed banner. */
+  .sub-page > .sv{height:0;margin:0;overflow:hidden}
+  .sub-page > .sv::before,.sub-page > .sv::after,.sub-page > .sv p{display:none}
   .snb{top:64px}
-  .snb ul{justify-content:flex-start;overflow-x:auto;padding:0 8px}
+  .snb ul{justify-content:flex-start;overflow-x:auto;padding:0 8px;scrollbar-width:none}
+  .snb ul::-webkit-scrollbar{display:none}
   .snb a{padding:16px 14px;font-size:14.5px}
   .snb a.on::after{left:14px;right:14px}
 }
@@ -548,6 +552,8 @@ body.nav-open .mnav-in{transform:none}
 @media (max-width:1180px){.nd-info{grid-template-columns:repeat(3,1fr)}.nd-info div:nth-child(4){border-left:0}.nd-info div:nth-child(n+4){border-top:1px solid rgba(255,255,255,.14)}.nd-merit{grid-template-columns:1fr 1fr}.nd-merit li:nth-child(2n+1){border-left:0}.nd-merit li:nth-child(n+3){border-top:1px solid var(--line)}}
 @media (max-width:860px){
   .nd-tabs{flex-wrap:nowrap;overflow-x:auto;justify-content:flex-start;margin:32px -20px 0;padding:0 20px}
+  :is(.nd-tabs,.ba-tabs,.tabs,.snb ul,.gal-thumbs,[role="tablist"]){scrollbar-width:none}
+  :is(.nd-tabs,.ba-tabs,.tabs,.snb ul,.gal-thumbs,[role="tablist"])::-webkit-scrollbar{display:none}
   .nd-tabs button,.nd-tabs a{flex:none;height:40px;padding:0 16px}
   .nd-block{padding:56px 0}
   .nd-h{flex-direction:column;gap:10px;margin-bottom:20px}
@@ -556,6 +562,7 @@ body.nav-open .mnav-in{transform:none}
   .nd-merit{grid-template-columns:1fr}.nd-merit li{border-left:0;border-top:1px solid var(--line);padding:26px 22px 28px}.nd-merit li:first-child{border-top:0}
   .nd-cards,.nd-quote{grid-template-columns:1fr}
   .nd-card .b{padding:22px 20px 26px}
+  .nd-card .b > .n:first-child{margin-top:0}
 }
 .nd-split{display:grid;grid-template-columns:1.3fr .7fr;gap:56px;align-items:center}
 .nd-cert img{box-shadow:0 10px 30px rgba(0,0,0,.12)}
@@ -1280,6 +1287,12 @@ body.is-authed .ba-lock{display:none}
 #safety .safety-reason-grid>li{border:0}
 @media(min-width:861px){#safety .safety-reason-grid>li:nth-child(2),#safety .safety-reason-grid>li:nth-child(3),#safety .safety-reason-grid>li:nth-child(5){border-left:1px solid rgba(255,255,255,.18)}#safety .safety-reason-grid>li:nth-child(n+4){border-top:1px solid rgba(255,255,255,.18)}}
 @media(max-width:860px){#safety .safety-reason-grid>li+li{border-top:1px solid rgba(255,255,255,.18)}}
+@media(max-width:860px){
+  .sub-page :is(.nd-card .b,.nd-who>li,.nd-merit>li,.ct-case-copy,.ct-flow>li,
+    .safety-card>div,.safety-method article,.safety-checks article,.safety-guide-points article,
+    .tr-body,.cc,.why>li,.sp-end){padding:18px 16px}
+}
+
 
 /* Individually framed illustrations retain original clinical drawings. */
 .nd-how .fig.type-steps{padding:0;background:transparent;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;align-items:start}
@@ -1303,6 +1316,40 @@ body.is-authed .ba-lock{display:none}
 @media(max-width:860px){#men .nd-lead+.nd-who{margin-top:24px}.men-line-photo svg{max-height:300px}}
 .men-line-photo svg{overflow:hidden}
 .men-line-photo svg{width:min(100%,285px);height:auto;max-height:none;margin-inline:auto}
+
+@media(max-width:860px){
+  main.sub-page .detail-card-strip:has(> :nth-child(2)){
+    --strip-inset:20px;
+    --strip-gap:12px;
+    --visible-cards:1.3;
+    display:flex;
+    flex-flow:row nowrap;
+    justify-content:flex-start;
+    align-items:stretch;
+    column-gap:var(--strip-gap);
+    min-width:0;
+    margin-inline:calc(0px - var(--strip-inset));
+    padding-inline:var(--strip-inset);
+    border:0;
+    overflow-x:auto;
+    overscroll-behavior-x:contain;
+    scroll-snap-type:x proximity;
+    scroll-padding-inline:var(--strip-inset);
+    scrollbar-width:none;
+  }
+  .detail-card-strip::-webkit-scrollbar{display:none}
+  .detail-card-strip:has(> :nth-child(2)) > *{
+    flex:0 0 calc((100% + var(--strip-inset) - var(--strip-gap)) / var(--visible-cards));
+    min-width:0;
+    max-width:none;
+    overflow-wrap:anywhere;
+    scroll-snap-align:start;
+  }
+  main.sub-page :is(.nd-steps,.ct-flow,.type-steps).detail-card-strip:has(> :nth-child(2)){--visible-cards:1.5}
+  .detail-card-strip:is(.nd-merit,.why,.phil-list)>li{border:1px solid var(--line)}
+  .band-g .detail-card-strip.nd-merit>li{border-color:rgba(255,255,255,.18)}
+  .nd-areas.detail-card-strip .a{display:flex;flex-direction:column;gap:12px}
+}
 /* Light-gray sections use white cards for clear separation. */
 .nd-block.band-w .nd-merit>li,.nd-block.band-w .nd-card{background:#fff}
 </style>
@@ -1374,7 +1421,7 @@ body.is-authed .ba-lock{display:none}
     <h2 class="h-en">Men</h2>
     <h2 class="ko">옴므성형, 만족감부터 남다르게 <b>남자다움을 살리다!</b></h2>
   </div>
-  <div class="nd-block "><div class="nd-h"><span class="k">What</span><h3><b>남자코</b>란?</h3></div><p class="nd-lead"><b>남자코 성형은 여자 코성형과 달라야 합니다.</b></p><p class="nd-tx">남자 코성형은 미적 관점에서도 아름다움의 기준이 여성과 다르므로 수술방법 역시 여자 코라인과는 차이가 있습니다. 이런 남성 코성형의 특성을 고려할 줄 아는 경험이 많은 성형외과 전문의에게 수술을 받는 것이 좋은 결과를 얻을수 있습니다.</p><div class="nd-cards men-compare" style="margin-top:28px"><article class="nd-card"><figure class="men-line-photo"><svg viewBox="420 650 570 680" role="img" aria-label="Men 코라인 비교 이미지"><image href="assets/men-original.jpg" width="1920" height="5202"/></svg></figure><div class="b"><p class="n">Men</p><h4>남자의 코라인 — <em>곧게 뻗은 직선라인</em></h4><p>남자만의 매력적인 콧대가 직선으로 쭉 뻗은 코라인으로 강하고 댄디한 남성미 완성</p></div></article><article class="nd-card"><figure class="men-line-photo"><svg viewBox="990 650 570 680" role="img" aria-label="Women 코라인 비교 이미지"><image href="assets/men-original.jpg" width="1920" height="5202"/></svg></figure><div class="b"><p class="n">Women</p><h4>여자의 코라인 — <em>반버선의 곡선라인</em></h4><p>코끝이 살짝 올라간 반버선 라인으로 여성스럽고 세련된 이미지 완성</p></div></article></div></div><div class="nd-block band-w"><div class="nd-h"><span class="k">Point</span><h3>올리브 <b>남자 코성형의 포인트</b></h3></div><p class="nd-lead">얼굴 중심위치한 코를 교정하면 신뢰감과 남성미를 나타낼 수 있습니다. <b>남자의 코성형이 여자와 다른점은 코끝을 이루는 각도에 가장 큰 포인트가 있습니다.</b> 미간에서 코끝까지 일직선으로 쭉 뻗은 오뚝한 코가 남성적인 매력을 부각시켜줍니다.</p><ol class="nd-who"><li><span class="n">01</span><p>남성만을 위한 코 디자인</p></li><li><span class="n">02</span><p>타고난 듯한 자연스러운 남자 코성형</p></li><li><span class="n">03</span><p>직선형태의 남성적 코라인</p></li><li><span class="n">04</span><p>취향을 반영한 맞춤 코성형</p></li><li><span class="n">05</span><p>코끝이 딱딱하지 않고 움직임이 가능</p></li></ol></div><div class="nd-block band-w"><div class="nd-h"><span class="k">Who</span><h3><b>남자코성형</b> 수술대상</h3></div><p class="nd-sub">남자코성형, 이런분들에게 추천합니다.</p><div style="margin-top:24px"><ol class="nd-who"><li><span class="n">01</span><p>남자다운 코를 원하는 경우</p></li><li><span class="n">02</span><p>코가 낮아 인상이 밋밋한 경우</p></li><li><span class="n">03</span><p>콧대가 낮아 세련된 이미지가 부족한 경우</p></li><li><span class="n">04</span><p>콧망울 넓어 뭉툭해 보이는 경우</p></li><li><span class="n">05</span><p>코가 휘거나 매부리코인 경우</p></li></ol></div></div><div class="nd-block band-w men-merit"><div class="nd-h"><span class="k">Merit</span><h3><b>남자코성형</b> 수술의 특징</h3></div><p class="nd-sub" style="margin:0 0 28px">오직 남자만의 미적 기준을 적용하여 남자만의 매력적인 코라인을 만듭니다.</p><ol class="nd-merit"><li><span class="n">01</span><h4>남자다운 곧은 코라인</h4><p>미간부터 코끝까지 곧게 뻗은 직선형의 라인을 만듭니다.</p></li><li><span class="n">02</span><h4>코성형으로 이상적인 얼굴 완성</h4><p>전체적인 얼굴과의 조화를 고려해서 코의 이상적인 비율을 만듭니다.</p></li><li><span class="n">03</span><h4>입체감 있는 얼굴</h4><p>정면과 측면이 어색하지않는 입체적이고 부드러운 콧대를 완성합니다.</p></li><li><span class="n">04</span><h4>미적 아름다움과 기능성 까지</h4><p>미적인 부분 뿐만 아니라 기능적인 부분까지 한번에 개선해 줍니다.</p></li></ol></div>
+  <div class="nd-block "><div class="nd-h"><span class="k">What</span><h3><b>남자코</b>란?</h3></div><p class="nd-lead"><b>남자코 성형은 여자 코성형과 달라야 합니다.</b></p><p class="nd-tx">남자 코성형은 미적 관점에서도 아름다움의 기준이 여성과 다르므로 수술방법 역시 여자 코라인과는 차이가 있습니다. 이런 남성 코성형의 특성을 고려할 줄 아는 경험이 많은 성형외과 전문의에게 수술을 받는 것이 좋은 결과를 얻을수 있습니다.</p><div class="nd-cards men-compare detail-card-strip" tabindex="0" style="margin-top:28px"><article class="nd-card"><figure class="men-line-photo"><svg viewBox="420 650 570 680" role="img" aria-label="Men 코라인 비교 이미지"><image href="assets/men-original.jpg" width="1920" height="5202"/></svg></figure><div class="b"><p class="n">Men</p><h4>남자의 코라인 — <em>곧게 뻗은 직선라인</em></h4><p>남자만의 매력적인 콧대가 직선으로 쭉 뻗은 코라인으로 강하고 댄디한 남성미 완성</p></div></article><article class="nd-card"><figure class="men-line-photo"><svg viewBox="990 650 570 680" role="img" aria-label="Women 코라인 비교 이미지"><image href="assets/men-original.jpg" width="1920" height="5202"/></svg></figure><div class="b"><p class="n">Women</p><h4>여자의 코라인 — <em>반버선의 곡선라인</em></h4><p>코끝이 살짝 올라간 반버선 라인으로 여성스럽고 세련된 이미지 완성</p></div></article></div></div><div class="nd-block band-w"><div class="nd-h"><span class="k">Point</span><h3>올리브 <b>남자 코성형의 포인트</b></h3></div><p class="nd-lead">얼굴 중심위치한 코를 교정하면 신뢰감과 남성미를 나타낼 수 있습니다. <b>남자의 코성형이 여자와 다른점은 코끝을 이루는 각도에 가장 큰 포인트가 있습니다.</b> 미간에서 코끝까지 일직선으로 쭉 뻗은 오뚝한 코가 남성적인 매력을 부각시켜줍니다.</p><ol class="nd-who detail-card-strip" tabindex="0"><li><span class="n">01</span><p>남성만을 위한 코 디자인</p></li><li><span class="n">02</span><p>타고난 듯한 자연스러운 남자 코성형</p></li><li><span class="n">03</span><p>직선형태의 남성적 코라인</p></li><li><span class="n">04</span><p>취향을 반영한 맞춤 코성형</p></li><li><span class="n">05</span><p>코끝이 딱딱하지 않고 움직임이 가능</p></li></ol></div><div class="nd-block band-w"><div class="nd-h"><span class="k">Who</span><h3><b>남자코성형</b> 수술대상</h3></div><p class="nd-sub">남자코성형, 이런분들에게 추천합니다.</p><div style="margin-top:24px"><ol class="nd-who detail-card-strip" tabindex="0"><li><span class="n">01</span><p>남자다운 코를 원하는 경우</p></li><li><span class="n">02</span><p>코가 낮아 인상이 밋밋한 경우</p></li><li><span class="n">03</span><p>콧대가 낮아 세련된 이미지가 부족한 경우</p></li><li><span class="n">04</span><p>콧망울 넓어 뭉툭해 보이는 경우</p></li><li><span class="n">05</span><p>코가 휘거나 매부리코인 경우</p></li></ol></div></div><div class="nd-block band-w men-merit"><div class="nd-h"><span class="k">Merit</span><h3><b>남자코성형</b> 수술의 특징</h3></div><p class="nd-sub" style="margin:0 0 28px">오직 남자만의 미적 기준을 적용하여 남자만의 매력적인 코라인을 만듭니다.</p><ol class="nd-merit detail-card-strip" tabindex="0"><li><span class="n">01</span><h4>남자다운 곧은 코라인</h4><p>미간부터 코끝까지 곧게 뻗은 직선형의 라인을 만듭니다.</p></li><li><span class="n">02</span><h4>코성형으로 이상적인 얼굴 완성</h4><p>전체적인 얼굴과의 조화를 고려해서 코의 이상적인 비율을 만듭니다.</p></li><li><span class="n">03</span><h4>입체감 있는 얼굴</h4><p>정면과 측면이 어색하지않는 입체적이고 부드러운 콧대를 완성합니다.</p></li><li><span class="n">04</span><h4>미적 아름다움과 기능성 까지</h4><p>미적인 부분 뿐만 아니라 기능적인 부분까지 한번에 개선해 줍니다.</p></li></ol></div>
 </div></section>
 
 <!-- 상담 -->

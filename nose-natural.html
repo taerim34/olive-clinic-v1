@@ -467,9 +467,13 @@ body.nav-open .mnav-in{transform:none}
   .snb a.on::after{left:20px;right:20px}
 }
 @media (max-width:860px){
-  .sv{margin-top:64px;height:300px}
+  .sub-page{padding-top:64px}
+  /* Keep the page heading available to screen readers inside the collapsed banner. */
+  .sub-page > .sv{height:0;margin:0;overflow:hidden}
+  .sub-page > .sv::before,.sub-page > .sv::after,.sub-page > .sv p{display:none}
   .snb{top:64px}
-  .snb ul{justify-content:flex-start;overflow-x:auto;padding:0 8px}
+  .snb ul{justify-content:flex-start;overflow-x:auto;padding:0 8px;scrollbar-width:none}
+  .snb ul::-webkit-scrollbar{display:none}
   .snb a{padding:16px 14px;font-size:14.5px}
   .snb a.on::after{left:14px;right:14px}
 }
@@ -548,6 +552,8 @@ body.nav-open .mnav-in{transform:none}
 @media (max-width:1180px){.nd-info{grid-template-columns:repeat(3,1fr)}.nd-info div:nth-child(4){border-left:0}.nd-info div:nth-child(n+4){border-top:1px solid rgba(255,255,255,.14)}.nd-merit{grid-template-columns:1fr 1fr}.nd-merit li:nth-child(2n+1){border-left:0}.nd-merit li:nth-child(n+3){border-top:1px solid var(--line)}}
 @media (max-width:860px){
   .nd-tabs{flex-wrap:nowrap;overflow-x:auto;justify-content:flex-start;margin:32px -20px 0;padding:0 20px}
+  :is(.nd-tabs,.ba-tabs,.tabs,.snb ul,.gal-thumbs,[role="tablist"]){scrollbar-width:none}
+  :is(.nd-tabs,.ba-tabs,.tabs,.snb ul,.gal-thumbs,[role="tablist"])::-webkit-scrollbar{display:none}
   .nd-tabs button,.nd-tabs a{flex:none;height:40px;padding:0 16px}
   .nd-block{padding:56px 0}
   .nd-h{flex-direction:column;gap:10px;margin-bottom:20px}
@@ -1280,6 +1286,12 @@ body.is-authed .ba-lock{display:none}
 #safety .safety-reason-grid>li{border:0}
 @media(min-width:861px){#safety .safety-reason-grid>li:nth-child(2),#safety .safety-reason-grid>li:nth-child(3),#safety .safety-reason-grid>li:nth-child(5){border-left:1px solid rgba(255,255,255,.18)}#safety .safety-reason-grid>li:nth-child(n+4){border-top:1px solid rgba(255,255,255,.18)}}
 @media(max-width:860px){#safety .safety-reason-grid>li+li{border-top:1px solid rgba(255,255,255,.18)}}
+@media(max-width:860px){
+  .sub-page :is(.nd-card .b,.nd-who>li,.nd-merit>li,.ct-case-copy,.ct-flow>li,
+    .safety-card>div,.safety-method article,.safety-checks article,.safety-guide-points article,
+    .tr-body,.cc,.why>li,.sp-end){padding:18px 16px}
+}
+
 
 /* Individually framed illustrations retain original clinical drawings. */
 .nd-how .fig.type-steps{padding:0;background:transparent;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;align-items:start}
@@ -1303,6 +1315,40 @@ body.is-authed .ba-lock{display:none}
 @media(max-width:860px){#men .nd-lead+.nd-who{margin-top:24px}.men-line-photo svg{max-height:300px}}
 .men-line-photo svg{overflow:hidden}
 .men-line-photo svg{width:min(100%,285px);height:auto;max-height:none;margin-inline:auto}
+
+@media(max-width:860px){
+  main.sub-page .detail-card-strip:has(> :nth-child(2)){
+    --strip-inset:20px;
+    --strip-gap:12px;
+    --visible-cards:1.3;
+    display:flex;
+    flex-flow:row nowrap;
+    justify-content:flex-start;
+    align-items:stretch;
+    column-gap:var(--strip-gap);
+    min-width:0;
+    margin-inline:calc(0px - var(--strip-inset));
+    padding-inline:var(--strip-inset);
+    border:0;
+    overflow-x:auto;
+    overscroll-behavior-x:contain;
+    scroll-snap-type:x proximity;
+    scroll-padding-inline:var(--strip-inset);
+    scrollbar-width:none;
+  }
+  .detail-card-strip::-webkit-scrollbar{display:none}
+  .detail-card-strip:has(> :nth-child(2)) > *{
+    flex:0 0 calc((100% + var(--strip-inset) - var(--strip-gap)) / var(--visible-cards));
+    min-width:0;
+    max-width:none;
+    overflow-wrap:anywhere;
+    scroll-snap-align:start;
+  }
+  main.sub-page :is(.nd-steps,.ct-flow,.type-steps).detail-card-strip:has(> :nth-child(2)){--visible-cards:1.5}
+  .detail-card-strip:is(.nd-merit,.why,.phil-list)>li{border:1px solid var(--line)}
+  .band-g .detail-card-strip.nd-merit>li{border-color:rgba(255,255,255,.18)}
+  .nd-areas.detail-card-strip .a{display:flex;flex-direction:column;gap:12px}
+}
 /* Light-gray sections use white cards for clear separation. */
 .nd-block.band-w .nd-merit>li,.nd-block.band-w .nd-card{background:#fff}
 </style>
@@ -1310,6 +1356,14 @@ body.is-authed .ba-lock{display:none}
 /* 코성형 메뉴 비주얼(석고 두상) */
 .sv::before{background-image:url("assets/web-eb4b5bf190e9b4d8.jpg");background-position:center 35%}
 @media (max-width:860px){.sv::before{background-position:86% 30%}}
+
+@media(max-width:860px){
+  #particle .nd-check{
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    grid-auto-rows:1fr;
+    overflow-wrap:anywhere;
+  }
+}
 
 @media(min-width:861px){
   #rib ol.nd-who{grid-template-columns:repeat(12,minmax(0,1fr))}
@@ -1388,17 +1442,17 @@ body.is-authed .ba-lock{display:none}
   </div>
   <div id="ear">
     <div class="nd-block "><div class="nd-sp"><div class="tx"><div class="nd-h"><span class="k">01 · Ear Cartilage</span><h3>무보형물 <b>귀연골 코성형</b></h3></div><p class="nd-lead">귀연골 코성형은 <b>귀의 연골을 채취하여 콧대와 코끝을 높이는데 사용하는 수술법</b>입니다.</p></div><div class="vis"><figure class="pic" style="--r:755/625"><img src="assets/web-c5ec7d488df29271.jpg" alt="무보형물 귀연골 코성형 이미지" width="755" height="625" loading="lazy"></figure></div></div></div>
-    <div class="nd-block band-w"><div class="nd-h"><span class="k">Who</span><h3><b>귀연골 코성형</b>이 필요한 경우</h3></div><ol class="nd-who"><li><span class="n">01</span><p>자연스럽고 청순한 라인을 원하시는 경우</p></li><li><span class="n">02</span><p>미간은 낮고 코끝이 높은 라인을 선호하시는 경우</p></li><li><span class="n">03</span><p>콧대를 2~3mm 정도 약간만 높이기 원하시는 경우</p></li><li><span class="n">04</span><p>코끝 부분만 높이길 원하시는 경우</p></li><li><span class="n">05</span><p>보형물 사용에 대한 불안감이 있으시거나</p></li><li><span class="n">06</span><p>보형물 사용이 꺼려지시는 경우</p></li></ol></div>
-    <div class="nd-block band-g"><div class="nd-h"><span class="k">Merit</span><h3><b>귀연골 코성형</b>의 장점</h3></div><ol class="nd-merit"><li><span class="n">01</span><h4>코끝이 부드럽고</h4><p>움직임이 가능함</p></li><li><span class="n">02</span><h4>부기가 거의 없고</h4><p>회복이 매우 빠름</p></li><li><span class="n">03</span><h4>코 안을 솜으로</h4><p>막지 않아 편리함</p></li><li><span class="n">04</span><h4>수술 후 흡수, 변형이</h4><p>거의 없는 장점</p></li><li><span class="n">05</span><h4>자가조직으로</h4><p>안전성이 매우 높음</p></li><li><span class="n">06</span><h4>보형물 부작용 가능성 거의 없음</h4><p>염증, 구축, 석회화 등 보형물로 인한 부작용 가능성 거의 없음</p></li></ol></div>
+    <div class="nd-block band-w"><div class="nd-h"><span class="k">Who</span><h3><b>귀연골 코성형</b>이 필요한 경우</h3></div><ol class="nd-who detail-card-strip" tabindex="0"><li><span class="n">01</span><p>자연스럽고 청순한 라인을 원하시는 경우</p></li><li><span class="n">02</span><p>미간은 낮고 코끝이 높은 라인을 선호하시는 경우</p></li><li><span class="n">03</span><p>콧대를 2~3mm 정도 약간만 높이기 원하시는 경우</p></li><li><span class="n">04</span><p>코끝 부분만 높이길 원하시는 경우</p></li><li><span class="n">05</span><p>보형물 사용에 대한 불안감이 있으시거나</p></li><li><span class="n">06</span><p>보형물 사용이 꺼려지시는 경우</p></li></ol></div>
+    <div class="nd-block band-g"><div class="nd-h"><span class="k">Merit</span><h3><b>귀연골 코성형</b>의 장점</h3></div><ol class="nd-merit detail-card-strip" tabindex="0"><li><span class="n">01</span><h4>코끝이 부드럽고</h4><p>움직임이 가능함</p></li><li><span class="n">02</span><h4>부기가 거의 없고</h4><p>회복이 매우 빠름</p></li><li><span class="n">03</span><h4>코 안을 솜으로</h4><p>막지 않아 편리함</p></li><li><span class="n">04</span><h4>수술 후 흡수, 변형이</h4><p>거의 없는 장점</p></li><li><span class="n">05</span><h4>자가조직으로</h4><p>안전성이 매우 높음</p></li><li><span class="n">06</span><h4>보형물 부작용 가능성 거의 없음</h4><p>염증, 구축, 석회화 등 보형물로 인한 부작용 가능성 거의 없음</p></li></ol></div>
   </div>
   <div id="rib">
     <div class="nd-block "><div class="nd-sp"><div class="tx"><div class="nd-h"><span class="k">02 · Rib Cartilage</span><h3>무보형물 <b>자가늑연골 코성형</b></h3></div><p class="nd-lead">자가늑연골 코성형은 <b>가슴이나 복부의 갈비뼈 부위 연골을 채취하여 콧대와 코끝을 높이는데 사용하는 수술법</b>입니다.</p></div><div class="vis"><figure class="pic" style="--r:755/689"><img src="assets/web-57f268667d40173b.jpg" alt="무보형물 자가늑연골 코성형 이미지" width="755" height="689" loading="lazy"></figure></div></div></div>
-    <div class="nd-block band-w"><div class="nd-h"><span class="k">Who</span><h3><b>자가늑연골 코성형</b>이 필요한 경우</h3></div><ol class="nd-who"><li><span class="n">01</span><p>화려하고 높은 라인을 원하시는 경우</p></li><li><span class="n">02</span><p>여러 차례의 재수술로 코의 지지력이 많이 소실된 경우</p></li><li><span class="n">03</span><p>귀연골과 비중격연골을 모두 사용하여 자가연골을 얻기 어려운 경우</p></li><li><span class="n">04</span><p>안장코변형(비중격함몰)이 있는경우, 비중격 재건이 필요한 경우</p></li><li><span class="n">05</span><p>과거에 양악수술을 받아 비중격의 지지력이 많이 약해져 있는 경우</p></li><li><span class="n">06</span><p>심하게 들린코, 구축코의 경우</p></li><li><span class="n">07</span><p>코수술후, 염증이 발생한 경우</p></li></ol></div>
-    <div class="nd-block band-w"><div class="nd-h"><span class="k">Point</span><h3>올리브 <b>자가늑연골 코성형 포인트</b></h3></div><ul class="nd-who"><li><span class="n">✓</span><p>전신마취 없이 수면마취만으로 수술하여 안전하고 회복이 빠릅니다!</p></li><li><span class="n">✓</span><p>3cm내외의 작은 절개만으로 채취, 수술흔적이 적습니다!</p></li><li><span class="n">✓</span><p>세밀한 연골 다듬기로 수술 결과가 매우 자연스럽습니다!</p></li><li><span class="n">✓</span><p>디테일한 코끝모양 처리를 통해 코끝이 자연스럽고 예쁩니다!</p></li><li><span class="n">✓</span><p>화려하고 오똑한 모양을 만들기 쉽습니다!</p></li></ul></div>
-    <div class="nd-block band-g"><div class="nd-h"><span class="k">Merit</span><h3><b>자가늑연골 코성형</b>의 장점</h3></div><ol class="nd-merit"><li><span class="n">01</span><h4>연골양이 풍부하여</h4><p>콧대를 충분히 높일 수 있음</p></li><li><span class="n">02</span><h4>지지력이 우수</h4><p>코끝을 많이 높일 수 있고 코끝 처짐 재발 가능성 적음</p></li><li><span class="n">03</span><h4>모양이 우수하고</h4><p>흡수가 거의 없음</p></li><li><span class="n">04</span><h4>염증에 매우</h4><p>강한 재료</p></li><li><span class="n">05</span><h4>자가조직으로</h4><p>안전성이 매우 높음</p></li></ol></div>
+    <div class="nd-block band-w"><div class="nd-h"><span class="k">Who</span><h3><b>자가늑연골 코성형</b>이 필요한 경우</h3></div><ol class="nd-who detail-card-strip" tabindex="0"><li><span class="n">01</span><p>화려하고 높은 라인을 원하시는 경우</p></li><li><span class="n">02</span><p>여러 차례의 재수술로 코의 지지력이 많이 소실된 경우</p></li><li><span class="n">03</span><p>귀연골과 비중격연골을 모두 사용하여 자가연골을 얻기 어려운 경우</p></li><li><span class="n">04</span><p>안장코변형(비중격함몰)이 있는경우, 비중격 재건이 필요한 경우</p></li><li><span class="n">05</span><p>과거에 양악수술을 받아 비중격의 지지력이 많이 약해져 있는 경우</p></li><li><span class="n">06</span><p>심하게 들린코, 구축코의 경우</p></li><li><span class="n">07</span><p>코수술후, 염증이 발생한 경우</p></li></ol></div>
+    <div class="nd-block band-w"><div class="nd-h"><span class="k">Point</span><h3>올리브 <b>자가늑연골 코성형 포인트</b></h3></div><ul class="nd-who detail-card-strip" tabindex="0"><li><span class="n">✓</span><p>전신마취 없이 수면마취만으로 수술하여 안전하고 회복이 빠릅니다!</p></li><li><span class="n">✓</span><p>3cm내외의 작은 절개만으로 채취, 수술흔적이 적습니다!</p></li><li><span class="n">✓</span><p>세밀한 연골 다듬기로 수술 결과가 매우 자연스럽습니다!</p></li><li><span class="n">✓</span><p>디테일한 코끝모양 처리를 통해 코끝이 자연스럽고 예쁩니다!</p></li><li><span class="n">✓</span><p>화려하고 오똑한 모양을 만들기 쉽습니다!</p></li></ul></div>
+    <div class="nd-block band-g"><div class="nd-h"><span class="k">Merit</span><h3><b>자가늑연골 코성형</b>의 장점</h3></div><ol class="nd-merit detail-card-strip" tabindex="0"><li><span class="n">01</span><h4>연골양이 풍부하여</h4><p>콧대를 충분히 높일 수 있음</p></li><li><span class="n">02</span><h4>지지력이 우수</h4><p>코끝을 많이 높일 수 있고 코끝 처짐 재발 가능성 적음</p></li><li><span class="n">03</span><h4>모양이 우수하고</h4><p>흡수가 거의 없음</p></li><li><span class="n">04</span><h4>염증에 매우</h4><p>강한 재료</p></li><li><span class="n">05</span><h4>자가조직으로</h4><p>안전성이 매우 높음</p></li></ol></div>
   </div>
   <div id="particle">
-    <div class="nd-block "><div class="nd-sp"><div class="tx"><div class="nd-h"><span class="k">03 · Rib Particle</span><h3>무보형물 <b>늑입자 코성형</b></h3></div><p class="nd-lead">늑입자 코성형(늑연골 입자 코성형)은 <b>늑연골 채취한 후, 특수기구를 사용하여 연골을 갈아, 분말형태의 가루로 만들어, 코에 삽입하거나 주사하는 형태의 수술</b>을 말합니다.</p></div><div class="vis"><figure class="pic" style="--r:880/1050"><img src="assets/web-5c73c25f96447cd9.jpg" alt="무보형물 늑입자 코성형 이미지" width="880" height="1050" loading="lazy"></figure></div></div></div><div class="nd-block band-g"><div class="nd-h"><span class="k">Merit</span><h3><b>늑입자(연골입자)</b> 수술의 장점</h3></div><ol class="nd-merit"><li><span class="n">01</span><h4>흡수율이 적음</h4><p>흡수율 및 이로인한 재수술 확률이 적습니다.</p></li><li><span class="n">02</span><h4>휘어짐(와핑) 적음</h4><p>휘어지는 현상(와핑)의 가능성이 적습니다.</p></li><li><span class="n">03</span><h4>윤곽 드러남 적음</h4><p>삽입물의 윤곽이 드러나는 현상의 가능성이 적습니다.</p></li><li><span class="n">04</span><h4>염증·구축 적음</h4><p>염증이나 구축 가능성이 적습니다.</p></li></ol></div><div class="nd-block band-w"><div class="nd-h"><span class="k">Olive Point</span><h3>올리브 <b>늑입자 코성형의 포인트</b></h3></div><ul class="nd-who nd-check"><li><span class="n">✓</span><p>0.3~0.5mm초미세입자라서 울퉁불퉁함이 없고 자연스럽습니다.</p></li><li><span class="n">✓</span><p>1~2cm의 작은 절개만으로도 수술이 가능합니다.</p></li><li><span class="n">✓</span><p>수면마취로도 가능하고, 수술시간이 짧습니다.</p></li><li><span class="n">✓</span><p>회복이 빠르고 통증이 적습니다.</p></li><li><span class="n">✓</span><p>흡수율이 매우 낮아 거의 반영구적인 시술입니다.</p></li></ul><p class="nd-lead" style="margin-top:28px"><b>늑입자 필러란?</b> 코성형 20년, 보다 안전하게, 보다 아름답게, 영구적으로 반준섭 원장의 노하우가 집약된 시술로써 콧대나 코끝에 늑연골을 초미세 입자로 만들어 필러형태로 주입하는 시술입니다.</p></div><div class="nd-block band-w"><div class="nd-h"><span class="k">Application</span><h3><b>늑입자 필러</b>의 시술 적용</h3></div><ol class="nd-who"><li><span class="n">01</span><p>보형물사용에 대해 거부감이 드는 경우</p></li><li><span class="n">02</span><p>영구적이고 인체 친화적인 코필러를 원하는 경우</p></li><li><span class="n">03</span><p>늑연골을 사용한 성형을 선호하는 경우</p></li></ol></div>
+    <div class="nd-block "><div class="nd-sp"><div class="tx"><div class="nd-h"><span class="k">03 · Rib Particle</span><h3>무보형물 <b>늑입자 코성형</b></h3></div><p class="nd-lead">늑입자 코성형(늑연골 입자 코성형)은 <b>늑연골 채취한 후, 특수기구를 사용하여 연골을 갈아, 분말형태의 가루로 만들어, 코에 삽입하거나 주사하는 형태의 수술</b>을 말합니다.</p></div><div class="vis"><figure class="pic" style="--r:880/1050"><img src="assets/web-5c73c25f96447cd9.jpg" alt="무보형물 늑입자 코성형 이미지" width="880" height="1050" loading="lazy"></figure></div></div></div><div class="nd-block band-g"><div class="nd-h"><span class="k">Merit</span><h3><b>늑입자(연골입자)</b> 수술의 장점</h3></div><ol class="nd-merit detail-card-strip" tabindex="0"><li><span class="n">01</span><h4>흡수율이 적음</h4><p>흡수율 및 이로인한 재수술 확률이 적습니다.</p></li><li><span class="n">02</span><h4>휘어짐(와핑) 적음</h4><p>휘어지는 현상(와핑)의 가능성이 적습니다.</p></li><li><span class="n">03</span><h4>윤곽 드러남 적음</h4><p>삽입물의 윤곽이 드러나는 현상의 가능성이 적습니다.</p></li><li><span class="n">04</span><h4>염증·구축 적음</h4><p>염증이나 구축 가능성이 적습니다.</p></li></ol></div><div class="nd-block band-w"><div class="nd-h"><span class="k">Olive Point</span><h3>올리브 <b>늑입자 코성형의 포인트</b></h3></div><ul class="nd-who nd-check detail-card-strip" tabindex="0"><li><span class="n">✓</span><p>0.3~0.5mm 초미세입자라서 울퉁불퉁함이 없고 자연스럽습니다.</p></li><li><span class="n">✓</span><p>1~2cm의 작은 절개만으로도 수술이 가능합니다.</p></li><li><span class="n">✓</span><p>수면마취로도 가능하고, 수술시간이 짧습니다.</p></li><li><span class="n">✓</span><p>회복이 빠르고 통증이 적습니다.</p></li><li><span class="n">✓</span><p>흡수율이 매우 낮아 거의 반영구적인 시술입니다.</p></li></ul><p class="nd-lead" style="margin-top:28px"><b>늑입자 필러란?</b> 코성형 20년, 보다 안전하게, 보다 아름답게, 영구적으로 반준섭 원장의 노하우가 집약된 시술로써 콧대나 코끝에 늑연골을 초미세 입자로 만들어 필러형태로 주입하는 시술입니다.</p></div><div class="nd-block band-w"><div class="nd-h"><span class="k">Application</span><h3><b>늑입자 필러</b>의 시술 적용</h3></div><ol class="nd-who detail-card-strip" tabindex="0"><li><span class="n">01</span><p>보형물사용에 대해 거부감이 드는 경우</p></li><li><span class="n">02</span><p>영구적이고 인체 친화적인 코필러를 원하는 경우</p></li><li><span class="n">03</span><p>늑연골을 사용한 성형을 선호하는 경우</p></li></ol></div>
   </div>
 </div></section>
 

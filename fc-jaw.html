@@ -467,9 +467,13 @@ body.nav-open .mnav-in{transform:none}
   .snb a.on::after{left:20px;right:20px}
 }
 @media (max-width:860px){
-  .sv{margin-top:64px;height:300px}
+  .sub-page{padding-top:64px}
+  /* Keep the page heading available to screen readers inside the collapsed banner. */
+  .sub-page > .sv{height:0;margin:0;overflow:hidden}
+  .sub-page > .sv::before,.sub-page > .sv::after,.sub-page > .sv p{display:none}
   .snb{top:64px}
-  .snb ul{justify-content:flex-start;overflow-x:auto;padding:0 8px}
+  .snb ul{justify-content:flex-start;overflow-x:auto;padding:0 8px;scrollbar-width:none}
+  .snb ul::-webkit-scrollbar{display:none}
   .snb a{padding:16px 14px;font-size:14.5px}
   .snb a.on::after{left:14px;right:14px}
 }
@@ -548,6 +552,8 @@ body.nav-open .mnav-in{transform:none}
 @media (max-width:1180px){.nd-info{grid-template-columns:repeat(3,1fr)}.nd-info div:nth-child(4){border-left:0}.nd-info div:nth-child(n+4){border-top:1px solid rgba(255,255,255,.14)}.nd-merit{grid-template-columns:1fr 1fr}.nd-merit li:nth-child(2n+1){border-left:0}.nd-merit li:nth-child(n+3){border-top:1px solid var(--line)}}
 @media (max-width:860px){
   .nd-tabs{flex-wrap:nowrap;overflow-x:auto;justify-content:flex-start;margin:32px -20px 0;padding:0 20px}
+  :is(.nd-tabs,.ba-tabs,.tabs,.snb ul,.gal-thumbs,[role="tablist"]){scrollbar-width:none}
+  :is(.nd-tabs,.ba-tabs,.tabs,.snb ul,.gal-thumbs,[role="tablist"])::-webkit-scrollbar{display:none}
   .nd-tabs button,.nd-tabs a{flex:none;height:40px;padding:0 16px}
   .nd-block{padding:56px 0}
   .nd-h{flex-direction:column;gap:10px;margin-bottom:20px}
@@ -1280,6 +1286,12 @@ body.is-authed .ba-lock{display:none}
 #safety .safety-reason-grid>li{border:0}
 @media(min-width:861px){#safety .safety-reason-grid>li:nth-child(2),#safety .safety-reason-grid>li:nth-child(3),#safety .safety-reason-grid>li:nth-child(5){border-left:1px solid rgba(255,255,255,.18)}#safety .safety-reason-grid>li:nth-child(n+4){border-top:1px solid rgba(255,255,255,.18)}}
 @media(max-width:860px){#safety .safety-reason-grid>li+li{border-top:1px solid rgba(255,255,255,.18)}}
+@media(max-width:860px){
+  .sub-page :is(.nd-card .b,.nd-who>li,.nd-merit>li,.ct-case-copy,.ct-flow>li,
+    .safety-card>div,.safety-method article,.safety-checks article,.safety-guide-points article,
+    .tr-body,.cc,.why>li,.sp-end){padding:18px 16px}
+}
+
 
 /* Individually framed illustrations retain original clinical drawings. */
 .nd-how .fig.type-steps{padding:0;background:transparent;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;align-items:start}
@@ -1303,6 +1315,40 @@ body.is-authed .ba-lock{display:none}
 @media(max-width:860px){#men .nd-lead+.nd-who{margin-top:24px}.men-line-photo svg{max-height:300px}}
 .men-line-photo svg{overflow:hidden}
 .men-line-photo svg{width:min(100%,285px);height:auto;max-height:none;margin-inline:auto}
+
+@media(max-width:860px){
+  main.sub-page .detail-card-strip:has(> :nth-child(2)){
+    --strip-inset:20px;
+    --strip-gap:12px;
+    --visible-cards:1.3;
+    display:flex;
+    flex-flow:row nowrap;
+    justify-content:flex-start;
+    align-items:stretch;
+    column-gap:var(--strip-gap);
+    min-width:0;
+    margin-inline:calc(0px - var(--strip-inset));
+    padding-inline:var(--strip-inset);
+    border:0;
+    overflow-x:auto;
+    overscroll-behavior-x:contain;
+    scroll-snap-type:x proximity;
+    scroll-padding-inline:var(--strip-inset);
+    scrollbar-width:none;
+  }
+  .detail-card-strip::-webkit-scrollbar{display:none}
+  .detail-card-strip:has(> :nth-child(2)) > *{
+    flex:0 0 calc((100% + var(--strip-inset) - var(--strip-gap)) / var(--visible-cards));
+    min-width:0;
+    max-width:none;
+    overflow-wrap:anywhere;
+    scroll-snap-align:start;
+  }
+  main.sub-page :is(.nd-steps,.ct-flow,.type-steps).detail-card-strip:has(> :nth-child(2)){--visible-cards:1.5}
+  .detail-card-strip:is(.nd-merit,.why,.phil-list)>li{border:1px solid var(--line)}
+  .band-g .detail-card-strip.nd-merit>li{border-color:rgba(255,255,255,.18)}
+  .nd-areas.detail-card-strip .a{display:flex;flex-direction:column;gap:12px}
+}
 /* Light-gray sections use white cards for clear separation. */
 .nd-block.band-w .nd-merit>li,.nd-block.band-w .nd-card{background:#fff}
 </style>
@@ -1368,7 +1414,7 @@ body.is-authed .ba-lock{display:none}
   <ul><li><a href="fc-square.html">사각턱</a></li><li><a href="fc-zygoma.html">광대축소</a></li><li><a href="fc-chin.html">무턱</a></li><li><a class="on" aria-current="page" href="fc-jaw.html">주걱턱</a></li><li><a href="fc-mouth.html">돌출입</a></li><li><a href="fc-forehead.html">이마성형</a></li><li><a href="fc-nasal.html">귀족성형</a></li><li><a href="fc-twojaw.html">양악수술</a></li></ul>
 </nav>
 <section class="sec nd-eye" id="jaw"><div class="wrap">
-<div class="nd-block"><div class="nd-sp"><div class="tx"><div class="nd-h"><span class="k">What</span><h3><b>주걱턱</b>이란?</h3></div><p class="nd-lead">주걱턱이란 턱의 과성장으로 턱이 크고 <b>전체적으로 앞쪽으로 나오게 되는 모양</b>을 가리킵니다.</p><p class="nd-tx">턱이 앞쪽으로 나오면서 아래턱의 치아도 앞쪽으로 나오게 되므로 보통 치아가 잘 맞지않고(부정교합) 아랫니가 윗니 선상또는 윗니보다 앞쪽으로 나오게 됩니다. 주걱턱인 경우는 턱이 앞으로 나오면서 대게 얼굴이 커지고 길어지게 됩니다. 주걱턱을 교정하기 위해서는 앞쪽으로 나온 턱을 뒤로 넣어주는 턱교정 수술(악교정수술 Orthognathic Surgery)이 필요합니다. 턱뼈를 관절이 있는 뒤쪽 부분과 치아가 있는 앞쪽 부분으로 절골 분리한 후 앞쪽 턱 전체를 뒤로 넣어주는 수술입니다. 이 수술을 통해 턱이 뒤로 들어가면서 짧아지고 얼굴이 작아지며 인상이 부드러워지고 어려 보이는 효과를 내게 되는데 그 효과가 드라마틱합니다.</p></div><div class="vis"><figure class="pic"><img src="assets/web-34670822c9d910a2.jpg" alt="주걱턱 대표 이미지" loading="lazy"></figure></div></div><dl class="nd-info"><div><dt>수술시간</dt><dd>1시간 정도</dd></div><div><dt>마취방법</dt><dd>전신마취</dd></div><div><dt>입원치료</dt><dd>1~2일</dd></div><div><dt>실밥제거</dt><dd>1주 후</dd></div><div><dt>내원치료</dt><dd>2~3회</dd></div><div><dt>회복기간</dt><dd>2주 후</dd></div></dl></div><div class="nd-block band-w"><div class="nd-sp rev"><div class="tx"><div class="nd-h"><span class="k">Who</span><h3><b>주걱턱</b> 수술대상</h3></div><p class="nd-sub">주걱턱, 이런 분들에게 추천합니다.</p><ul class="nd-chk"><li>턱끝이 심하게 튀어나온 경우</li><li>아랫니가 윗니보다 돌출된 경우</li><li>음식물을 이로 잘라먹기 힘든 경우</li><li>아래턱이 길어 얼굴이 길어 보이는 경우</li><li>주걱턱으로 인상이 강해 보이는 경우</li></ul></div><div class="vis"><figure class="pic"><img src="assets/web-68773f715859e7c8.jpg" alt="주걱턱 수술대상 이미지" loading="lazy"></figure></div></div></div><div class="nd-block "><div class="nd-h"><span class="k">How</span><h3><b>주걱턱</b> 수술방법</h3></div><div class="nd-how"><div class="m"><div class="t"><span class="n">Method</span><p>위턱의 돌출이 심하지 않거나 아래턱의 튀어나온 정도가 심하지 않아 아래턱만 수술이 필요할 경우 하악(아래턱) 수술을 진행합니다. 어금니 뒤쪽의 턱뼈와 관절 사이를 절골하여 치아와 아래턱뼈 전체를 뒤로 밀어 넣어주는 수술입니다.<br><br>주걱턱수술은 치아가 있는 턱을 이동하는 수술이기 때문에 수술과 동시에 치아의 상태가 변화하므로 수술 전 또는 수술 후에 치아교정치료가 필요합니다. 수술과 치아교정의 전후 순서에 따라, 수술 전 1년-1년 반정도 치아교정을 하고 턱교정수술을 시행하는 선교정 후수술의 방법과 수술을 먼저 시행하고 6개월 ~ 1년정도 치아교정을 하는 선수술 후교정 방법이 있는데, 요즘은 선수술 후교정 방법을 많이 시행하는 추세입니다.</p></div><div class="fig"><img src="assets/web-4cea36fa585a4c87.jpg" alt="수술 방법 그림" loading="lazy"></div></div></div></div><div class="nd-block band-w merit-neutral"><div class="nd-h"><span class="k">Merit</span><h3><b>주걱턱</b> 수술의 특징</h3></div><p class="nd-sub">얼굴에 맞는 턱길이로 균형있는 얼굴을 만듭니다.</p><ol class="nd-merit"><li><span class="n">01</span><h4>얼굴의 조화와 균형</h4><p>길게 튀어나온 턱을 바로잡아 얼굴의 균형을 개선할 수 있습니다.</p></li><li><span class="n">02</span><h4>기능적, 심미적 문제 해결</h4><p>기능적, 심미적 문제를 모두 해결할 수 있습니다.</p></li><li><span class="n">03</span><h4>부드러운 인상</h4><p>고집스러워 보이는 인상을 부드러운 이미지로 개선할 수 있습니다.</p></li><li><span class="n">04</span><h4>작고 갸름한 얼굴형</h4><p>긴얼굴을 작고 갸름한 얼굴형으로 교정할 수 있습니다.</p></li></ol></div>
+<div class="nd-block"><div class="nd-sp"><div class="tx"><div class="nd-h"><span class="k">What</span><h3><b>주걱턱</b>이란?</h3></div><p class="nd-lead">주걱턱이란 턱의 과성장으로 턱이 크고 <b>전체적으로 앞쪽으로 나오게 되는 모양</b>을 가리킵니다.</p><p class="nd-tx">턱이 앞쪽으로 나오면서 아래턱의 치아도 앞쪽으로 나오게 되므로 보통 치아가 잘 맞지않고(부정교합) 아랫니가 윗니 선상또는 윗니보다 앞쪽으로 나오게 됩니다. 주걱턱인 경우는 턱이 앞으로 나오면서 대게 얼굴이 커지고 길어지게 됩니다. 주걱턱을 교정하기 위해서는 앞쪽으로 나온 턱을 뒤로 넣어주는 턱교정 수술(악교정수술 Orthognathic Surgery)이 필요합니다. 턱뼈를 관절이 있는 뒤쪽 부분과 치아가 있는 앞쪽 부분으로 절골 분리한 후 앞쪽 턱 전체를 뒤로 넣어주는 수술입니다. 이 수술을 통해 턱이 뒤로 들어가면서 짧아지고 얼굴이 작아지며 인상이 부드러워지고 어려 보이는 효과를 내게 되는데 그 효과가 드라마틱합니다.</p></div><div class="vis"><figure class="pic"><img src="assets/web-34670822c9d910a2.jpg" alt="주걱턱 대표 이미지" loading="lazy"></figure></div></div><dl class="nd-info"><div><dt>수술시간</dt><dd>1시간 정도</dd></div><div><dt>마취방법</dt><dd>전신마취</dd></div><div><dt>입원치료</dt><dd>1~2일</dd></div><div><dt>실밥제거</dt><dd>1주 후</dd></div><div><dt>내원치료</dt><dd>2~3회</dd></div><div><dt>회복기간</dt><dd>2주 후</dd></div></dl></div><div class="nd-block band-w"><div class="nd-sp rev"><div class="tx"><div class="nd-h"><span class="k">Who</span><h3><b>주걱턱</b> 수술대상</h3></div><p class="nd-sub">주걱턱, 이런 분들에게 추천합니다.</p><ul class="nd-chk"><li>턱끝이 심하게 튀어나온 경우</li><li>아랫니가 윗니보다 돌출된 경우</li><li>음식물을 이로 잘라먹기 힘든 경우</li><li>아래턱이 길어 얼굴이 길어 보이는 경우</li><li>주걱턱으로 인상이 강해 보이는 경우</li></ul></div><div class="vis"><figure class="pic"><img src="assets/web-68773f715859e7c8.jpg" alt="주걱턱 수술대상 이미지" loading="lazy"></figure></div></div></div><div class="nd-block "><div class="nd-h"><span class="k">How</span><h3><b>주걱턱</b> 수술방법</h3></div><div class="nd-how"><div class="m"><div class="t"><span class="n">Method</span><p>위턱의 돌출이 심하지 않거나 아래턱의 튀어나온 정도가 심하지 않아 아래턱만 수술이 필요할 경우 하악(아래턱) 수술을 진행합니다. 어금니 뒤쪽의 턱뼈와 관절 사이를 절골하여 치아와 아래턱뼈 전체를 뒤로 밀어 넣어주는 수술입니다.<br><br>주걱턱수술은 치아가 있는 턱을 이동하는 수술이기 때문에 수술과 동시에 치아의 상태가 변화하므로 수술 전 또는 수술 후에 치아교정치료가 필요합니다. 수술과 치아교정의 전후 순서에 따라, 수술 전 1년-1년 반정도 치아교정을 하고 턱교정수술을 시행하는 선교정 후수술의 방법과 수술을 먼저 시행하고 6개월 ~ 1년정도 치아교정을 하는 선수술 후교정 방법이 있는데, 요즘은 선수술 후교정 방법을 많이 시행하는 추세입니다.</p></div><div class="fig"><img src="assets/web-4cea36fa585a4c87.jpg" alt="수술 방법 그림" loading="lazy"></div></div></div></div><div class="nd-block band-w merit-neutral"><div class="nd-h"><span class="k">Merit</span><h3><b>주걱턱</b> 수술의 특징</h3></div><p class="nd-sub">얼굴에 맞는 턱길이로 균형있는 얼굴을 만듭니다.</p><ol class="nd-merit detail-card-strip" tabindex="0"><li><span class="n">01</span><h4>얼굴의 조화와 균형</h4><p>길게 튀어나온 턱을 바로잡아 얼굴의 균형을 개선할 수 있습니다.</p></li><li><span class="n">02</span><h4>기능적, 심미적 문제 해결</h4><p>기능적, 심미적 문제를 모두 해결할 수 있습니다.</p></li><li><span class="n">03</span><h4>부드러운 인상</h4><p>고집스러워 보이는 인상을 부드러운 이미지로 개선할 수 있습니다.</p></li><li><span class="n">04</span><h4>작고 갸름한 얼굴형</h4><p>긴얼굴을 작고 갸름한 얼굴형으로 교정할 수 있습니다.</p></li></ol></div>
 </div></section>
 
 <!-- 상담 -->

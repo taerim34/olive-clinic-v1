@@ -467,9 +467,13 @@ body.nav-open .mnav-in{transform:none}
   .snb a.on::after{left:20px;right:20px}
 }
 @media (max-width:860px){
-  .sv{margin-top:64px;height:300px}
+  .sub-page{padding-top:64px}
+  /* Keep the page heading available to screen readers inside the collapsed banner. */
+  .sub-page > .sv{height:0;margin:0;overflow:hidden}
+  .sub-page > .sv::before,.sub-page > .sv::after,.sub-page > .sv p{display:none}
   .snb{top:64px}
-  .snb ul{justify-content:flex-start;overflow-x:auto;padding:0 8px}
+  .snb ul{justify-content:flex-start;overflow-x:auto;padding:0 8px;scrollbar-width:none}
+  .snb ul::-webkit-scrollbar{display:none}
   .snb a{padding:16px 14px;font-size:14.5px}
   .snb a.on::after{left:14px;right:14px}
 }
@@ -548,6 +552,8 @@ body.nav-open .mnav-in{transform:none}
 @media (max-width:1180px){.nd-info{grid-template-columns:repeat(3,1fr)}.nd-info div:nth-child(4){border-left:0}.nd-info div:nth-child(n+4){border-top:1px solid rgba(255,255,255,.14)}.nd-merit{grid-template-columns:1fr 1fr}.nd-merit li:nth-child(2n+1){border-left:0}.nd-merit li:nth-child(n+3){border-top:1px solid var(--line)}}
 @media (max-width:860px){
   .nd-tabs{flex-wrap:nowrap;overflow-x:auto;justify-content:flex-start;margin:32px -20px 0;padding:0 20px}
+  :is(.nd-tabs,.ba-tabs,.tabs,.snb ul,.gal-thumbs,[role="tablist"]){scrollbar-width:none}
+  :is(.nd-tabs,.ba-tabs,.tabs,.snb ul,.gal-thumbs,[role="tablist"])::-webkit-scrollbar{display:none}
   .nd-tabs button,.nd-tabs a{flex:none;height:40px;padding:0 16px}
   .nd-block{padding:56px 0}
   .nd-h{flex-direction:column;gap:10px;margin-bottom:20px}
@@ -1280,6 +1286,12 @@ body.is-authed .ba-lock{display:none}
 #safety .safety-reason-grid>li{border:0}
 @media(min-width:861px){#safety .safety-reason-grid>li:nth-child(2),#safety .safety-reason-grid>li:nth-child(3),#safety .safety-reason-grid>li:nth-child(5){border-left:1px solid rgba(255,255,255,.18)}#safety .safety-reason-grid>li:nth-child(n+4){border-top:1px solid rgba(255,255,255,.18)}}
 @media(max-width:860px){#safety .safety-reason-grid>li+li{border-top:1px solid rgba(255,255,255,.18)}}
+@media(max-width:860px){
+  .sub-page :is(.nd-card .b,.nd-who>li,.nd-merit>li,.ct-case-copy,.ct-flow>li,
+    .safety-card>div,.safety-method article,.safety-checks article,.safety-guide-points article,
+    .tr-body,.cc,.why>li,.sp-end){padding:18px 16px}
+}
+
 
 /* Individually framed illustrations retain original clinical drawings. */
 .nd-how .fig.type-steps{padding:0;background:transparent;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;align-items:start}
@@ -1303,6 +1315,40 @@ body.is-authed .ba-lock{display:none}
 @media(max-width:860px){#men .nd-lead+.nd-who{margin-top:24px}.men-line-photo svg{max-height:300px}}
 .men-line-photo svg{overflow:hidden}
 .men-line-photo svg{width:min(100%,285px);height:auto;max-height:none;margin-inline:auto}
+
+@media(max-width:860px){
+  main.sub-page .detail-card-strip:has(> :nth-child(2)){
+    --strip-inset:20px;
+    --strip-gap:12px;
+    --visible-cards:1.3;
+    display:flex;
+    flex-flow:row nowrap;
+    justify-content:flex-start;
+    align-items:stretch;
+    column-gap:var(--strip-gap);
+    min-width:0;
+    margin-inline:calc(0px - var(--strip-inset));
+    padding-inline:var(--strip-inset);
+    border:0;
+    overflow-x:auto;
+    overscroll-behavior-x:contain;
+    scroll-snap-type:x proximity;
+    scroll-padding-inline:var(--strip-inset);
+    scrollbar-width:none;
+  }
+  .detail-card-strip::-webkit-scrollbar{display:none}
+  .detail-card-strip:has(> :nth-child(2)) > *{
+    flex:0 0 calc((100% + var(--strip-inset) - var(--strip-gap)) / var(--visible-cards));
+    min-width:0;
+    max-width:none;
+    overflow-wrap:anywhere;
+    scroll-snap-align:start;
+  }
+  main.sub-page :is(.nd-steps,.ct-flow,.type-steps).detail-card-strip:has(> :nth-child(2)){--visible-cards:1.5}
+  .detail-card-strip:is(.nd-merit,.why,.phil-list)>li{border:1px solid var(--line)}
+  .band-g .detail-card-strip.nd-merit>li{border-color:rgba(255,255,255,.18)}
+  .nd-areas.detail-card-strip .a{display:flex;flex-direction:column;gap:12px}
+}
 /* Light-gray sections use white cards for clear separation. */
 .nd-block.band-w .nd-merit>li,.nd-block.band-w .nd-card{background:#fff}
 </style>
@@ -1368,7 +1414,7 @@ body.is-authed .ba-lock{display:none}
   <ul><li><a class="on" aria-current="page" href="petit-botox.html">보톡스</a></li><li><a href="petit-filler.html">필러</a></li><li><a href="petit-skin.html">스킨보톡스</a></li><li><a href="petit-rejuran.html">리쥬란</a></li><li><a href="petit-juvelook.html">쥬베룩</a></li></ul>
 </nav>
 <section class="sec nd-eye" id="botox"><div class="wrap">
-<div class="nd-block"><div class="nd-sp"><div class="tx"><div class="nd-h"><span class="k">What</span><h3><b>보톡스</b>란?</h3></div><p class="nd-lead">보톡스는 운동신경말단에 작용해 근육의 움직임을 차단하여 <b>주름 완화, 턱 근육, 종아리 근육 축소, 땀샘 억제 등 다양한 목적으로 사용</b>할 수 있습니다.</p><p class="nd-tx">빠르고 간단한 미용 시술인 보톡스는 주입 후 1주 뒤 최대 효과가 나타나며 4~6개월 정도 재투여 기간을 두어 내성을 피할 수 있습니다. 개인의 상태나 요구에 맞게 보톡스 주입 용량, 희석 비율, 시술 부위를 정하여 맞춤 보톡스 시술을 진행합니다.</p></div><div class="vis"><figure class="pic"><img src="assets/web-e3854ad77a618024.jpg" alt="보톡스 대표 이미지" loading="lazy"></figure></div></div><dl class="nd-info"><div><dt>시술시간</dt><dd>5~10분</dd></div><div><dt>마취방법</dt><dd>연고마취</dd></div><div><dt>입원치료</dt><dd>불필요</dd></div><div><dt>실밥제거</dt><dd>불필요</dd></div><div><dt>내원치료</dt><dd>불필요</dd></div><div><dt>회복기간</dt><dd>바로 일상생활 가능</dd></div></dl></div><div class="nd-block band-w"><div class="nd-sp rev"><div class="tx"><div class="nd-h"><span class="k">Who</span><h3><b>보톡스</b> 시술대상</h3></div><p class="nd-sub">보톡스, 이런 분들에게 추천합니다.</p><ul class="nd-chk"><li>얼굴에 생기는 주름이 신경쓰이는 경우</li><li>작고 부드러운 얼굴선을 원하는 경우</li><li>간편한 시술로 V라인을 갖고 싶은 경우</li><li>두꺼운 종아리, 팔뚝을 슬림하게 만들고 싶은 경우</li><li>여성스럽게 부드러운 어깨선을 갖고 싶은 경우</li></ul></div><div class="vis"><figure class="pic"><img src="assets/web-9ba2ef0f0ad98eb5.jpg" alt="보톡스 시술대상 이미지" loading="lazy"></figure></div></div></div><div class="nd-block "><div class="nd-h"><span class="k">Where</span><h3><b>보톡스</b> 시술부위</h3></div><figure class="nd-fig nd-eyefig nd-where-fig"><img src="assets/web-ecf11f24368ea14b.jpg" alt="보톡스 시술부위 그림" loading="lazy"></figure></div><div class="nd-block "><div class="nd-h"><span class="k">How</span><h3><b>보톡스</b> 시술방법</h3></div><p class="nd-lead">이마, 눈가, 콧등 등 잔주름 개선에 효과적이며 그 밖에 근육 축소가 필요한 부위에 주입하여 빠르고 간단하게 개선할 수 있습니다.</p><p class="nd-sub">충분한 상담을 통해 시술 부위를 정하고 맞춤 시술을 진행합니다.</p><figure class="nd-fig nd-eyefig nd-round"><img src="assets/web-388356542ab6a60d.jpg" alt="보톡스 시술 장면" loading="lazy"></figure><ol class="nd-steps c4" style="margin-top:24px"><li><span class="n">01</span><p>충분한 상담 후 보톡스 시술이 필요한 부위를 디자인합니다.</p></li><li><span class="n">02</span><p>연고마취 후 필요한 부위에 보톡스를 주입합니다.</p></li><li><span class="n">03</span><p>시술 부위에 따라 조금씩 다르기는 하나 약 10분 이내에 시술은 끝납니다.</p></li><li><span class="n">04</span><p>7~10일경에 효과를 정확히 알 수 있습니다.</p></li></ol></div><div class="nd-block band-g"><div class="nd-h"><span class="k">Merit</span><h3><b>보톡스</b> 시술의 특징</h3></div><ol class="nd-merit"><li><span class="n">01</span><h4>동안 효과</h4><p>얼굴 주름을 개선하여 동안 효과를 얻을 수 있습니다.</p></li><li><span class="n">02</span><h4>주름 개선 및 예방 효과</h4><p>잔주름을 개선하고 주름을 미리 예방하는 효과가 있습니다.</p></li><li><span class="n">03</span><h4>부작용, 흉터 걱정 없음</h4><p>안전성 높은 시술로 부작용, 흉터에 대한 걱정이 없습니다.</p></li><li><span class="n">04</span><h4>주름 외 다양한 시술</h4><p>얼굴 주름 외 다한증, 근육 축소 등에 시술이 가능합니다.</p></li></ol></div><div class="nd-block band-w"><div class="nd-h"><span class="k">Compare</span><h3><b>보톡스와 스킨보톡스</b> 차이점</h3></div><p class="nd-lead">근육에 주입하는 일반적인 보톡스와 피부 진피층에 희석한 보톡스를 주입하는 스킨보톡스는 <b>시술방법과 효과에 차이</b>가 있습니다.</p><table class="nd-vs"><thead><tr><th scope="col">보톡스</th><th scope="col">종류</th><th scope="col">스킨보톡스</th></tr></thead><tbody><tr><td>국소부위 근육층에 주입</td><th scope="row">시술방법</th><td>피부의 진피층에 소량으로 광범위하게 주입</td></tr><tr><td>표정주름, 사각턱, 침샘, 종아리, 승모근 등 근육층</td><th scope="row">시술부위</th><td>이마, 볼, 턱선, 목 등 탄력이 떨어진 피부층 전체</td></tr><tr><td>6~10개월</td><th scope="row">시술주기</th><td>4~5개월</td></tr><tr><td>주름 완화, 다한증 개선, 과한 근육 볼륨 축소</td><th scope="row">시술특징</th><td>피부결 개선, 피부 탄력 증가, 모공 축소, 잔주름 개선</td></tr></tbody></table></div>
+<div class="nd-block"><div class="nd-sp"><div class="tx"><div class="nd-h"><span class="k">What</span><h3><b>보톡스</b>란?</h3></div><p class="nd-lead">보톡스는 운동신경말단에 작용해 근육의 움직임을 차단하여 <b>주름 완화, 턱 근육, 종아리 근육 축소, 땀샘 억제 등 다양한 목적으로 사용</b>할 수 있습니다.</p><p class="nd-tx">빠르고 간단한 미용 시술인 보톡스는 주입 후 1주 뒤 최대 효과가 나타나며 4~6개월 정도 재투여 기간을 두어 내성을 피할 수 있습니다. 개인의 상태나 요구에 맞게 보톡스 주입 용량, 희석 비율, 시술 부위를 정하여 맞춤 보톡스 시술을 진행합니다.</p></div><div class="vis"><figure class="pic"><img src="assets/web-e3854ad77a618024.jpg" alt="보톡스 대표 이미지" loading="lazy"></figure></div></div><dl class="nd-info"><div><dt>시술시간</dt><dd>5~10분</dd></div><div><dt>마취방법</dt><dd>연고마취</dd></div><div><dt>입원치료</dt><dd>불필요</dd></div><div><dt>실밥제거</dt><dd>불필요</dd></div><div><dt>내원치료</dt><dd>불필요</dd></div><div><dt>회복기간</dt><dd>바로 일상생활 가능</dd></div></dl></div><div class="nd-block band-w"><div class="nd-sp rev"><div class="tx"><div class="nd-h"><span class="k">Who</span><h3><b>보톡스</b> 시술대상</h3></div><p class="nd-sub">보톡스, 이런 분들에게 추천합니다.</p><ul class="nd-chk"><li>얼굴에 생기는 주름이 신경쓰이는 경우</li><li>작고 부드러운 얼굴선을 원하는 경우</li><li>간편한 시술로 V라인을 갖고 싶은 경우</li><li>두꺼운 종아리, 팔뚝을 슬림하게 만들고 싶은 경우</li><li>여성스럽게 부드러운 어깨선을 갖고 싶은 경우</li></ul></div><div class="vis"><figure class="pic"><img src="assets/web-9ba2ef0f0ad98eb5.jpg" alt="보톡스 시술대상 이미지" loading="lazy"></figure></div></div></div><div class="nd-block "><div class="nd-h"><span class="k">Where</span><h3><b>보톡스</b> 시술부위</h3></div><figure class="nd-fig nd-eyefig nd-where-fig"><img src="assets/web-ecf11f24368ea14b.jpg" alt="보톡스 시술부위 그림" loading="lazy"></figure></div><div class="nd-block "><div class="nd-h"><span class="k">How</span><h3><b>보톡스</b> 시술방법</h3></div><p class="nd-lead">이마, 눈가, 콧등 등 잔주름 개선에 효과적이며 그 밖에 근육 축소가 필요한 부위에 주입하여 빠르고 간단하게 개선할 수 있습니다.</p><p class="nd-sub">충분한 상담을 통해 시술 부위를 정하고 맞춤 시술을 진행합니다.</p><figure class="nd-fig nd-eyefig nd-round"><img src="assets/web-388356542ab6a60d.jpg" alt="보톡스 시술 장면" loading="lazy"></figure><ol class="nd-steps c4 detail-card-strip" tabindex="0" style="margin-top:24px"><li><span class="n">01</span><p>충분한 상담 후 보톡스 시술이 필요한 부위를 디자인합니다.</p></li><li><span class="n">02</span><p>연고마취 후 필요한 부위에 보톡스를 주입합니다.</p></li><li><span class="n">03</span><p>시술 부위에 따라 조금씩 다르기는 하나 약 10분 이내에 시술은 끝납니다.</p></li><li><span class="n">04</span><p>7~10일경에 효과를 정확히 알 수 있습니다.</p></li></ol></div><div class="nd-block band-g"><div class="nd-h"><span class="k">Merit</span><h3><b>보톡스</b> 시술의 특징</h3></div><ol class="nd-merit detail-card-strip" tabindex="0"><li><span class="n">01</span><h4>동안 효과</h4><p>얼굴 주름을 개선하여 동안 효과를 얻을 수 있습니다.</p></li><li><span class="n">02</span><h4>주름 개선 및 예방 효과</h4><p>잔주름을 개선하고 주름을 미리 예방하는 효과가 있습니다.</p></li><li><span class="n">03</span><h4>부작용, 흉터 걱정 없음</h4><p>안전성 높은 시술로 부작용, 흉터에 대한 걱정이 없습니다.</p></li><li><span class="n">04</span><h4>주름 외 다양한 시술</h4><p>얼굴 주름 외 다한증, 근육 축소 등에 시술이 가능합니다.</p></li></ol></div><div class="nd-block band-w"><div class="nd-h"><span class="k">Compare</span><h3><b>보톡스와 스킨보톡스</b> 차이점</h3></div><p class="nd-lead">근육에 주입하는 일반적인 보톡스와 피부 진피층에 희석한 보톡스를 주입하는 스킨보톡스는 <b>시술방법과 효과에 차이</b>가 있습니다.</p><table class="nd-vs"><thead><tr><th scope="col">보톡스</th><th scope="col">종류</th><th scope="col">스킨보톡스</th></tr></thead><tbody><tr><td>국소부위 근육층에 주입</td><th scope="row">시술방법</th><td>피부의 진피층에 소량으로 광범위하게 주입</td></tr><tr><td>표정주름, 사각턱, 침샘, 종아리, 승모근 등 근육층</td><th scope="row">시술부위</th><td>이마, 볼, 턱선, 목 등 탄력이 떨어진 피부층 전체</td></tr><tr><td>6~10개월</td><th scope="row">시술주기</th><td>4~5개월</td></tr><tr><td>주름 완화, 다한증 개선, 과한 근육 볼륨 축소</td><th scope="row">시술특징</th><td>피부결 개선, 피부 탄력 증가, 모공 축소, 잔주름 개선</td></tr></tbody></table></div>
 </div></section>
 
 <!-- 상담 -->

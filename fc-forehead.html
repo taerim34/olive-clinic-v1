@@ -467,9 +467,13 @@ body.nav-open .mnav-in{transform:none}
   .snb a.on::after{left:20px;right:20px}
 }
 @media (max-width:860px){
-  .sv{margin-top:64px;height:300px}
+  .sub-page{padding-top:64px}
+  /* Keep the page heading available to screen readers inside the collapsed banner. */
+  .sub-page > .sv{height:0;margin:0;overflow:hidden}
+  .sub-page > .sv::before,.sub-page > .sv::after,.sub-page > .sv p{display:none}
   .snb{top:64px}
-  .snb ul{justify-content:flex-start;overflow-x:auto;padding:0 8px}
+  .snb ul{justify-content:flex-start;overflow-x:auto;padding:0 8px;scrollbar-width:none}
+  .snb ul::-webkit-scrollbar{display:none}
   .snb a{padding:16px 14px;font-size:14.5px}
   .snb a.on::after{left:14px;right:14px}
 }
@@ -548,6 +552,8 @@ body.nav-open .mnav-in{transform:none}
 @media (max-width:1180px){.nd-info{grid-template-columns:repeat(3,1fr)}.nd-info div:nth-child(4){border-left:0}.nd-info div:nth-child(n+4){border-top:1px solid rgba(255,255,255,.14)}.nd-merit{grid-template-columns:1fr 1fr}.nd-merit li:nth-child(2n+1){border-left:0}.nd-merit li:nth-child(n+3){border-top:1px solid var(--line)}}
 @media (max-width:860px){
   .nd-tabs{flex-wrap:nowrap;overflow-x:auto;justify-content:flex-start;margin:32px -20px 0;padding:0 20px}
+  :is(.nd-tabs,.ba-tabs,.tabs,.snb ul,.gal-thumbs,[role="tablist"]){scrollbar-width:none}
+  :is(.nd-tabs,.ba-tabs,.tabs,.snb ul,.gal-thumbs,[role="tablist"])::-webkit-scrollbar{display:none}
   .nd-tabs button,.nd-tabs a{flex:none;height:40px;padding:0 16px}
   .nd-block{padding:56px 0}
   .nd-h{flex-direction:column;gap:10px;margin-bottom:20px}
@@ -1280,6 +1286,12 @@ body.is-authed .ba-lock{display:none}
 #safety .safety-reason-grid>li{border:0}
 @media(min-width:861px){#safety .safety-reason-grid>li:nth-child(2),#safety .safety-reason-grid>li:nth-child(3),#safety .safety-reason-grid>li:nth-child(5){border-left:1px solid rgba(255,255,255,.18)}#safety .safety-reason-grid>li:nth-child(n+4){border-top:1px solid rgba(255,255,255,.18)}}
 @media(max-width:860px){#safety .safety-reason-grid>li+li{border-top:1px solid rgba(255,255,255,.18)}}
+@media(max-width:860px){
+  .sub-page :is(.nd-card .b,.nd-who>li,.nd-merit>li,.ct-case-copy,.ct-flow>li,
+    .safety-card>div,.safety-method article,.safety-checks article,.safety-guide-points article,
+    .tr-body,.cc,.why>li,.sp-end){padding:18px 16px}
+}
+
 
 /* Individually framed illustrations retain original clinical drawings. */
 .nd-how .fig.type-steps{padding:0;background:transparent;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;align-items:start}
@@ -1303,6 +1315,40 @@ body.is-authed .ba-lock{display:none}
 @media(max-width:860px){#men .nd-lead+.nd-who{margin-top:24px}.men-line-photo svg{max-height:300px}}
 .men-line-photo svg{overflow:hidden}
 .men-line-photo svg{width:min(100%,285px);height:auto;max-height:none;margin-inline:auto}
+
+@media(max-width:860px){
+  main.sub-page .detail-card-strip:has(> :nth-child(2)){
+    --strip-inset:20px;
+    --strip-gap:12px;
+    --visible-cards:1.3;
+    display:flex;
+    flex-flow:row nowrap;
+    justify-content:flex-start;
+    align-items:stretch;
+    column-gap:var(--strip-gap);
+    min-width:0;
+    margin-inline:calc(0px - var(--strip-inset));
+    padding-inline:var(--strip-inset);
+    border:0;
+    overflow-x:auto;
+    overscroll-behavior-x:contain;
+    scroll-snap-type:x proximity;
+    scroll-padding-inline:var(--strip-inset);
+    scrollbar-width:none;
+  }
+  .detail-card-strip::-webkit-scrollbar{display:none}
+  .detail-card-strip:has(> :nth-child(2)) > *{
+    flex:0 0 calc((100% + var(--strip-inset) - var(--strip-gap)) / var(--visible-cards));
+    min-width:0;
+    max-width:none;
+    overflow-wrap:anywhere;
+    scroll-snap-align:start;
+  }
+  main.sub-page :is(.nd-steps,.ct-flow,.type-steps).detail-card-strip:has(> :nth-child(2)){--visible-cards:1.5}
+  .detail-card-strip:is(.nd-merit,.why,.phil-list)>li{border:1px solid var(--line)}
+  .band-g .detail-card-strip.nd-merit>li{border-color:rgba(255,255,255,.18)}
+  .nd-areas.detail-card-strip .a{display:flex;flex-direction:column;gap:12px}
+}
 /* Light-gray sections use white cards for clear separation. */
 .nd-block.band-w .nd-merit>li,.nd-block.band-w .nd-card{background:#fff}
 </style>
@@ -1368,7 +1414,7 @@ body.is-authed .ba-lock{display:none}
   <ul><li><a href="fc-square.html">사각턱</a></li><li><a href="fc-zygoma.html">광대축소</a></li><li><a href="fc-chin.html">무턱</a></li><li><a href="fc-jaw.html">주걱턱</a></li><li><a href="fc-mouth.html">돌출입</a></li><li><a class="on" aria-current="page" href="fc-forehead.html">이마성형</a></li><li><a href="fc-nasal.html">귀족성형</a></li><li><a href="fc-twojaw.html">양악수술</a></li></ul>
 </nav>
 <section class="sec nd-eye" id="forehead"><div class="wrap">
-<div class="nd-block"><div class="nd-sp"><div class="tx"><div class="nd-h"><span class="k">What</span><h3><b>이마성형</b>이란?</h3></div><p class="nd-lead">얼굴의 약 1/3을 차지하는 이마는 사람의 인상에 큰 영향을 주는 부위입니다. 볼륨감이 없거나 함몰된 이마는 밋밋한 인상을 줍니다. 이러한 이마에 볼륨을 주면 <b>얼굴에 입체감이 더해지고 원래 나이보다 어려보이는 동안효과</b>를 볼 수 있습니다.</p><p class="nd-tx">하지만 이마에 볼륨이 많다고 무조건 좋은 것은 아니기 때문에 개인에 맞는 이마 성형 방법과 꼼꼼하면서 정확한 상담 및 분석이 필요합니다. 일반적으로 코와 적절히 라인을 이룰 수 있는 만큼의 볼륨이 가장 적당하며 이마에는 혈관과 신경세포가 많이 분포되어 있기 때문에 안면 구조에 대한 이해도와 기술력을 가진 의료진에게 수술 받으시는 것이 좋습니다.</p></div><div class="vis"><figure class="pic"><img src="assets/web-01e928cd2fa981f5.jpg" alt="이마성형 대표 이미지" loading="lazy"></figure></div></div><dl class="nd-info"><div><dt>수술시간</dt><dd>1시간 정도</dd></div><div><dt>마취방법</dt><dd>수면마취</dd></div><div><dt>입원치료</dt><dd>불필요</dd></div><div><dt>실밥제거</dt><dd>1주 후</dd></div><div><dt>내원치료</dt><dd>2~3회</dd></div><div><dt>회복기간</dt><dd>7~10일 후</dd></div></dl></div><div class="nd-block band-w"><div class="nd-sp rev"><div class="tx"><div class="nd-h"><span class="k">Who</span><h3><b>이마성형</b> 수술대상</h3></div><p class="nd-sub">이마성형, 이런 분들에게 추천합니다.</p><ul class="nd-chk"><li>이마가 꺼져있는 경우</li><li>옆모습이 자신없는 경우</li><li>이마가 좁아 답답해 보이는 인상인 경우</li><li>납작한 이마 때문에 밋밋한 인상인 경우</li><li>이마가 예쁘지 못해 헤어스타일의 제약을 받는 경우</li></ul></div><div class="vis"><figure class="pic"><img src="assets/web-7001b1e6243cba0b.jpg" alt="이마성형 수술대상 이미지" loading="lazy"></figure></div></div></div><div class="nd-block "><div class="nd-h"><span class="k">How</span><h3><b>이마성형</b> 수술방법</h3></div><div class="nd-how"><div class="m"><div class="t"><span class="n">Method 01</span><h4>보형물 삽입술</h4><p>헤어라인 뒤에 길이 3~4cm 정도의 헤어라인에 수직인 시상절개를 합니다. 헤어라인과 수평인 관상절개를 하면 수술은 더 편하지만 수술자국이 조금 더 눈에 뜨이는 편이라 수술의 불편을 감수하면서 시상절개를 합니다. 이마의 골막하 박리를 통해서 보형물이 들어갈 공간을 확보 합니다. 보형물이 삽입되면 정확한 위치에 들어갔는지 재차 확인하고, 시상절개를 봉합 합니다.</p></div><div class="fig"><img src="assets/web-b6e8c8dda8853086.jpg" alt="보형물 삽입술 그림" loading="lazy"></div></div><div class="m"><div class="t"><span class="n">Method 02</span><h4>지방이식술/필러</h4><p>보형물 대신 지방이식과 필러 등으로 이마를 볼록하게 만드는 수술입니다. 주사기를 통해 주입하므로 수술의 부담감이 적으며, 부드러운 변화가 강점입니다. 지방이식은 본인의 엉덩이, 복부나, 허벅지에서 자가 지방을 채취한 후 순수 지방만을 분리한 후 주입기를 통해 이마에 주입하게 됩니다.</p></div><div class="fig"><img src="assets/web-1e36487d39fb620a.jpg" alt="지방이식술/필러 그림" loading="lazy"></div></div></div></div><div class="nd-block band-w merit-neutral"><div class="nd-h"><span class="k">Merit</span><h3><b>이마성형</b> 수술의 특징</h3></div><p class="nd-sub">이마의 입체감을 살려 어려 보이는 동안 얼굴을 완성!</p><ol class="nd-merit"><li><span class="n">01</span><h4>시원하고 아름다운 이마</h4><p>시원하고 세련된 이마로 자신감이 상승합니다.</p></li><li><span class="n">02</span><h4>입체적인 얼굴</h4><p>이마의 볼륨으로 동안의 이미지와 입체적인 얼굴로 개선할 수 있습니다.</p></li><li><span class="n">03</span><h4>자신있는 옆모습</h4><p>정면뿐 아니라 측면에서도 자연스러운 S라인으로 개선할 수 있습니다.</p></li><li><span class="n">04</span><h4>동안효과</h4><p>이마 주름 개선과 함께 꺼진 부분을 채워주어 동안 효과를 볼 수 있습니다.</p></li></ol></div>
+<div class="nd-block"><div class="nd-sp"><div class="tx"><div class="nd-h"><span class="k">What</span><h3><b>이마성형</b>이란?</h3></div><p class="nd-lead">얼굴의 약 1/3을 차지하는 이마는 사람의 인상에 큰 영향을 주는 부위입니다. 볼륨감이 없거나 함몰된 이마는 밋밋한 인상을 줍니다. 이러한 이마에 볼륨을 주면 <b>얼굴에 입체감이 더해지고 원래 나이보다 어려보이는 동안효과</b>를 볼 수 있습니다.</p><p class="nd-tx">하지만 이마에 볼륨이 많다고 무조건 좋은 것은 아니기 때문에 개인에 맞는 이마 성형 방법과 꼼꼼하면서 정확한 상담 및 분석이 필요합니다. 일반적으로 코와 적절히 라인을 이룰 수 있는 만큼의 볼륨이 가장 적당하며 이마에는 혈관과 신경세포가 많이 분포되어 있기 때문에 안면 구조에 대한 이해도와 기술력을 가진 의료진에게 수술 받으시는 것이 좋습니다.</p></div><div class="vis"><figure class="pic"><img src="assets/web-01e928cd2fa981f5.jpg" alt="이마성형 대표 이미지" loading="lazy"></figure></div></div><dl class="nd-info"><div><dt>수술시간</dt><dd>1시간 정도</dd></div><div><dt>마취방법</dt><dd>수면마취</dd></div><div><dt>입원치료</dt><dd>불필요</dd></div><div><dt>실밥제거</dt><dd>1주 후</dd></div><div><dt>내원치료</dt><dd>2~3회</dd></div><div><dt>회복기간</dt><dd>7~10일 후</dd></div></dl></div><div class="nd-block band-w"><div class="nd-sp rev"><div class="tx"><div class="nd-h"><span class="k">Who</span><h3><b>이마성형</b> 수술대상</h3></div><p class="nd-sub">이마성형, 이런 분들에게 추천합니다.</p><ul class="nd-chk"><li>이마가 꺼져있는 경우</li><li>옆모습이 자신없는 경우</li><li>이마가 좁아 답답해 보이는 인상인 경우</li><li>납작한 이마 때문에 밋밋한 인상인 경우</li><li>이마가 예쁘지 못해 헤어스타일의 제약을 받는 경우</li></ul></div><div class="vis"><figure class="pic"><img src="assets/web-7001b1e6243cba0b.jpg" alt="이마성형 수술대상 이미지" loading="lazy"></figure></div></div></div><div class="nd-block "><div class="nd-h"><span class="k">How</span><h3><b>이마성형</b> 수술방법</h3></div><div class="nd-how"><div class="m"><div class="t"><span class="n">Method 01</span><h4>보형물 삽입술</h4><p>헤어라인 뒤에 길이 3~4cm 정도의 헤어라인에 수직인 시상절개를 합니다. 헤어라인과 수평인 관상절개를 하면 수술은 더 편하지만 수술자국이 조금 더 눈에 뜨이는 편이라 수술의 불편을 감수하면서 시상절개를 합니다. 이마의 골막하 박리를 통해서 보형물이 들어갈 공간을 확보 합니다. 보형물이 삽입되면 정확한 위치에 들어갔는지 재차 확인하고, 시상절개를 봉합 합니다.</p></div><div class="fig"><img src="assets/web-b6e8c8dda8853086.jpg" alt="보형물 삽입술 그림" loading="lazy"></div></div><div class="m"><div class="t"><span class="n">Method 02</span><h4>지방이식술/필러</h4><p>보형물 대신 지방이식과 필러 등으로 이마를 볼록하게 만드는 수술입니다. 주사기를 통해 주입하므로 수술의 부담감이 적으며, 부드러운 변화가 강점입니다. 지방이식은 본인의 엉덩이, 복부나, 허벅지에서 자가 지방을 채취한 후 순수 지방만을 분리한 후 주입기를 통해 이마에 주입하게 됩니다.</p></div><div class="fig"><img src="assets/web-1e36487d39fb620a.jpg" alt="지방이식술/필러 그림" loading="lazy"></div></div></div></div><div class="nd-block band-w merit-neutral"><div class="nd-h"><span class="k">Merit</span><h3><b>이마성형</b> 수술의 특징</h3></div><p class="nd-sub">이마의 입체감을 살려 어려 보이는 동안 얼굴을 완성!</p><ol class="nd-merit detail-card-strip" tabindex="0"><li><span class="n">01</span><h4>시원하고 아름다운 이마</h4><p>시원하고 세련된 이마로 자신감이 상승합니다.</p></li><li><span class="n">02</span><h4>입체적인 얼굴</h4><p>이마의 볼륨으로 동안의 이미지와 입체적인 얼굴로 개선할 수 있습니다.</p></li><li><span class="n">03</span><h4>자신있는 옆모습</h4><p>정면뿐 아니라 측면에서도 자연스러운 S라인으로 개선할 수 있습니다.</p></li><li><span class="n">04</span><h4>동안효과</h4><p>이마 주름 개선과 함께 꺼진 부분을 채워주어 동안 효과를 볼 수 있습니다.</p></li></ol></div>
 </div></section>
 
 <!-- 상담 -->

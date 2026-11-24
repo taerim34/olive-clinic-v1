@@ -467,9 +467,13 @@ body.nav-open .mnav-in{transform:none}
   .snb a.on::after{left:20px;right:20px}
 }
 @media (max-width:860px){
-  .sv{margin-top:64px;height:300px}
+  .sub-page{padding-top:64px}
+  /* Keep the page heading available to screen readers inside the collapsed banner. */
+  .sub-page > .sv{height:0;margin:0;overflow:hidden}
+  .sub-page > .sv::before,.sub-page > .sv::after,.sub-page > .sv p{display:none}
   .snb{top:64px}
-  .snb ul{justify-content:flex-start;overflow-x:auto;padding:0 8px}
+  .snb ul{justify-content:flex-start;overflow-x:auto;padding:0 8px;scrollbar-width:none}
+  .snb ul::-webkit-scrollbar{display:none}
   .snb a{padding:16px 14px;font-size:14.5px}
   .snb a.on::after{left:14px;right:14px}
 }
@@ -548,6 +552,8 @@ body.nav-open .mnav-in{transform:none}
 @media (max-width:1180px){.nd-info{grid-template-columns:repeat(3,1fr)}.nd-info div:nth-child(4){border-left:0}.nd-info div:nth-child(n+4){border-top:1px solid rgba(255,255,255,.14)}.nd-merit{grid-template-columns:1fr 1fr}.nd-merit li:nth-child(2n+1){border-left:0}.nd-merit li:nth-child(n+3){border-top:1px solid var(--line)}}
 @media (max-width:860px){
   .nd-tabs{flex-wrap:nowrap;overflow-x:auto;justify-content:flex-start;margin:32px -20px 0;padding:0 20px}
+  :is(.nd-tabs,.ba-tabs,.tabs,.snb ul,.gal-thumbs,[role="tablist"]){scrollbar-width:none}
+  :is(.nd-tabs,.ba-tabs,.tabs,.snb ul,.gal-thumbs,[role="tablist"])::-webkit-scrollbar{display:none}
   .nd-tabs button,.nd-tabs a{flex:none;height:40px;padding:0 16px}
   .nd-block{padding:56px 0}
   .nd-h{flex-direction:column;gap:10px;margin-bottom:20px}
@@ -1280,6 +1286,12 @@ body.is-authed .ba-lock{display:none}
 #safety .safety-reason-grid>li{border:0}
 @media(min-width:861px){#safety .safety-reason-grid>li:nth-child(2),#safety .safety-reason-grid>li:nth-child(3),#safety .safety-reason-grid>li:nth-child(5){border-left:1px solid rgba(255,255,255,.18)}#safety .safety-reason-grid>li:nth-child(n+4){border-top:1px solid rgba(255,255,255,.18)}}
 @media(max-width:860px){#safety .safety-reason-grid>li+li{border-top:1px solid rgba(255,255,255,.18)}}
+@media(max-width:860px){
+  .sub-page :is(.nd-card .b,.nd-who>li,.nd-merit>li,.ct-case-copy,.ct-flow>li,
+    .safety-card>div,.safety-method article,.safety-checks article,.safety-guide-points article,
+    .tr-body,.cc,.why>li,.sp-end){padding:18px 16px}
+}
+
 
 /* Individually framed illustrations retain original clinical drawings. */
 .nd-how .fig.type-steps{padding:0;background:transparent;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;align-items:start}
@@ -1303,6 +1315,40 @@ body.is-authed .ba-lock{display:none}
 @media(max-width:860px){#men .nd-lead+.nd-who{margin-top:24px}.men-line-photo svg{max-height:300px}}
 .men-line-photo svg{overflow:hidden}
 .men-line-photo svg{width:min(100%,285px);height:auto;max-height:none;margin-inline:auto}
+
+@media(max-width:860px){
+  main.sub-page .detail-card-strip:has(> :nth-child(2)){
+    --strip-inset:20px;
+    --strip-gap:12px;
+    --visible-cards:1.3;
+    display:flex;
+    flex-flow:row nowrap;
+    justify-content:flex-start;
+    align-items:stretch;
+    column-gap:var(--strip-gap);
+    min-width:0;
+    margin-inline:calc(0px - var(--strip-inset));
+    padding-inline:var(--strip-inset);
+    border:0;
+    overflow-x:auto;
+    overscroll-behavior-x:contain;
+    scroll-snap-type:x proximity;
+    scroll-padding-inline:var(--strip-inset);
+    scrollbar-width:none;
+  }
+  .detail-card-strip::-webkit-scrollbar{display:none}
+  .detail-card-strip:has(> :nth-child(2)) > *{
+    flex:0 0 calc((100% + var(--strip-inset) - var(--strip-gap)) / var(--visible-cards));
+    min-width:0;
+    max-width:none;
+    overflow-wrap:anywhere;
+    scroll-snap-align:start;
+  }
+  main.sub-page :is(.nd-steps,.ct-flow,.type-steps).detail-card-strip:has(> :nth-child(2)){--visible-cards:1.5}
+  .detail-card-strip:is(.nd-merit,.why,.phil-list)>li{border:1px solid var(--line)}
+  .band-g .detail-card-strip.nd-merit>li{border-color:rgba(255,255,255,.18)}
+  .nd-areas.detail-card-strip .a{display:flex;flex-direction:column;gap:12px}
+}
 /* Light-gray sections use white cards for clear separation. */
 .nd-block.band-w .nd-merit>li,.nd-block.band-w .nd-card{background:#fff}
 </style>
@@ -1336,6 +1382,20 @@ body.is-authed .ba-lock{display:none}
 .also h3 b{font-weight:700}
 .chips{margin:36px auto 0;max-width:1200px;display:flex;flex-wrap:wrap;justify-content:center;gap:8px}
 .chips li{padding:8px 18px;border:1px solid #d3d9cb;border-radius:24px;background:#fff;font-size:var(--fs-b2);color:#555}
+.chip-marquee{display:none}
+@media (max-width:860px) and (prefers-reduced-motion:no-preference){
+  .chip-marquee{display:grid;grid-template-columns:minmax(0,1fr);gap:4px;overflow:hidden;margin:24px -20px 0}
+  .chip-marquee + .chips{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);margin:0}
+  .chip-row{display:flex}
+  .chip-row .chips{
+    flex:none;width:max-content;flex-wrap:nowrap;justify-content:flex-start;align-items:center;gap:4px;
+    max-width:none;margin:0;padding-right:4px;
+    white-space:nowrap;animation:chip-drift 40s linear infinite;
+  }
+  .chip-row:nth-child(2) .chips{animation-direction:reverse}
+  .chip-marquee:active .chips{animation-play-state:paused}
+  @keyframes chip-drift{to{transform:translateX(-100%)}}
+}
 .also .note{margin-top:14px;text-align:center;font-size:var(--fs-cap);color:var(--muted)}
 .photos{margin-top:56px;display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
 .photos img{width:100%;aspect-ratio:4/3;object-fit:cover}
@@ -1394,12 +1454,20 @@ body.is-authed .ba-lock{display:none}
   .greet h2.ko{margin-top:24px}
   .greet .pt{margin-top:30px}
   .chips li{padding:6px 14px}
-  .photos{grid-template-columns:1fr;gap:12px;margin-top:36px}
+  .also .photos{
+    grid-template-columns:none;grid-auto-flow:column;
+    grid-auto-columns:calc((100% + 20px - 12px) / 1.3);gap:12px;
+    margin:36px -20px 0;padding-inline:20px;overflow-x:auto;
+    scroll-padding-inline:20px;scroll-snap-type:x proximity;scrollbar-width:none
+  }
+  .also .photos::-webkit-scrollbar{display:none}
+  .also .photos img{height:auto;scroll-snap-align:start}
   .sys-hd{flex-direction:column;align-items:flex-start;gap:18px;margin-bottom:36px}
   .sys-list{grid-template-columns:1fr;gap:18px}
-  .sys-body{padding:26px 22px 30px}
+  .sys-body{padding:18px 16px}
+  .sys-body>.k:first-child,.phil-list .n:first-child{margin-top:0}
   .phil-list{grid-template-columns:1fr;margin-top:40px}
-  .phil-list li{padding:34px 24px 38px;border-left:0;border-top:1px solid var(--line)}
+  .phil-list li{padding:18px 16px;border-left:0;border-top:1px solid var(--line)}
   .phil-list li:first-child{border-top:0}
   .phil-list .n{font-size:44px}
   .epi-bg{inset:0;opacity:.35}
@@ -1522,7 +1590,7 @@ body.is-authed .ba-lock{display:none}
       </div>
       <a class="more" href="system.html">올리브 시스템 자세히 <span><svg class="ui-arrow" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M4 12h16m-6-6 6 6-6 6"/></svg></span></a>
     </div>
-    <div class="sys-list">
+    <div class="sys-list detail-card-strip" tabindex="0">
       <article class="sys">
         <div class="sys-img"><img src="assets/web-62bd2688bbb29ef1.jpg" alt="반준섭 대표원장" width="710" height="390"></div>
         <div class="sys-body">
@@ -1567,7 +1635,7 @@ body.is-authed .ba-lock{display:none}
       <h2 class="h-en">Olive Philosophy</h2>
       <p>저와 올리브성형외과의 <b>성형수술에 대한 철학</b>은 이렇습니다.</p>
     </div>
-    <ol class="phil-list">
+    <ol class="phil-list detail-card-strip" tabindex="0">
       <li>
         <p class="n">01</p><p class="en">Result</p>
         <h3>성형수술은<br><b>결과가 중요</b>합니다.</h3>
@@ -1658,6 +1726,21 @@ body.is-authed .ba-lock{display:none}
   const hd=document.getElementById('hd');
   const onScroll=()=>hd.classList.toggle('on',scrollY>40);
   addEventListener('scroll',onScroll,{passive:true});onScroll();
+  const chipList=document.querySelector('.also .chips');
+  const items=Array.from(chipList.children);
+  const middle=Math.ceil(items.length/2);
+  const marquee=document.createElement('div');
+  marquee.className='chip-marquee';
+  marquee.setAttribute('aria-hidden','true');
+  for(const group of [items.slice(0,middle),items.slice(middle)]){
+    const row=document.createElement('div');
+    row.className='chip-row';
+    const list=chipList.cloneNode(false);
+    list.append(...group.map(item=>item.cloneNode(true)));
+    row.append(list,list.cloneNode(true),list.cloneNode(true));
+    marquee.append(row);
+  }
+  chipList.before(marquee);
   // 서브탭: 모바일에서 현재 탭이 보이게 가로 스크롤 맞춤
   (()=>{const u=document.querySelector('.snb ul'), a=u&&u.querySelector('a.on'); if(a){const li=a.parentElement; u.scrollLeft=li.offsetLeft-(u.clientWidth-li.offsetWidth)/2}})();
 </script>

@@ -467,9 +467,13 @@ body.nav-open .mnav-in{transform:none}
   .snb a.on::after{left:20px;right:20px}
 }
 @media (max-width:860px){
-  .sv{margin-top:64px;height:300px}
+  .sub-page{padding-top:64px}
+  /* Keep the page heading available to screen readers inside the collapsed banner. */
+  .sub-page > .sv{height:0;margin:0;overflow:hidden}
+  .sub-page > .sv::before,.sub-page > .sv::after,.sub-page > .sv p{display:none}
   .snb{top:64px}
-  .snb ul{justify-content:flex-start;overflow-x:auto;padding:0 8px}
+  .snb ul{justify-content:flex-start;overflow-x:auto;padding:0 8px;scrollbar-width:none}
+  .snb ul::-webkit-scrollbar{display:none}
   .snb a{padding:16px 14px;font-size:14.5px}
   .snb a.on::after{left:14px;right:14px}
 }
@@ -548,6 +552,8 @@ body.nav-open .mnav-in{transform:none}
 @media (max-width:1180px){.nd-info{grid-template-columns:repeat(3,1fr)}.nd-info div:nth-child(4){border-left:0}.nd-info div:nth-child(n+4){border-top:1px solid rgba(255,255,255,.14)}.nd-merit{grid-template-columns:1fr 1fr}.nd-merit li:nth-child(2n+1){border-left:0}.nd-merit li:nth-child(n+3){border-top:1px solid var(--line)}}
 @media (max-width:860px){
   .nd-tabs{flex-wrap:nowrap;overflow-x:auto;justify-content:flex-start;margin:32px -20px 0;padding:0 20px}
+  :is(.nd-tabs,.ba-tabs,.tabs,.snb ul,.gal-thumbs,[role="tablist"]){scrollbar-width:none}
+  :is(.nd-tabs,.ba-tabs,.tabs,.snb ul,.gal-thumbs,[role="tablist"])::-webkit-scrollbar{display:none}
   .nd-tabs button,.nd-tabs a{flex:none;height:40px;padding:0 16px}
   .nd-block{padding:56px 0}
   .nd-h{flex-direction:column;gap:10px;margin-bottom:20px}
@@ -556,6 +562,7 @@ body.nav-open .mnav-in{transform:none}
   .nd-merit{grid-template-columns:1fr}.nd-merit li{border-left:0;border-top:1px solid var(--line);padding:26px 22px 28px}.nd-merit li:first-child{border-top:0}
   .nd-cards,.nd-quote{grid-template-columns:1fr}
   .nd-card .b{padding:22px 20px 26px}
+  .nd-card .b > .n:first-child{margin-top:0}
 }
 .nd-split{display:grid;grid-template-columns:1.3fr .7fr;gap:56px;align-items:center}
 .nd-cert img{box-shadow:0 10px 30px rgba(0,0,0,.12)}
@@ -1280,6 +1287,12 @@ body.is-authed .ba-lock{display:none}
 #safety .safety-reason-grid>li{border:0}
 @media(min-width:861px){#safety .safety-reason-grid>li:nth-child(2),#safety .safety-reason-grid>li:nth-child(3),#safety .safety-reason-grid>li:nth-child(5){border-left:1px solid rgba(255,255,255,.18)}#safety .safety-reason-grid>li:nth-child(n+4){border-top:1px solid rgba(255,255,255,.18)}}
 @media(max-width:860px){#safety .safety-reason-grid>li+li{border-top:1px solid rgba(255,255,255,.18)}}
+@media(max-width:860px){
+  .sub-page :is(.nd-card .b,.nd-who>li,.nd-merit>li,.ct-case-copy,.ct-flow>li,
+    .safety-card>div,.safety-method article,.safety-checks article,.safety-guide-points article,
+    .tr-body,.cc,.why>li,.sp-end){padding:18px 16px}
+}
+
 
 /* Individually framed illustrations retain original clinical drawings. */
 .nd-how .fig.type-steps{padding:0;background:transparent;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;align-items:start}
@@ -1303,6 +1316,40 @@ body.is-authed .ba-lock{display:none}
 @media(max-width:860px){#men .nd-lead+.nd-who{margin-top:24px}.men-line-photo svg{max-height:300px}}
 .men-line-photo svg{overflow:hidden}
 .men-line-photo svg{width:min(100%,285px);height:auto;max-height:none;margin-inline:auto}
+
+@media(max-width:860px){
+  main.sub-page .detail-card-strip:has(> :nth-child(2)){
+    --strip-inset:20px;
+    --strip-gap:12px;
+    --visible-cards:1.3;
+    display:flex;
+    flex-flow:row nowrap;
+    justify-content:flex-start;
+    align-items:stretch;
+    column-gap:var(--strip-gap);
+    min-width:0;
+    margin-inline:calc(0px - var(--strip-inset));
+    padding-inline:var(--strip-inset);
+    border:0;
+    overflow-x:auto;
+    overscroll-behavior-x:contain;
+    scroll-snap-type:x proximity;
+    scroll-padding-inline:var(--strip-inset);
+    scrollbar-width:none;
+  }
+  .detail-card-strip::-webkit-scrollbar{display:none}
+  .detail-card-strip:has(> :nth-child(2)) > *{
+    flex:0 0 calc((100% + var(--strip-inset) - var(--strip-gap)) / var(--visible-cards));
+    min-width:0;
+    max-width:none;
+    overflow-wrap:anywhere;
+    scroll-snap-align:start;
+  }
+  main.sub-page :is(.nd-steps,.ct-flow,.type-steps).detail-card-strip:has(> :nth-child(2)){--visible-cards:1.5}
+  .detail-card-strip:is(.nd-merit,.why,.phil-list)>li{border:1px solid var(--line)}
+  .band-g .detail-card-strip.nd-merit>li{border-color:rgba(255,255,255,.18)}
+  .nd-areas.detail-card-strip .a{display:flex;flex-direction:column;gap:12px}
+}
 /* Light-gray sections use white cards for clear separation. */
 .nd-block.band-w .nd-merit>li,.nd-block.band-w .nd-card{background:#fff}
 </style>
@@ -1335,13 +1382,14 @@ body.is-authed .ba-lock{display:none}
 #contract .nd-merit>li{grid-column:span 2;border:0;background:#fff;padding:28px}
 #contract .nd-merit>li:nth-child(n+4){grid-column:span 3}
 @media(max-width:1100px){#guide .revision-guide{grid-template-columns:repeat(2,minmax(0,1fr))}#cases .revision-case-track>.nd-card{flex-basis:calc((100% - 24px)/2)}}
-@media(max-width:860px){#guide .revision-guide{grid-template-columns:1fr;gap:20px}.revision-case-tools{align-items:flex-end;gap:12px}.revision-filters{gap:6px}.revision-filters button{padding:9px 13px;font-size:13px}.revision-arrows{flex-shrink:0}.revision-arrows button{width:32px;height:32px}#cases .revision-case-track{gap:16px}#cases .revision-case-track>.nd-card{flex-basis:88%}#contract .nd-merit{grid-template-columns:1fr;gap:16px}#contract .nd-merit>li,#contract .nd-merit>li:nth-child(n+4){grid-column:auto;padding:24px}}
+@media(max-width:860px){#guide .revision-guide{grid-template-columns:1fr;column-gap:var(--strip-gap)}.revision-case-tools{align-items:flex-end;gap:12px}.revision-filters{gap:6px}.revision-filters button{padding:9px 13px;font-size:13px}.revision-arrows{flex-shrink:0}.revision-arrows button{width:32px;height:32px}#cases .revision-case-track{gap:16px}#cases .revision-case-track>.nd-card{flex-basis:88%}#contract .nd-merit{grid-template-columns:1fr;column-gap:var(--strip-gap)}#contract .nd-merit>li,#contract .nd-merit>li:nth-child(n+4){grid-column:auto;padding:24px}}
 
 /* Keep each revision solution together on one continuous surface. */
 #rev-more{background:#f5f5f5}
 #rev-more .nd-block{background:#f5f5f5;border-top:0}
 #rev-more .nd-block.band-w{--bandc:#f5f5f5}
 #rev-more .nd-who>li,#rev-more .nd-card,#rev-more .nd-merit>li{background:#fff}
+@media(max-width:860px){#guide .revision-guide .b,#cases .nd-card .b,#contract .nd-merit>li,#contract .nd-merit>li:nth-child(n+4){padding:18px 16px}}
 </style>
 <!-- 검색엔진·AI·공유 미리보기용(tools/seo.py 가 빌드 때 넣음, 화면에는 안 보임) -->
 <link rel="canonical" href="https://taerim34.github.io/olive-clinic-v1/nose-revision.html">
@@ -1407,7 +1455,7 @@ body.is-authed .ba-lock{display:none}
     <h2 class="ko">실패 없는 <b>코재수술의 기준?</b></h2>
     <p class="b1">올리브성형외과의 코재수술은 원인을 정확하게 파악하여 이상적인 코라인에 집중합니다.</p>
   </div>
-  <div class="nd-quote" style="margin-top:56px">
+  <div class="nd-quote detail-card-strip" tabindex="0" style="margin-top:56px">
     <p>코 첫수술 후 <b>얼굴에 맞지 않게 라인이 나왔어요.</b> 더 이상해질까봐 못하겠어요</p>
     <p>귀연골, 늑연골 다시 채취해야하나? <b>기존 연골 사용</b>해서 부담을 줄이고 싶은데…</p>
     <p>이번이 정말 마지막 코수술.. <b>모양과 라인도 마음에 들면서 기능적</b>으로도 나아지고싶어요</p>
@@ -1421,7 +1469,7 @@ body.is-authed .ba-lock{display:none}
 <section class="sec" id="guide"><div class="wrap">
   <div class="nd-h"><span class="k">01 · Success Guide</span><h3>코재수술에 <b>성공하려면?</b></h3></div>
   <p class="nd-sub" style="margin:-8px 0 32px">코재수술을 생각하고 계신 당신! 꼭 이것 만큼은 체크해보세요!</p>
-  <div class="nd-cards revision-guide"><article class="nd-card"><img src="assets/web-8d75b0536658caa0.jpg" alt="" loading="lazy"><div class="b"><p class="n">01</p><h4>코재수술 경험 확인</h4><p>담당 의사의 코재수술 경험과 전문성을 확인하고, 현재 상태에 맞는 수술 계획을 상담합니다.</p></div></article><article class="nd-card"><img src="assets/web-cd2b7afaa7a7f883.jpg" alt="" loading="lazy"><div class="b"><p class="n">02</p><h4>나에게 맞는 재료</h4><p>기존 보형물과 피부 상태를 살펴보고, 코끝과 콧대에 적합한 재료를 선택합니다.</p></div></article><article class="nd-card"><img src="assets/web-4d500d39425bcd2e.jpg" alt="" loading="lazy"><div class="b"><p class="n">03</p><h4>3D CT로 상태 확인</h4><p>기존 보형물과 이식 연골의 위치, 코뼈와 비중격의 상태를 입체적으로 살펴봅니다.</p></div></article><article class="nd-card"><img src="assets/web-5184b0343286891b.jpg" alt="" loading="lazy"><div class="b"><p class="n">04</p><h4>원하는 변화와 한계 상담</h4><p>개선하고 싶은 모양을 구체적으로 전달하고, 가능한 변화와 한계를 충분히 이야기합니다.</p></div></article></div>
+  <div class="nd-cards revision-guide detail-card-strip" tabindex="0"><article class="nd-card"><img src="assets/web-8d75b0536658caa0.jpg" alt="" loading="lazy"><div class="b"><p class="n">01</p><h4>코재수술 경험 확인</h4><p>담당 의사의 코재수술 경험과 전문성을 확인하고, 현재 상태에 맞는 수술 계획을 상담합니다.</p></div></article><article class="nd-card"><img src="assets/web-cd2b7afaa7a7f883.jpg" alt="" loading="lazy"><div class="b"><p class="n">02</p><h4>나에게 맞는 재료</h4><p>기존 보형물과 피부 상태를 살펴보고, 코끝과 콧대에 적합한 재료를 선택합니다.</p></div></article><article class="nd-card"><img src="assets/web-4d500d39425bcd2e.jpg" alt="" loading="lazy"><div class="b"><p class="n">03</p><h4>3D CT로 상태 확인</h4><p>기존 보형물과 이식 연골의 위치, 코뼈와 비중격의 상태를 입체적으로 살펴봅니다.</p></div></article><article class="nd-card"><img src="assets/web-5184b0343286891b.jpg" alt="" loading="lazy"><div class="b"><p class="n">04</p><h4>원하는 변화와 한계 상담</h4><p>개선하고 싶은 모양을 구체적으로 전달하고, 가능한 변화와 한계를 충분히 이야기합니다.</p></div></article></div>
 </div></section>
 <section class="sec nd-dark"><div class="wrap">
   <div class="nd-h"><span class="k">02 · Reason</span><h3>코재수술의 <b>이유들</b></h3></div>
@@ -1440,7 +1488,7 @@ body.is-authed .ba-lock{display:none}
     <p class="sec-label">04 · Revision Solutions</p>
     <h2 class="h-en">Solutions</h2>
     <h2 class="ko">상황별 <b>코재수술 솔루션</b></h2>
-    <div class="nd-tabs" role="tablist"><button type="button" role="tab" data-t="contract" class="on">구축코 교정</button><button type="button" role="tab" data-t="septum">비중격 재건술</button><button type="button" role="tab" data-t="ribrev">자가늑연골 코재수술</button><button type="button" role="tab" data-t="easy">재수술 없이 하는 간편 코교정술</button></div><div class="nd-panel" id="contract" role="tabpanel"><div class="nd-block "><div class="nd-sp"><div class="tx"><div class="nd-h"><span class="k">What</span><h3><b>구축코</b>란?</h3></div><p class="nd-lead">코성형 후 염증의 후유증으로 <b>조직과 피부가 쪼그라 들면서 코끝이 심하게 들리는 코 변형</b>입니다.</p><p class="nd-tx">아무런 이유 없이 발생하는 경우는 드물고 대개 염증을 오래 방치했을 경우 발생합니다.</p></div><div class="vis"><figure class="pic" style="--r:690/245"><img src="assets/web-db5236c49230d9b5.jpg" alt="구축코란? 이미지" width="690" height="245" loading="lazy"></figure></div></div></div><div class="nd-block band-w contract-points"><div class="nd-h"><span class="k">Olive Key Point</span><h3>올리브 <b>구축코 교정의 포인트</b></h3></div><ol class="nd-merit"><li><span class="n">01</span><h4>조기 교정</h4><p>구축코의 경우 6개월 ~ 1년을 기다렸다가 수술하기를 권하는 경우도 있습니다만, 구축코의 진행시기에는 시간이 지나면서 더 심한 변형이 발생하는 경우도 있습니다. 이런 이유로 올리브에서는 6개월 이전이라도 구축현상이 발견되면 즉각적으로 조기 교정하는 것을 권해드리고 있습니다.</p></li><li><span class="n">02</span><h4>풍부한 경험</h4><p>구축코 교정은 이에 대한 경험이 필수적인데, 올리브는 구축코 교정에 풍부한 경험을 가지고 있습니다.</p></li><li><span class="n">03</span><h4>강력한 지지대</h4><p>구축코 교정 시 조직의 유착을 풀어주어 길이를 충분히 늘려주며, 다시 들리지 않도록 강력한 지지대를 만들어 드립니다.</p></li><li><span class="n">04</span><h4>자가늑연골 경험</h4><p>심한 구축에는 자가늑연골을 사용하는 경우가 많은데, 올리브는 풍부한 자가늑연골 사용 경험을 보유하고 있습니다.</p></li><li><span class="n">05</span><h4>자연스럽고 예쁜 코모양</h4><p>구축을 풀어주고 들린 코를 교정하여 정상적 모양으로 만들어 주는 것도 중요하지만, 그것을 넘어서 자연스럽고 예쁜 코모양을 만들어 드리는데 중점을 두고 수술해드립니다.</p></li></ol></div></div><div class="nd-panel" id="septum" role="tabpanel" hidden><div class="nd-block "><div class="nd-h"><span class="k">What</span><h3><b>비중격 재건술</b>이란?</h3></div><p class="nd-lead"><b>비중격은 양쪽 비강사이의 격막으로 우리 코의 기둥이라고 할 수 있습니다.</b> 과거 비중격만곡증 수술을 한 경우, 비중격을 채취하여 수술한 경우, 양악수술을 한 경우 등 비중격에 대한 수술을 시행한 경우의 일부에선 비중격이 상당히 약해지거나 일부가 녹아 없어지는 현상이 나타날 수 있습니다.</p><p class="nd-tx">비중격은 코의 중요한 기둥이므로 비중격이 약해지게 되면 코의 변형이 발생할 수 있고 숨을 들이 쉴 때 중요한 지지구조물들이 내려앉아 숨쉬기 불편한 증상이 발생할 수 있습니다. 이처럼 손상된 비중격을 다시 보강하고 재건하여 코의 모양과 기능을 개선해주는 것이 비중격 재건술입니다. 비중격 재건을 위해서는 다량의 튼튼한 연골이 필요한 경우가 많아 자가늑연골을 많이 사용하게 됩니다. 비중격 소실 정도가 심하지 않은 경우는 귀연골로 어느 정도 가능한 경우도 있겠습니다.</p><figure class="nd-fig"><img src="assets/web-5bd92b9295ea1f85.jpg" alt="비중격 지지력이 소실되면서 콧등이 꺼진 경우의 CT 사진" loading="lazy" style="max-width:min(100%,820px)"><figcaption class="nd-cap">비중격지지력이 소실되면서 콧등이 꺼진 경우의 CT 사진 — 보형물 끝부분의 처짐과 비중격 함몰이 관찰됩니다. 안장코 변형(Saddle nose deformity)이라고도 하며, 이러한 경우 비중격재건이 반드시 필요합니다.</figcaption></figure></div><div class="nd-block band-w"><div class="nd-h"><span class="k">Necessary</span><h3><b>비중격 재건</b>이 필요한 경우</h3></div><ol class="nd-who"><li><span class="n">01</span><p>외상 또는 과거의 비중격만곡증 교정수술이나 코성형수술로 인하여 비중격의 지지력이 상당부분 소실 된 경우</p></li><li><span class="n">02</span><p>콧대의 중간이 내려앉는 안장코 변형(Saddle nose deformity)이 발생한 경우</p></li><li><span class="n">03</span><p>수술 후 점차적으로 코끝 처짐이 심해진 경우</p></li><li><span class="n">04</span><p>양악 수술 후 코모양이 많이 변화한 경우</p></li><li><span class="n">05</span><p>수술 후 염증 없이 들린 코 변형이 발생한 경우</p></li></ol></div></div><div class="nd-panel" id="ribrev" role="tabpanel" hidden><div class="nd-block "><div class="nd-h"><span class="k">Why</span><h3>왜 <b>자가 늑연골</b>인가?</h3></div><p class="nd-tx">코재수술에서 자가 늑연골 사용 시 어떤점이 좋은지 알아봅니다. 코수술을 이미 여러 번 시행하여 귀연골이나 비중격연골이 모두 소진되어 버린 경우가 많습니다. 이런 경우 늑연골이 유일한 대안이 됩니다. 늑연골은 좌우 각 12개씩 총 24개로 몇 번의 재수술도 가능합니다. 코재수술의 경우엔 처음 수술보다 교정해주어야 하는 부분들이 많아 필요한 연골의 양도 많습니다. 늑연골은 1개만 채취해도 귀연골이나 비중격보다 양이 충분하여 재수술에 유리합니다.</p><p class="nd-lead" style="margin-top:22px"><b>이전의 수술로 코의 지지력이 많이 소실된 경우엔 튼튼한 늑연골이 필요합니다.</b> 코재수술의 경우, 특히 예전에 비중격교정술을 받았거나 비중격연골을 채취하여 사용한 경우라면, 코의 지지력이 상당히 약해져 있는 경우가 많습니다. 상담 시 CT를 촬영해보면 콧대 중간이 움푹 꺼진 '안장코변형'이 보이기도 합니다. 이런 경우 코를 더 높이거나 모양을 예쁘게 교정해주기 위해서는 손상된 지지력 복원이 필수적입니다. 따라서 우리 몸의 연골 중 가장 튼튼한 늑연골 사용이 유리합니다.</p></div><div class="nd-block band-w"><div class="nd-h"><span class="k">Necessary</span><h3>자가 늑연골 <b>코재수술이 필요한 경우</b></h3></div><ol class="nd-who"><li><span class="n">01</span><p>여러 차례의 재수술로 코의 지지력이 많이 소실된 경우</p></li><li><span class="n">02</span><p>귀연골과 비중격연골을 모두 사용하여 충분한 자가연골을 얻기 어려운 경우</p></li><li><span class="n">03</span><p>안장코변형(비중격함몰)이 있는 경우, 비중격 재건이 필요한 경우</p></li><li><span class="n">04</span><p>과거에 양악수술을 받아 비중격의 지지력이 많이 약해져 있는 경우</p></li><li><span class="n">05</span><p>심한 들린 코, 구축코의 경우</p></li><li><span class="n">06</span><p>수술부위에 염증이 있는 경우</p></li><li><span class="n">07</span><p>화려하고 오똑한 코를 원하는 경우</p></li></ol></div><div class="nd-block band-w"><div class="nd-h"><span class="k">Key Point</span><h3>올리브 반준섭 원장의 <b>자가늑연골 코재수술 포인트</b></h3></div><ul class="nd-who nd-check"><li><span class="n">✓</span><p>전신마취 없이, 수면마취만으로 수술하여 안전하고 회복이 빠릅니다.</p></li><li><span class="n">✓</span><p>2cm 내외의 작은 절개만으로 채취, 수술 흔적이 적습니다.</p></li><li><span class="n">✓</span><p>특수기구를 이용하여 흉막측 연골을 남기고 채취하는 방식을 적용, 통증을 획기적으로 감소시키며, 다음 날부터 일상생활이 가능하고 부작용 측면에서 더 안전합니다.</p></li><li><span class="n">✓</span><p>세밀한 연골 다듬기로 수술결과가 매우 자연스럽습니다.</p></li><li><span class="n">✓</span><p>디테일한 코끝모양 처리를 통해 코끝이 자연스럽고 예쁩니다.</p></li></ul></div><div class="nd-block "><div class="nd-h"><span class="k">Comparison</span><h3><b>자가늑연골 VS 기증늑연골</b></h3></div><p class="nd-tx">기증늑연골은 타인의 사체에서 채취한 늑연골(동종 늑연골)을 말합니다. 기증늑연골은 상품으로 나와 있는 재료이므로 자신의 몸에서 채취할 필요가 없다는 것이 장점입니다. 의사입장에서도 채취과정이 필요 없어 수술이 간단해지고 비용도 추가로 받을 수 있다는 메리트가 있습니다. 그러나, 기증연골은 사실 장기적으로 흡수의 가능성이 있고, 나중에 지지력이 소실되는 경우도 있으며, 염증 발생의 가능성도 약간 있는 재료입니다. 이같은 문제로 또 다시 재수술이 필요한 경우도 생길 수 있기 때문에, 코재수술에 있어서는 가급적 배제하는 것이 좋다는 의견입니다.</p></div></div><div class="nd-panel" id="easy" role="tabpanel" hidden><div class="nd-block "><div class="nd-h"><span class="k">Prologue</span><h3>재수술 없이 하는 <b>간편 교정술</b></h3></div><p class="nd-tx">코성형수술 후 약간의 모양상의 수정이나 보정을 원하는 경우가 있습니다. 전체적으로 다시 하자니 부담스러울 수 있는데, 이런 경우 <b>코를 다시 절개하여 수술하지 않고 간단하게 교정하는 방법</b>이 바로 올리브의 '재수술 없이 하는 간편 교정술'입니다.</p><p class="nd-lead" style="margin-top:22px">올리브는 코성형 수술에 대한 풍부한 경험과 축적된 데이터를 바탕으로 몇가지 <b>간편 교정술을 개발하여 시행</b>하고 있는데 <b>만족도가 상당히 높은 편</b>입니다. 간편 교정술에 사용되는 시술들은 <b>자가지방이식, 연골필러, 필러주사</b> 등입니다.</p><p class="nd-tx">간편한 교정이지만 실제 적용에는 상당한 기술이 필요하며, 해당 시술에 대한 경험이 풍부한 곳에서 받아야 합니다. 상태에 따라 적합한 시술이 달라질 수 있으므로 반드시 전문가와 상의한 후 어떤 시술이 적합한지 선택하여 시술받는 것이 좋습니다. 간편 교정술은 코에 주사만 하는 시술로서, 부기가 거의 없기 때문에 다음날부터 일상생활이 가능합니다.</p></div><div class="nd-block band-w"><div class="nd-h"><span class="k">Trouble</span><h3>간편 교정술로 <b>교정이 가능한 문제들</b></h3></div><ol class="nd-who"><li><span class="n">01</span><p>콧등이나 코끝의 미세한 굴곡이나 함몰</p></li><li><span class="n">02</span><p>코끝이나 콧대의 비대칭</p></li><li><span class="n">03</span><p>보형물이 휘거나 비뚤어진 경우</p></li><li><span class="n">04</span><p>보형물의 비침이나 윤곽 드러남</p></li><li><span class="n">05</span><p>코끝의 연골 비침</p></li><li><span class="n">06</span><p>보형물로 인한 미간의 가로주름</p></li><li><span class="n">07</span><p>얇은 콧대를 도톰하게 바꾸고 싶은 경우</p></li><li><span class="n">08</span><p>미간이나 코끝을 살짝 더 높이고 싶은 경우</p></li></ol></div><div class="nd-block "><div class="nd-h"><span class="k">Olive Solution</span><h3>간편 교정술에 <b>사용되는 시술법</b></h3></div><div class="nd-cards nd-cards-3"><article class="nd-card"><div class="b"><h4>자가지방이식</h4><p>허벅지나 복부의 지방을 약간 흡입하여 주사기로 코에 주입하는 방식입니다. 약간의 흡수를 고려하여 2회 정도 리터치하며, 6개월 때 남은 것은 10년 이상 반영구적으로 유지됩니다. 이미 보형물을 사용하여 수술한 경우에도 적용이 가능합니다. 이미 수술이 되어 있는 코에 자가지방이식을 안전하고 효과적으로 시술하기 위해서는 본 시술에 대한 많은 경험과 기술이 필요합니다.</p></div></article><article class="nd-card"><div class="b"><h4>연골 필러 (C.C 필러)</h4><p>늑연골 부위를 1cm 정도 절개하여 연골을 채취한 후 특수기구로 갈아서 미세한 입자로 만든 후 주사기로 코에 주사하는 방식입니다. 자가연골 성분이므로 한번 시술로 반영구적인 효과가 가능합니다. 자가 연골 채취가 부담스런 경우는 타인의 늑연골 제품인 기증늑연골(동종늑연골)을 사용할 수도 있습니다.</p></div></article><article class="nd-card"><div class="b"><h4>필러 주사</h4><p>코수술 후 발생한 미세한 굴곡이나 꺼짐, 비대칭 등은 필러 주사로도 간단하게 교정이 가능합니다. 이미 수술한 코에 필러 주사를 시술하는 것은 상당한 기술이 필요합니다. 잘못될 경우 색전증, 피부 괴사 등도 가능하니 반드시 전문가에게 시술 받아야 합니다. 필러는 영구적인 것은 아니며, 주기적으로 약간의 필러를 보충해주어야 할 수 있겠습니다.</p></div></article></div></div></div>
+    <div class="nd-tabs" role="tablist"><button type="button" role="tab" data-t="contract" class="on">구축코 교정</button><button type="button" role="tab" data-t="septum">비중격 재건술</button><button type="button" role="tab" data-t="ribrev">자가늑연골 코재수술</button><button type="button" role="tab" data-t="easy">재수술 없이 하는 간편 코교정술</button></div><div class="nd-panel" id="contract" role="tabpanel"><div class="nd-block "><div class="nd-sp"><div class="tx"><div class="nd-h"><span class="k">What</span><h3><b>구축코</b>란?</h3></div><p class="nd-lead">코성형 후 염증의 후유증으로 <b>조직과 피부가 쪼그라 들면서 코끝이 심하게 들리는 코 변형</b>입니다.</p><p class="nd-tx">아무런 이유 없이 발생하는 경우는 드물고 대개 염증을 오래 방치했을 경우 발생합니다.</p></div><div class="vis"><figure class="pic" style="--r:690/245"><img src="assets/web-db5236c49230d9b5.jpg" alt="구축코란? 이미지" width="690" height="245" loading="lazy"></figure></div></div></div><div class="nd-block band-w contract-points"><div class="nd-h"><span class="k">Olive Key Point</span><h3>올리브 <b>구축코 교정의 포인트</b></h3></div><ol class="nd-merit detail-card-strip" tabindex="0"><li><span class="n">01</span><h4>조기 교정</h4><p>구축코의 경우 6개월 ~ 1년을 기다렸다가 수술하기를 권하는 경우도 있습니다만, 구축코의 진행시기에는 시간이 지나면서 더 심한 변형이 발생하는 경우도 있습니다. 이런 이유로 올리브에서는 6개월 이전이라도 구축현상이 발견되면 즉각적으로 조기 교정하는 것을 권해드리고 있습니다.</p></li><li><span class="n">02</span><h4>풍부한 경험</h4><p>구축코 교정은 이에 대한 경험이 필수적인데, 올리브는 구축코 교정에 풍부한 경험을 가지고 있습니다.</p></li><li><span class="n">03</span><h4>강력한 지지대</h4><p>구축코 교정 시 조직의 유착을 풀어주어 길이를 충분히 늘려주며, 다시 들리지 않도록 강력한 지지대를 만들어 드립니다.</p></li><li><span class="n">04</span><h4>자가늑연골 경험</h4><p>심한 구축에는 자가늑연골을 사용하는 경우가 많은데, 올리브는 풍부한 자가늑연골 사용 경험을 보유하고 있습니다.</p></li><li><span class="n">05</span><h4>자연스럽고 예쁜 코모양</h4><p>구축을 풀어주고 들린 코를 교정하여 정상적 모양으로 만들어 주는 것도 중요하지만, 그것을 넘어서 자연스럽고 예쁜 코모양을 만들어 드리는데 중점을 두고 수술해드립니다.</p></li></ol></div></div><div class="nd-panel" id="septum" role="tabpanel" hidden><div class="nd-block "><div class="nd-h"><span class="k">What</span><h3><b>비중격 재건술</b>이란?</h3></div><p class="nd-lead"><b>비중격은 양쪽 비강사이의 격막으로 우리 코의 기둥이라고 할 수 있습니다.</b> 과거 비중격만곡증 수술을 한 경우, 비중격을 채취하여 수술한 경우, 양악수술을 한 경우 등 비중격에 대한 수술을 시행한 경우의 일부에선 비중격이 상당히 약해지거나 일부가 녹아 없어지는 현상이 나타날 수 있습니다.</p><p class="nd-tx">비중격은 코의 중요한 기둥이므로 비중격이 약해지게 되면 코의 변형이 발생할 수 있고 숨을 들이 쉴 때 중요한 지지구조물들이 내려앉아 숨쉬기 불편한 증상이 발생할 수 있습니다. 이처럼 손상된 비중격을 다시 보강하고 재건하여 코의 모양과 기능을 개선해주는 것이 비중격 재건술입니다. 비중격 재건을 위해서는 다량의 튼튼한 연골이 필요한 경우가 많아 자가늑연골을 많이 사용하게 됩니다. 비중격 소실 정도가 심하지 않은 경우는 귀연골로 어느 정도 가능한 경우도 있겠습니다.</p><figure class="nd-fig"><img src="assets/web-5bd92b9295ea1f85.jpg" alt="비중격 지지력이 소실되면서 콧등이 꺼진 경우의 CT 사진" loading="lazy" style="max-width:min(100%,820px)"><figcaption class="nd-cap">비중격지지력이 소실되면서 콧등이 꺼진 경우의 CT 사진 — 보형물 끝부분의 처짐과 비중격 함몰이 관찰됩니다. 안장코 변형(Saddle nose deformity)이라고도 하며, 이러한 경우 비중격재건이 반드시 필요합니다.</figcaption></figure></div><div class="nd-block band-w"><div class="nd-h"><span class="k">Necessary</span><h3><b>비중격 재건</b>이 필요한 경우</h3></div><ol class="nd-who detail-card-strip" tabindex="0"><li><span class="n">01</span><p>외상 또는 과거의 비중격만곡증 교정수술이나 코성형수술로 인하여 비중격의 지지력이 상당부분 소실 된 경우</p></li><li><span class="n">02</span><p>콧대의 중간이 내려앉는 안장코 변형(Saddle nose deformity)이 발생한 경우</p></li><li><span class="n">03</span><p>수술 후 점차적으로 코끝 처짐이 심해진 경우</p></li><li><span class="n">04</span><p>양악 수술 후 코모양이 많이 변화한 경우</p></li><li><span class="n">05</span><p>수술 후 염증 없이 들린 코 변형이 발생한 경우</p></li></ol></div></div><div class="nd-panel" id="ribrev" role="tabpanel" hidden><div class="nd-block "><div class="nd-h"><span class="k">Why</span><h3>왜 <b>자가 늑연골</b>인가?</h3></div><p class="nd-tx">코재수술에서 자가 늑연골 사용 시 어떤점이 좋은지 알아봅니다. 코수술을 이미 여러 번 시행하여 귀연골이나 비중격연골이 모두 소진되어 버린 경우가 많습니다. 이런 경우 늑연골이 유일한 대안이 됩니다. 늑연골은 좌우 각 12개씩 총 24개로 몇 번의 재수술도 가능합니다. 코재수술의 경우엔 처음 수술보다 교정해주어야 하는 부분들이 많아 필요한 연골의 양도 많습니다. 늑연골은 1개만 채취해도 귀연골이나 비중격보다 양이 충분하여 재수술에 유리합니다.</p><p class="nd-lead" style="margin-top:22px"><b>이전의 수술로 코의 지지력이 많이 소실된 경우엔 튼튼한 늑연골이 필요합니다.</b> 코재수술의 경우, 특히 예전에 비중격교정술을 받았거나 비중격연골을 채취하여 사용한 경우라면, 코의 지지력이 상당히 약해져 있는 경우가 많습니다. 상담 시 CT를 촬영해보면 콧대 중간이 움푹 꺼진 '안장코변형'이 보이기도 합니다. 이런 경우 코를 더 높이거나 모양을 예쁘게 교정해주기 위해서는 손상된 지지력 복원이 필수적입니다. 따라서 우리 몸의 연골 중 가장 튼튼한 늑연골 사용이 유리합니다.</p></div><div class="nd-block band-w"><div class="nd-h"><span class="k">Necessary</span><h3>자가 늑연골 <b>코재수술이 필요한 경우</b></h3></div><ol class="nd-who detail-card-strip" tabindex="0"><li><span class="n">01</span><p>여러 차례의 재수술로 코의 지지력이 많이 소실된 경우</p></li><li><span class="n">02</span><p>귀연골과 비중격연골을 모두 사용하여 충분한 자가연골을 얻기 어려운 경우</p></li><li><span class="n">03</span><p>안장코변형(비중격함몰)이 있는 경우, 비중격 재건이 필요한 경우</p></li><li><span class="n">04</span><p>과거에 양악수술을 받아 비중격의 지지력이 많이 약해져 있는 경우</p></li><li><span class="n">05</span><p>심한 들린 코, 구축코의 경우</p></li><li><span class="n">06</span><p>수술부위에 염증이 있는 경우</p></li><li><span class="n">07</span><p>화려하고 오똑한 코를 원하는 경우</p></li></ol></div><div class="nd-block band-w"><div class="nd-h"><span class="k">Key Point</span><h3>올리브 반준섭 원장의 <b>자가늑연골 코재수술 포인트</b></h3></div><ul class="nd-who nd-check detail-card-strip" tabindex="0"><li><span class="n">✓</span><p>전신마취 없이, 수면마취만으로 수술하여 안전하고 회복이 빠릅니다.</p></li><li><span class="n">✓</span><p>2cm 내외의 작은 절개만으로 채취, 수술 흔적이 적습니다.</p></li><li><span class="n">✓</span><p>특수기구를 이용하여 흉막측 연골을 남기고 채취하는 방식을 적용, 통증을 획기적으로 감소시키며, 다음 날부터 일상생활이 가능하고 부작용 측면에서 더 안전합니다.</p></li><li><span class="n">✓</span><p>세밀한 연골 다듬기로 수술결과가 매우 자연스럽습니다.</p></li><li><span class="n">✓</span><p>디테일한 코끝모양 처리를 통해 코끝이 자연스럽고 예쁩니다.</p></li></ul></div><div class="nd-block "><div class="nd-h"><span class="k">Comparison</span><h3><b>자가늑연골 VS 기증늑연골</b></h3></div><p class="nd-tx">기증늑연골은 타인의 사체에서 채취한 늑연골(동종 늑연골)을 말합니다. 기증늑연골은 상품으로 나와 있는 재료이므로 자신의 몸에서 채취할 필요가 없다는 것이 장점입니다. 의사입장에서도 채취과정이 필요 없어 수술이 간단해지고 비용도 추가로 받을 수 있다는 메리트가 있습니다. 그러나, 기증연골은 사실 장기적으로 흡수의 가능성이 있고, 나중에 지지력이 소실되는 경우도 있으며, 염증 발생의 가능성도 약간 있는 재료입니다. 이같은 문제로 또 다시 재수술이 필요한 경우도 생길 수 있기 때문에, 코재수술에 있어서는 가급적 배제하는 것이 좋다는 의견입니다.</p></div></div><div class="nd-panel" id="easy" role="tabpanel" hidden><div class="nd-block "><div class="nd-h"><span class="k">Prologue</span><h3>재수술 없이 하는 <b>간편 교정술</b></h3></div><p class="nd-tx">코성형수술 후 약간의 모양상의 수정이나 보정을 원하는 경우가 있습니다. 전체적으로 다시 하자니 부담스러울 수 있는데, 이런 경우 <b>코를 다시 절개하여 수술하지 않고 간단하게 교정하는 방법</b>이 바로 올리브의 '재수술 없이 하는 간편 교정술'입니다.</p><p class="nd-lead" style="margin-top:22px">올리브는 코성형 수술에 대한 풍부한 경험과 축적된 데이터를 바탕으로 몇가지 <b>간편 교정술을 개발하여 시행</b>하고 있는데 <b>만족도가 상당히 높은 편</b>입니다. 간편 교정술에 사용되는 시술들은 <b>자가지방이식, 연골필러, 필러주사</b> 등입니다.</p><p class="nd-tx">간편한 교정이지만 실제 적용에는 상당한 기술이 필요하며, 해당 시술에 대한 경험이 풍부한 곳에서 받아야 합니다. 상태에 따라 적합한 시술이 달라질 수 있으므로 반드시 전문가와 상의한 후 어떤 시술이 적합한지 선택하여 시술받는 것이 좋습니다. 간편 교정술은 코에 주사만 하는 시술로서, 부기가 거의 없기 때문에 다음날부터 일상생활이 가능합니다.</p></div><div class="nd-block band-w"><div class="nd-h"><span class="k">Trouble</span><h3>간편 교정술로 <b>교정이 가능한 문제들</b></h3></div><ol class="nd-who detail-card-strip" tabindex="0"><li><span class="n">01</span><p>콧등이나 코끝의 미세한 굴곡이나 함몰</p></li><li><span class="n">02</span><p>코끝이나 콧대의 비대칭</p></li><li><span class="n">03</span><p>보형물이 휘거나 비뚤어진 경우</p></li><li><span class="n">04</span><p>보형물의 비침이나 윤곽 드러남</p></li><li><span class="n">05</span><p>코끝의 연골 비침</p></li><li><span class="n">06</span><p>보형물로 인한 미간의 가로주름</p></li><li><span class="n">07</span><p>얇은 콧대를 도톰하게 바꾸고 싶은 경우</p></li><li><span class="n">08</span><p>미간이나 코끝을 살짝 더 높이고 싶은 경우</p></li></ol></div><div class="nd-block "><div class="nd-h"><span class="k">Olive Solution</span><h3>간편 교정술에 <b>사용되는 시술법</b></h3></div><div class="nd-cards nd-cards-3 detail-card-strip" tabindex="0"><article class="nd-card"><div class="b"><h4>자가지방이식</h4><p>허벅지나 복부의 지방을 약간 흡입하여 주사기로 코에 주입하는 방식입니다. 약간의 흡수를 고려하여 2회 정도 리터치하며, 6개월 때 남은 것은 10년 이상 반영구적으로 유지됩니다. 이미 보형물을 사용하여 수술한 경우에도 적용이 가능합니다. 이미 수술이 되어 있는 코에 자가지방이식을 안전하고 효과적으로 시술하기 위해서는 본 시술에 대한 많은 경험과 기술이 필요합니다.</p></div></article><article class="nd-card"><div class="b"><h4>연골 필러 (C.C 필러)</h4><p>늑연골 부위를 1cm 정도 절개하여 연골을 채취한 후 특수기구로 갈아서 미세한 입자로 만든 후 주사기로 코에 주사하는 방식입니다. 자가연골 성분이므로 한번 시술로 반영구적인 효과가 가능합니다. 자가 연골 채취가 부담스런 경우는 타인의 늑연골 제품인 기증늑연골(동종늑연골)을 사용할 수도 있습니다.</p></div></article><article class="nd-card"><div class="b"><h4>필러 주사</h4><p>코수술 후 발생한 미세한 굴곡이나 꺼짐, 비대칭 등은 필러 주사로도 간단하게 교정이 가능합니다. 이미 수술한 코에 필러 주사를 시술하는 것은 상당한 기술이 필요합니다. 잘못될 경우 색전증, 피부 괴사 등도 가능하니 반드시 전문가에게 시술 받아야 합니다. 필러는 영구적인 것은 아니며, 주기적으로 약간의 필러를 보충해주어야 할 수 있겠습니다.</p></div></article></div></div></div>
   </div>
 </div></section>
 

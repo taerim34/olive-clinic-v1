@@ -467,9 +467,13 @@ body.nav-open .mnav-in{transform:none}
   .snb a.on::after{left:20px;right:20px}
 }
 @media (max-width:860px){
-  .sv{margin-top:64px;height:300px}
+  .sub-page{padding-top:64px}
+  /* Keep the page heading available to screen readers inside the collapsed banner. */
+  .sub-page > .sv{height:0;margin:0;overflow:hidden}
+  .sub-page > .sv::before,.sub-page > .sv::after,.sub-page > .sv p{display:none}
   .snb{top:64px}
-  .snb ul{justify-content:flex-start;overflow-x:auto;padding:0 8px}
+  .snb ul{justify-content:flex-start;overflow-x:auto;padding:0 8px;scrollbar-width:none}
+  .snb ul::-webkit-scrollbar{display:none}
   .snb a{padding:16px 14px;font-size:14.5px}
   .snb a.on::after{left:14px;right:14px}
 }
@@ -548,6 +552,8 @@ body.nav-open .mnav-in{transform:none}
 @media (max-width:1180px){.nd-info{grid-template-columns:repeat(3,1fr)}.nd-info div:nth-child(4){border-left:0}.nd-info div:nth-child(n+4){border-top:1px solid rgba(255,255,255,.14)}.nd-merit{grid-template-columns:1fr 1fr}.nd-merit li:nth-child(2n+1){border-left:0}.nd-merit li:nth-child(n+3){border-top:1px solid var(--line)}}
 @media (max-width:860px){
   .nd-tabs{flex-wrap:nowrap;overflow-x:auto;justify-content:flex-start;margin:32px -20px 0;padding:0 20px}
+  :is(.nd-tabs,.ba-tabs,.tabs,.snb ul,.gal-thumbs,[role="tablist"]){scrollbar-width:none}
+  :is(.nd-tabs,.ba-tabs,.tabs,.snb ul,.gal-thumbs,[role="tablist"])::-webkit-scrollbar{display:none}
   .nd-tabs button,.nd-tabs a{flex:none;height:40px;padding:0 16px}
   .nd-block{padding:56px 0}
   .nd-h{flex-direction:column;gap:10px;margin-bottom:20px}
@@ -1280,6 +1286,12 @@ body.is-authed .ba-lock{display:none}
 #safety .safety-reason-grid>li{border:0}
 @media(min-width:861px){#safety .safety-reason-grid>li:nth-child(2),#safety .safety-reason-grid>li:nth-child(3),#safety .safety-reason-grid>li:nth-child(5){border-left:1px solid rgba(255,255,255,.18)}#safety .safety-reason-grid>li:nth-child(n+4){border-top:1px solid rgba(255,255,255,.18)}}
 @media(max-width:860px){#safety .safety-reason-grid>li+li{border-top:1px solid rgba(255,255,255,.18)}}
+@media(max-width:860px){
+  .sub-page :is(.nd-card .b,.nd-who>li,.nd-merit>li,.ct-case-copy,.ct-flow>li,
+    .safety-card>div,.safety-method article,.safety-checks article,.safety-guide-points article,
+    .tr-body,.cc,.why>li,.sp-end){padding:18px 16px}
+}
+
 
 /* Individually framed illustrations retain original clinical drawings. */
 .nd-how .fig.type-steps{padding:0;background:transparent;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;align-items:start}
@@ -1303,6 +1315,40 @@ body.is-authed .ba-lock{display:none}
 @media(max-width:860px){#men .nd-lead+.nd-who{margin-top:24px}.men-line-photo svg{max-height:300px}}
 .men-line-photo svg{overflow:hidden}
 .men-line-photo svg{width:min(100%,285px);height:auto;max-height:none;margin-inline:auto}
+
+@media(max-width:860px){
+  main.sub-page .detail-card-strip:has(> :nth-child(2)){
+    --strip-inset:20px;
+    --strip-gap:12px;
+    --visible-cards:1.3;
+    display:flex;
+    flex-flow:row nowrap;
+    justify-content:flex-start;
+    align-items:stretch;
+    column-gap:var(--strip-gap);
+    min-width:0;
+    margin-inline:calc(0px - var(--strip-inset));
+    padding-inline:var(--strip-inset);
+    border:0;
+    overflow-x:auto;
+    overscroll-behavior-x:contain;
+    scroll-snap-type:x proximity;
+    scroll-padding-inline:var(--strip-inset);
+    scrollbar-width:none;
+  }
+  .detail-card-strip::-webkit-scrollbar{display:none}
+  .detail-card-strip:has(> :nth-child(2)) > *{
+    flex:0 0 calc((100% + var(--strip-inset) - var(--strip-gap)) / var(--visible-cards));
+    min-width:0;
+    max-width:none;
+    overflow-wrap:anywhere;
+    scroll-snap-align:start;
+  }
+  main.sub-page :is(.nd-steps,.ct-flow,.type-steps).detail-card-strip:has(> :nth-child(2)){--visible-cards:1.5}
+  .detail-card-strip:is(.nd-merit,.why,.phil-list)>li{border:1px solid var(--line)}
+  .band-g .detail-card-strip.nd-merit>li{border-color:rgba(255,255,255,.18)}
+  .nd-areas.detail-card-strip .a{display:flex;flex-direction:column;gap:12px}
+}
 /* Light-gray sections use white cards for clear separation. */
 .nd-block.band-w .nd-merit>li,.nd-block.band-w .nd-card{background:#fff}
 </style>
@@ -1321,6 +1367,25 @@ body.is-authed .ba-lock{display:none}
 .process-card .step{font:500 var(--fs-label)/1 var(--en);color:var(--moss);letter-spacing:.14em;margin-top:24px}
 .process-card h3{font-size:var(--fs-h3);color:var(--ink);margin-top:10px;font-weight:600}
 .process-card p{font-size:var(--fs-b2);line-height:1.8;margin-top:12px}
+@media(max-width:860px){
+  .process-grid{
+    --inset:20px;
+    --gap:12px;
+    grid-template-columns:none;
+    grid-auto-flow:column;
+    grid-auto-columns:calc((100% + var(--inset) - var(--gap)) / 1.5);
+    gap:var(--gap);
+    margin-inline:calc(0px - var(--inset));
+    padding-inline:var(--inset);
+    overflow-x:auto;
+    scroll-padding-inline:var(--inset);
+    scroll-snap-type:x proximity;
+    overscroll-behavior-x:contain;
+    scrollbar-width:none;
+  }
+  .process-grid::-webkit-scrollbar{display:none}
+  .process-card{min-width:0;scroll-snap-align:start}
+}
 .nose-guide{display:grid;grid-template-columns:1fr 1.2fr;gap:80px}
 .nose-guide .h-en{margin-bottom:24px}
 .nose-guide details{border-top:1px solid var(--line);padding:22px 0}
@@ -1335,7 +1400,7 @@ a:focus-visible,summary:focus-visible,button:focus-visible{outline:2px solid var
 @media(max-width:860px){
 .nose-page section[id]{scroll-margin-top:135px}
 .nose-heading{display:block;margin-bottom:28px}.nose-heading>p{margin-top:16px}
-.nose-guide{gap:28px}.nose-links{margin-top:24px}.nose-guide summary{font-size:var(--fs-b1)}
+.nose-guide{grid-template-columns:minmax(0,1fr);gap:28px}.nose-links{margin-top:24px}.nose-guide summary{font-size:var(--fs-b1)}
 }
 
 /* 01 올리브 코성형 */
@@ -1472,7 +1537,7 @@ a:focus-visible,summary:focus-visible,button:focus-visible{outline:2px solid var
 <!-- 01 고민 고르기: 원하는 코 모양·고민에서 시작해 해당 시술로 이동 -->
 <section class="sec cc-sec" id="concerns" data-section-bg="white"><div class="wrap">
   <div class="nose-heading"><div><p class="sec-label">01 · Find your concern</p><h2 class="h-en">Your Concern</h2><h2 class="ko">어떤 <b>고민</b>으로 오셨나요?</h2></div><p>수술 이름을 몰라도 괜찮습니다.<br>지금 나의 고민에서 시작해 보세요.</p></div>
-  <div class="cc-grid">
+  <div class="cc-grid detail-card-strip" tabindex="0">
     <div class="cc"><a class="cc-hit" href="nose-types.html" aria-label="유형별 코성형"></a><span class="n">01</span><h3>코 모양이<br>고민이에요</h3><ul><li><a href="nose-types.html#low">낮은 코</a></li><li><a href="nose-types.html#hump">매부리코</a></li><li><a href="nose-types.html#bulbous">복코</a></li><li><a href="nose-types.html#short">들창코</a></li><li><a href="nose-types.html#long">화살코</a></li><li><a href="nose-types.html#alar">콧볼</a></li><li><a href="nose-men.html">남자 코</a></li></ul><a class="go" href="nose-types.html">유형별 코성형 <b aria-hidden="true"><svg class="ui-arrow" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M4 12h16m-6-6 6 6-6 6"/></svg></b></a></div>
     <div class="cc"><a class="cc-hit" href="nose-revision.html" aria-label="코재수술"></a><span class="n">02</span><h3>재수술을<br>알아보고 있어요</h3><ul><li><a href="nose-revision.html#contract">구축코</a></li><li><a href="nose-revision.html#septum">비중격 재건</a></li><li><a href="nose-revision.html#easy">간편 교정</a></li><li><a href="nose-revision.html#cases">재수술 사례</a></li></ul><a class="go" href="nose-revision.html">코재수술 <b aria-hidden="true"><svg class="ui-arrow" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M4 12h16m-6-6 6 6-6 6"/></svg></b></a></div>
     <div class="cc"><a class="cc-hit" href="nose-natural.html" aria-label="무보형물·자가조직"></a><span class="n">03</span><h3>보형물이<br>부담돼요</h3><ul><li><a href="nose-natural.html#ear">귀연골</a></li><li><a href="nose-natural.html#rib">자가늑연골</a></li><li><a href="nose-natural.html#particle">늑입자</a></li></ul><a class="go" href="nose-natural.html">무보형물·자가조직 <b aria-hidden="true"><svg class="ui-arrow" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M4 12h16m-6-6 6 6-6 6"/></svg></b></a></div>
@@ -1492,7 +1557,7 @@ a:focus-visible,summary:focus-visible,button:focus-visible{outline:2px solid var
     </div>
     <figure class="ov-photo"><img src="assets/web-c645fd2450137de3.jpg" alt="수술 중인 반준섭 대표원장" width="540" height="400"></figure>
   </div>
-  <ol class="why">
+  <ol class="why detail-card-strip" tabindex="0">
     <li><span class="n">01</span><p class="en">One Surgeon</p><h3>반준섭 대표원장<br><b>1:1 책임성형</b></h3><p>상담에서부터 수술, 수술 후 관리까지 모든 과정을 책임지고 진료합니다.</p></li>
     <li><span class="n">02</span><p class="en">4D Simulation</p><h3>발명특허<br><b>4D 가상 코성형</b></h3><p>코성형 수술 후 모습을 미리 알 수 없을까? 올리브 4D 가상 코성형으로 상담합니다.</p><a class="more why-more" href="nose-olive.html#sim">자세히 <span><svg class="ui-arrow" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M4 12h16m-6-6 6 6-6 6"/></svg></span></a></li>
     <li><span class="n">03</span><p class="en">3D CT</p><h3>저선량 고해상도<br><b>3D CT 진단</b></h3><p>환자의 상태를 안전하고 정확하게 진단할 수 있도록 저선량 고해상도 3D CT 장비를 도입하였습니다.</p><a class="more why-more" href="nose-olive.html#ct">자세히 <span><svg class="ui-arrow" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M4 12h16m-6-6 6 6-6 6"/></svg></span></a></li>
@@ -1505,7 +1570,7 @@ a:focus-visible,summary:focus-visible,button:focus-visible{outline:2px solid var
 
 <section class="sec nose-process" id="process" data-section-bg="white"><div class="wrap">
 <div class="nose-heading"><div><p class="sec-label">03 · Consultation &amp; Planning</p><h2 class="h-en">Planning</h2><h2 class="ko">상담에서 수술 계획까지</h2></div><a class="more" href="system.html">올리브 시스템 <span aria-hidden="true"><svg class="ui-arrow" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5 19 19 5M5 5h14v14"/></svg></span></a></div>
-<div class="process-grid">
+<div class="process-grid" role="region" aria-label="상담에서 수술 계획까지" tabindex="0">
 <article class="process-card"><img src="assets/web-2eda0510aef2d22b.jpg" alt="올리브 상담 공간" loading="lazy"><p class="step">01 · LISTEN</p><h3>고민을 듣는 상담</h3><p>원하는 변화와 걱정되는 점을 이야기합니다. 이전 수술 경험이 있다면 상담 시 함께 전달해 주세요.</p></article>
 <article class="process-card"><img src="assets/web-8e7f23e42e80f3c5.jpg" alt="올리브 CT 장비" loading="lazy"><p class="step">02 · UNDERSTAND</p><h3>현재 상태의 이해</h3><p>코의 상태를 살피고 필요한 검사를 안내합니다. 3D CT와 가상 코성형에 관한 내용도 상담에서 확인할 수 있습니다.</p></article>
 <article class="process-card"><img src="assets/web-8edebcd97bb6e3eb.jpg" alt="올리브 회복 공간" loading="lazy"><p class="step">03 · PLAN</p><h3>수술과 회복 계획</h3><p>수술 방법과 재료, 회복 과정에 대한 설명을 듣고 개인 일정과 함께 계획을 세웁니다.</p></article>

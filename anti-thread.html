@@ -467,9 +467,13 @@ body.nav-open .mnav-in{transform:none}
   .snb a.on::after{left:20px;right:20px}
 }
 @media (max-width:860px){
-  .sv{margin-top:64px;height:300px}
+  .sub-page{padding-top:64px}
+  /* Keep the page heading available to screen readers inside the collapsed banner. */
+  .sub-page > .sv{height:0;margin:0;overflow:hidden}
+  .sub-page > .sv::before,.sub-page > .sv::after,.sub-page > .sv p{display:none}
   .snb{top:64px}
-  .snb ul{justify-content:flex-start;overflow-x:auto;padding:0 8px}
+  .snb ul{justify-content:flex-start;overflow-x:auto;padding:0 8px;scrollbar-width:none}
+  .snb ul::-webkit-scrollbar{display:none}
   .snb a{padding:16px 14px;font-size:14.5px}
   .snb a.on::after{left:14px;right:14px}
 }
@@ -548,6 +552,8 @@ body.nav-open .mnav-in{transform:none}
 @media (max-width:1180px){.nd-info{grid-template-columns:repeat(3,1fr)}.nd-info div:nth-child(4){border-left:0}.nd-info div:nth-child(n+4){border-top:1px solid rgba(255,255,255,.14)}.nd-merit{grid-template-columns:1fr 1fr}.nd-merit li:nth-child(2n+1){border-left:0}.nd-merit li:nth-child(n+3){border-top:1px solid var(--line)}}
 @media (max-width:860px){
   .nd-tabs{flex-wrap:nowrap;overflow-x:auto;justify-content:flex-start;margin:32px -20px 0;padding:0 20px}
+  :is(.nd-tabs,.ba-tabs,.tabs,.snb ul,.gal-thumbs,[role="tablist"]){scrollbar-width:none}
+  :is(.nd-tabs,.ba-tabs,.tabs,.snb ul,.gal-thumbs,[role="tablist"])::-webkit-scrollbar{display:none}
   .nd-tabs button,.nd-tabs a{flex:none;height:40px;padding:0 16px}
   .nd-block{padding:56px 0}
   .nd-h{flex-direction:column;gap:10px;margin-bottom:20px}
@@ -556,6 +562,7 @@ body.nav-open .mnav-in{transform:none}
   .nd-merit{grid-template-columns:1fr}.nd-merit li{border-left:0;border-top:1px solid var(--line);padding:26px 22px 28px}.nd-merit li:first-child{border-top:0}
   .nd-cards,.nd-quote{grid-template-columns:1fr}
   .nd-card .b{padding:22px 20px 26px}
+  .nd-card .b > .n:first-child{margin-top:0}
 }
 .nd-split{display:grid;grid-template-columns:1.3fr .7fr;gap:56px;align-items:center}
 .nd-cert img{box-shadow:0 10px 30px rgba(0,0,0,.12)}
@@ -1280,6 +1287,12 @@ body.is-authed .ba-lock{display:none}
 #safety .safety-reason-grid>li{border:0}
 @media(min-width:861px){#safety .safety-reason-grid>li:nth-child(2),#safety .safety-reason-grid>li:nth-child(3),#safety .safety-reason-grid>li:nth-child(5){border-left:1px solid rgba(255,255,255,.18)}#safety .safety-reason-grid>li:nth-child(n+4){border-top:1px solid rgba(255,255,255,.18)}}
 @media(max-width:860px){#safety .safety-reason-grid>li+li{border-top:1px solid rgba(255,255,255,.18)}}
+@media(max-width:860px){
+  .sub-page :is(.nd-card .b,.nd-who>li,.nd-merit>li,.ct-case-copy,.ct-flow>li,
+    .safety-card>div,.safety-method article,.safety-checks article,.safety-guide-points article,
+    .tr-body,.cc,.why>li,.sp-end){padding:18px 16px}
+}
+
 
 /* Individually framed illustrations retain original clinical drawings. */
 .nd-how .fig.type-steps{padding:0;background:transparent;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;align-items:start}
@@ -1303,6 +1316,40 @@ body.is-authed .ba-lock{display:none}
 @media(max-width:860px){#men .nd-lead+.nd-who{margin-top:24px}.men-line-photo svg{max-height:300px}}
 .men-line-photo svg{overflow:hidden}
 .men-line-photo svg{width:min(100%,285px);height:auto;max-height:none;margin-inline:auto}
+
+@media(max-width:860px){
+  main.sub-page .detail-card-strip:has(> :nth-child(2)){
+    --strip-inset:20px;
+    --strip-gap:12px;
+    --visible-cards:1.3;
+    display:flex;
+    flex-flow:row nowrap;
+    justify-content:flex-start;
+    align-items:stretch;
+    column-gap:var(--strip-gap);
+    min-width:0;
+    margin-inline:calc(0px - var(--strip-inset));
+    padding-inline:var(--strip-inset);
+    border:0;
+    overflow-x:auto;
+    overscroll-behavior-x:contain;
+    scroll-snap-type:x proximity;
+    scroll-padding-inline:var(--strip-inset);
+    scrollbar-width:none;
+  }
+  .detail-card-strip::-webkit-scrollbar{display:none}
+  .detail-card-strip:has(> :nth-child(2)) > *{
+    flex:0 0 calc((100% + var(--strip-inset) - var(--strip-gap)) / var(--visible-cards));
+    min-width:0;
+    max-width:none;
+    overflow-wrap:anywhere;
+    scroll-snap-align:start;
+  }
+  main.sub-page :is(.nd-steps,.ct-flow,.type-steps).detail-card-strip:has(> :nth-child(2)){--visible-cards:1.5}
+  .detail-card-strip:is(.nd-merit,.why,.phil-list)>li{border:1px solid var(--line)}
+  .band-g .detail-card-strip.nd-merit>li{border-color:rgba(255,255,255,.18)}
+  .nd-areas.detail-card-strip .a{display:flex;flex-direction:column;gap:12px}
+}
 /* Light-gray sections use white cards for clear separation. */
 .nd-block.band-w .nd-merit>li,.nd-block.band-w .nd-card{background:#fff}
 </style>
@@ -1368,7 +1415,7 @@ body.is-authed .ba-lock{display:none}
   <ul><li><a href="eye-upper.html">중년 눈성형</a></li><li><a href="anti-facelift.html">페이스리프팅</a></li><li><a href="anti-brow.html">이마거상술</a></li><li><a class="on" aria-current="page" href="anti-thread.html">실리프팅</a></li><li><a href="anti-fat.html">지방이식</a></li><li><a href="anti-lipo.html">얼굴지방흡입</a></li></ul>
 </nav>
 <section class="sec nd-eye" id="thread"><div class="wrap">
-<div class="nd-block"><div class="nd-sp"><div class="tx"><div class="nd-h"><span class="k">What</span><h3><b>실리프팅</b>이란?</h3></div><p class="nd-lead">머리카락보다 가느다란 <b>PDO실을 0.5cm 간격으로 삽입</b>하는 방법을 통해 진피층 자극해 <b>콜라겐 생성을 촉진, 피부 탄력과 주름개선 효과</b>를 내는 시술입니다.</p><p class="nd-tx">볼살, 턱선, 눈가 등 라인을 따라 혹은 수직 방향으로 100~200개 미세한 실을 심으면 20대 젖살, 30대 처지고 커지는 얼굴살, 40대 이중턱까지 시술 직후 바로 효과를 확인할 수 있습니다. 사용되는 실의 종류에 따라 크게 녹지 않는 실과 녹는 실로 구분합니다.</p><p class="nd-tx">녹지 않은 실의 경우 모양에 따라 재질에 따라 여러가지 재료가 있으며, 녹는 실의 경우에도 그성분이나 돌기의 모양, 제작방식에 따라서 매우 다양한 종류의 실들이 있습니다. 실은 고정 여부에 따라 측두부에 고정하는 방식과 고정하지 않는 방식으로 나누기도 합니다. 유지기간은 통상적으로 1-2년, 길면 5년 정도입니다.</p></div><div class="vis"><figure class="pic"><img src="assets/web-3f33f93d3b96e584.jpg" alt="실리프팅 대표 이미지" loading="lazy"></figure></div></div><dl class="nd-info"><div><dt>수술시간</dt><dd>30분~1시간 정도</dd></div><div><dt>마취방법</dt><dd>연고마취</dd></div><div><dt>입원치료</dt><dd>불필요</dd></div><div><dt>실밥제거</dt><dd>불필요</dd></div><div><dt>내원치료</dt><dd>불필요</dd></div><div><dt>회복기간</dt><dd>바로 일상생활 가능</dd></div></dl></div><div class="nd-block band-w"><div class="nd-sp rev"><div class="tx"><div class="nd-h"><span class="k">Who</span><h3><b>실리프팅</b> 수술대상</h3></div><p class="nd-sub">실리프팅, 이런 분들에게 추천합니다.</p><ul class="nd-chk"><li>자연스러운 리프팅을 원하는 경우</li><li>탄력이 떨어져 얼굴살이 처지고 노화된 경우</li><li>주름개선과 함께 V라인을 원하는 경우</li><li>보형물에 대한 거부감이 있는 경우</li><li>수술 후 통증이 두려운 경우</li></ul></div><div class="vis"><figure class="pic"><img src="assets/web-52a6969fc7aeb7ea.jpg" alt="실리프팅 수술대상 이미지" loading="lazy"></figure></div></div></div><div class="nd-block band-w"><div class="nd-h"><span class="k">Type</span><h3><b>실리프팅</b>의 종류</h3></div><div class="nd-cards nd-thread"><article class="nd-card"><img src="assets/web-92b948ffc6cd9cad.jpg" alt="민트 리프팅 그림" loading="lazy"><div class="b"><p class="n">Type 01</p><h4>민트 리프팅</h4><p class="em">민트 리프팅에 사용되는 실은 식품의약품안전처(MFDS)와 미국식약청(FDA), 한국식약처(KFDA)의 승인을 받아 안전하며, 일정기간이 지나면 자연스럽게 체내에서 분해되는 몰딩형 최소 침습 안면조직 고정용 PDO실입니다.</p><p>얼굴의 처진 살과 깊은 주름을 개선하여 얼굴에 전체적인 리프팅 효과를 볼 수 있습니다. 민트 리프팅 실은 USP 1-0(지름 0.4mm)사이즈로 특수 몰딩 방식으로 제작하여 실두께가 일정하게 유지되고 잘 끊어지지 않아 리프팅 지속시간이 기존 리프팅 실보다 4배 정도 높고, 강력한 돌기가 360도 회전식으로 생성되어 있어 모든 방향에서 조직을 고정하여 강력하고 확실한 리프팅 효과를 볼 수 있습니다. 또한 PDO실이 체내에서 녹으면서 콜라겐과 엘라스틴을 생성시키기 때문에 피부탄력, 피부톤 등의 피부개선 효과도 볼 수 있습니다.</p></div></article><article class="nd-card"><img src="assets/web-8c034f3ce20eceac.jpg" alt="엘라스티꿈 리프팅 그림" loading="lazy"><div class="b"><p class="n">Type 02</p><h4>엘라스티꿈 리프팅</h4><p class="em">특수한 소재인 엘라스티꿈(Elasticcum)이라는 밴드를 이용하여 늘어진 인대를 대신해 새로운 강한 인대로 만들어 늘어지고 처진 피부를 개선할 수 있는 시술입니다.</p><p>실리콘에 폴리에스터가 촘촘한 그물처럼 감싸져 있는 형태의 엘라스티꿈은 탄성력이 뛰어나 근육의 움직임에 따라 자유롭게 늘어납니다. 메쉬 형태로 되어 있기 때문에 실 사이 공간에 안정적으로 결합하고 인체조직과 유사하여 얼굴의 움직임을 더욱 자연스럽게 만들어 줍니다. 일반 실리프팅 보다 주름 개선효과가 장기간 유지됩니다.</p></div></article><article class="nd-card"><img src="assets/web-fcd58c1ef3a35e70.jpg" alt="오메가 리프팅 그림" loading="lazy"><div class="b"><p class="n">Type 03</p><h4>오메가 리프팅</h4><p class="em">오메가리프팅 실은 녹는 특수 실인 PDO실이나 기존 실과 모양이나 구조가 다릅니다. 실 좌우로 가시 달린 앞쪽은 피부를 잡아 당겨주고, 뒤쪽은 조직을 지지해주는 구조로 되어있습니다.</p><p>이러한 구조는 시술 후 즉각적인 주름개선, 리프팅 효과를 볼 수 있으며, 피부를 확실히 당겨주고 단단히 고정해주어 만족스러운 시술 결과를 볼 수 있습니다. 실을 피부의 피하층에 삽입 후 원하는 방향으로 당겨 고정하면 실이 삽입된 부위는 콜라겐이 생성 및 촉진 되고, 섬유화가 진행되어 피부의 탄력이 증가하고 다른 리프팅 실에 비해 효과가 더 오래 지속됩니다.</p></div></article><article class="nd-card"><img src="assets/web-63c800960ee9b3d8.jpg" alt="회오리 리프팅 그림" loading="lazy"><div class="b"><p class="n">Type 04</p><h4>회오리 리프팅</h4><p class="em">식약처에서 인정한 녹는 트위스트실을 피부에 주입시키고 실이 녹는 자리에 피부 세포조직의 콜라겐을 촉진시켜 리프팅과 탄력효과를 동시에 주는 리프팅 시술입니다.</p><p>시술 후 느껴지지 않는 이물감은 보다 편안한 일상생활이 가능하며, 시간이 지날수록 V라인과 탄력을 느낄 수 있습니다.</p></div></article></div></div><div class="nd-block "><div class="nd-h"><span class="k">How</span><h3><b>실리프팅</b> 수술방법</h3></div><div class="nd-how"><div class="m"><div class="t"><span class="n">Method</span><p>실리프팅 시술 과정</p></div><div class="fig"><img src="assets/web-cdc57a6396ce7f8b.jpg" alt="수술 방법 그림" loading="lazy"></div></div></div></div><div class="nd-block band-w merit-neutral"><div class="nd-h"><span class="k">Merit</span><h3><b>실리프팅</b> 수술의 특징</h3></div><p class="nd-sub">주름개선 피부탄력은 물론 V라인 효과까지 기대 할 수 있습니다.</p><ol class="nd-merit"><li><span class="n">01</span><h4>얼굴주름개선</h4><p>피부를 탄력있게 끌어 당겨 주름을 개선합니다.</p></li><li><span class="n">02</span><h4>동안효과</h4><p>피부탄력과 주름개선으로 동안효과를 얻을 수 있습니다.</p></li><li><span class="n">03</span><h4>피부탄력</h4><p>콜라겐 재생을 촉진시켜 피부탄력이 증가합니다.</p></li><li><span class="n">04</span><h4>V라인 개선</h4><p>늘어진 피부를 정리하여 갸름한 얼굴라인을 완성합니다.</p></li></ol></div>
+<div class="nd-block"><div class="nd-sp"><div class="tx"><div class="nd-h"><span class="k">What</span><h3><b>실리프팅</b>이란?</h3></div><p class="nd-lead">머리카락보다 가느다란 <b>PDO실을 0.5cm 간격으로 삽입</b>하는 방법을 통해 진피층 자극해 <b>콜라겐 생성을 촉진, 피부 탄력과 주름개선 효과</b>를 내는 시술입니다.</p><p class="nd-tx">볼살, 턱선, 눈가 등 라인을 따라 혹은 수직 방향으로 100~200개 미세한 실을 심으면 20대 젖살, 30대 처지고 커지는 얼굴살, 40대 이중턱까지 시술 직후 바로 효과를 확인할 수 있습니다. 사용되는 실의 종류에 따라 크게 녹지 않는 실과 녹는 실로 구분합니다.</p><p class="nd-tx">녹지 않은 실의 경우 모양에 따라 재질에 따라 여러가지 재료가 있으며, 녹는 실의 경우에도 그성분이나 돌기의 모양, 제작방식에 따라서 매우 다양한 종류의 실들이 있습니다. 실은 고정 여부에 따라 측두부에 고정하는 방식과 고정하지 않는 방식으로 나누기도 합니다. 유지기간은 통상적으로 1-2년, 길면 5년 정도입니다.</p></div><div class="vis"><figure class="pic"><img src="assets/web-3f33f93d3b96e584.jpg" alt="실리프팅 대표 이미지" loading="lazy"></figure></div></div><dl class="nd-info"><div><dt>수술시간</dt><dd>30분~1시간 정도</dd></div><div><dt>마취방법</dt><dd>연고마취</dd></div><div><dt>입원치료</dt><dd>불필요</dd></div><div><dt>실밥제거</dt><dd>불필요</dd></div><div><dt>내원치료</dt><dd>불필요</dd></div><div><dt>회복기간</dt><dd>바로 일상생활 가능</dd></div></dl></div><div class="nd-block band-w"><div class="nd-sp rev"><div class="tx"><div class="nd-h"><span class="k">Who</span><h3><b>실리프팅</b> 수술대상</h3></div><p class="nd-sub">실리프팅, 이런 분들에게 추천합니다.</p><ul class="nd-chk"><li>자연스러운 리프팅을 원하는 경우</li><li>탄력이 떨어져 얼굴살이 처지고 노화된 경우</li><li>주름개선과 함께 V라인을 원하는 경우</li><li>보형물에 대한 거부감이 있는 경우</li><li>수술 후 통증이 두려운 경우</li></ul></div><div class="vis"><figure class="pic"><img src="assets/web-52a6969fc7aeb7ea.jpg" alt="실리프팅 수술대상 이미지" loading="lazy"></figure></div></div></div><div class="nd-block band-w"><div class="nd-h"><span class="k">Type</span><h3><b>실리프팅</b>의 종류</h3></div><div class="nd-cards nd-thread detail-card-strip" tabindex="0"><article class="nd-card"><img src="assets/web-92b948ffc6cd9cad.jpg" alt="민트 리프팅 그림" loading="lazy"><div class="b"><p class="n">Type 01</p><h4>민트 리프팅</h4><p class="em">민트 리프팅에 사용되는 실은 식품의약품안전처(MFDS)와 미국식약청(FDA), 한국식약처(KFDA)의 승인을 받아 안전하며, 일정기간이 지나면 자연스럽게 체내에서 분해되는 몰딩형 최소 침습 안면조직 고정용 PDO실입니다.</p><p>얼굴의 처진 살과 깊은 주름을 개선하여 얼굴에 전체적인 리프팅 효과를 볼 수 있습니다. 민트 리프팅 실은 USP 1-0(지름 0.4mm)사이즈로 특수 몰딩 방식으로 제작하여 실두께가 일정하게 유지되고 잘 끊어지지 않아 리프팅 지속시간이 기존 리프팅 실보다 4배 정도 높고, 강력한 돌기가 360도 회전식으로 생성되어 있어 모든 방향에서 조직을 고정하여 강력하고 확실한 리프팅 효과를 볼 수 있습니다. 또한 PDO실이 체내에서 녹으면서 콜라겐과 엘라스틴을 생성시키기 때문에 피부탄력, 피부톤 등의 피부개선 효과도 볼 수 있습니다.</p></div></article><article class="nd-card"><img src="assets/web-8c034f3ce20eceac.jpg" alt="엘라스티꿈 리프팅 그림" loading="lazy"><div class="b"><p class="n">Type 02</p><h4>엘라스티꿈 리프팅</h4><p class="em">특수한 소재인 엘라스티꿈(Elasticcum)이라는 밴드를 이용하여 늘어진 인대를 대신해 새로운 강한 인대로 만들어 늘어지고 처진 피부를 개선할 수 있는 시술입니다.</p><p>실리콘에 폴리에스터가 촘촘한 그물처럼 감싸져 있는 형태의 엘라스티꿈은 탄성력이 뛰어나 근육의 움직임에 따라 자유롭게 늘어납니다. 메쉬 형태로 되어 있기 때문에 실 사이 공간에 안정적으로 결합하고 인체조직과 유사하여 얼굴의 움직임을 더욱 자연스럽게 만들어 줍니다. 일반 실리프팅 보다 주름 개선효과가 장기간 유지됩니다.</p></div></article><article class="nd-card"><img src="assets/web-fcd58c1ef3a35e70.jpg" alt="오메가 리프팅 그림" loading="lazy"><div class="b"><p class="n">Type 03</p><h4>오메가 리프팅</h4><p class="em">오메가리프팅 실은 녹는 특수 실인 PDO실이나 기존 실과 모양이나 구조가 다릅니다. 실 좌우로 가시 달린 앞쪽은 피부를 잡아 당겨주고, 뒤쪽은 조직을 지지해주는 구조로 되어있습니다.</p><p>이러한 구조는 시술 후 즉각적인 주름개선, 리프팅 효과를 볼 수 있으며, 피부를 확실히 당겨주고 단단히 고정해주어 만족스러운 시술 결과를 볼 수 있습니다. 실을 피부의 피하층에 삽입 후 원하는 방향으로 당겨 고정하면 실이 삽입된 부위는 콜라겐이 생성 및 촉진 되고, 섬유화가 진행되어 피부의 탄력이 증가하고 다른 리프팅 실에 비해 효과가 더 오래 지속됩니다.</p></div></article><article class="nd-card"><img src="assets/web-63c800960ee9b3d8.jpg" alt="회오리 리프팅 그림" loading="lazy"><div class="b"><p class="n">Type 04</p><h4>회오리 리프팅</h4><p class="em">식약처에서 인정한 녹는 트위스트실을 피부에 주입시키고 실이 녹는 자리에 피부 세포조직의 콜라겐을 촉진시켜 리프팅과 탄력효과를 동시에 주는 리프팅 시술입니다.</p><p>시술 후 느껴지지 않는 이물감은 보다 편안한 일상생활이 가능하며, 시간이 지날수록 V라인과 탄력을 느낄 수 있습니다.</p></div></article></div></div><div class="nd-block "><div class="nd-h"><span class="k">How</span><h3><b>실리프팅</b> 수술방법</h3></div><div class="nd-how"><div class="m"><div class="t"><span class="n">Method</span><p>실리프팅 시술 과정</p></div><div class="fig"><img src="assets/web-cdc57a6396ce7f8b.jpg" alt="수술 방법 그림" loading="lazy"></div></div></div></div><div class="nd-block band-w merit-neutral"><div class="nd-h"><span class="k">Merit</span><h3><b>실리프팅</b> 수술의 특징</h3></div><p class="nd-sub">주름개선 피부탄력은 물론 V라인 효과까지 기대 할 수 있습니다.</p><ol class="nd-merit detail-card-strip" tabindex="0"><li><span class="n">01</span><h4>얼굴주름개선</h4><p>피부를 탄력있게 끌어 당겨 주름을 개선합니다.</p></li><li><span class="n">02</span><h4>동안효과</h4><p>피부탄력과 주름개선으로 동안효과를 얻을 수 있습니다.</p></li><li><span class="n">03</span><h4>피부탄력</h4><p>콜라겐 재생을 촉진시켜 피부탄력이 증가합니다.</p></li><li><span class="n">04</span><h4>V라인 개선</h4><p>늘어진 피부를 정리하여 갸름한 얼굴라인을 완성합니다.</p></li></ol></div>
 </div></section>
 
 <!-- 상담 -->

@@ -467,9 +467,13 @@ body.nav-open .mnav-in{transform:none}
   .snb a.on::after{left:20px;right:20px}
 }
 @media (max-width:860px){
-  .sv{margin-top:64px;height:300px}
+  .sub-page{padding-top:64px}
+  /* Keep the page heading available to screen readers inside the collapsed banner. */
+  .sub-page > .sv{height:0;margin:0;overflow:hidden}
+  .sub-page > .sv::before,.sub-page > .sv::after,.sub-page > .sv p{display:none}
   .snb{top:64px}
-  .snb ul{justify-content:flex-start;overflow-x:auto;padding:0 8px}
+  .snb ul{justify-content:flex-start;overflow-x:auto;padding:0 8px;scrollbar-width:none}
+  .snb ul::-webkit-scrollbar{display:none}
   .snb a{padding:16px 14px;font-size:14.5px}
   .snb a.on::after{left:14px;right:14px}
 }
@@ -548,6 +552,8 @@ body.nav-open .mnav-in{transform:none}
 @media (max-width:1180px){.nd-info{grid-template-columns:repeat(3,1fr)}.nd-info div:nth-child(4){border-left:0}.nd-info div:nth-child(n+4){border-top:1px solid rgba(255,255,255,.14)}.nd-merit{grid-template-columns:1fr 1fr}.nd-merit li:nth-child(2n+1){border-left:0}.nd-merit li:nth-child(n+3){border-top:1px solid var(--line)}}
 @media (max-width:860px){
   .nd-tabs{flex-wrap:nowrap;overflow-x:auto;justify-content:flex-start;margin:32px -20px 0;padding:0 20px}
+  :is(.nd-tabs,.ba-tabs,.tabs,.snb ul,.gal-thumbs,[role="tablist"]){scrollbar-width:none}
+  :is(.nd-tabs,.ba-tabs,.tabs,.snb ul,.gal-thumbs,[role="tablist"])::-webkit-scrollbar{display:none}
   .nd-tabs button,.nd-tabs a{flex:none;height:40px;padding:0 16px}
   .nd-block{padding:56px 0}
   .nd-h{flex-direction:column;gap:10px;margin-bottom:20px}
@@ -643,7 +649,24 @@ main section [id]{scroll-margin-top:150px}
   .nd-how .m{grid-template-columns:1fr;gap:18px;padding:28px 0}
   .nd-how .fig{padding:16px}
   .nd-chk li{padding:14px 16px}
-  .nd-ba{grid-template-columns:1fr 1fr;gap:8px}.nd-ba .ph:nth-child(3){display:none}
+  .nd-ba{grid-template-columns:minmax(0,1fr)}
+  .sub-page .nd-ba:has(> :nth-child(2)){
+    --inset:20px;
+    --gap:12px;
+    grid-template-columns:none;
+    grid-auto-flow:column;
+    grid-auto-columns:calc((100% + var(--inset) - var(--gap)) / 1.3);
+    gap:var(--gap);
+    margin-inline:calc(0px - var(--inset));
+    padding-inline:var(--inset);
+    overflow-x:auto;
+    overscroll-behavior-x:contain;
+    scroll-padding-inline:var(--inset);
+    scroll-snap-type:x proximity;
+    scrollbar-width:none;
+  }
+  .nd-ba::-webkit-scrollbar{display:none}
+  .nd-ba > *{min-width:0;scroll-snap-align:start}
   .ph span{display:none}
 }
 /* 원장 칼럼 사진 */
@@ -732,7 +755,6 @@ main section [id]{scroll-margin-top:150px}
 .nd-ba.eye .ba-pic img{aspect-ratio:3/1}
 .nd-case .nd-card img{aspect-ratio:auto;object-fit:contain;background:#fff;border-bottom:1px solid var(--line)}
 @media (max-width:860px){
-  .nd-ba.eye{grid-template-columns:1fr}
   .nd-vs{font-size:13px}.nd-vs td,.nd-vs tbody th{padding:10px 6px}
 }
 
@@ -1280,6 +1302,12 @@ body.is-authed .ba-lock{display:none}
 #safety .safety-reason-grid>li{border:0}
 @media(min-width:861px){#safety .safety-reason-grid>li:nth-child(2),#safety .safety-reason-grid>li:nth-child(3),#safety .safety-reason-grid>li:nth-child(5){border-left:1px solid rgba(255,255,255,.18)}#safety .safety-reason-grid>li:nth-child(n+4){border-top:1px solid rgba(255,255,255,.18)}}
 @media(max-width:860px){#safety .safety-reason-grid>li+li{border-top:1px solid rgba(255,255,255,.18)}}
+@media(max-width:860px){
+  .sub-page :is(.nd-card .b,.nd-who>li,.nd-merit>li,.ct-case-copy,.ct-flow>li,
+    .safety-card>div,.safety-method article,.safety-checks article,.safety-guide-points article,
+    .tr-body,.cc,.why>li,.sp-end){padding:18px 16px}
+}
+
 
 /* Individually framed illustrations retain original clinical drawings. */
 .nd-how .fig.type-steps{padding:0;background:transparent;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;align-items:start}
@@ -1303,6 +1331,40 @@ body.is-authed .ba-lock{display:none}
 @media(max-width:860px){#men .nd-lead+.nd-who{margin-top:24px}.men-line-photo svg{max-height:300px}}
 .men-line-photo svg{overflow:hidden}
 .men-line-photo svg{width:min(100%,285px);height:auto;max-height:none;margin-inline:auto}
+
+@media(max-width:860px){
+  main.sub-page .detail-card-strip:has(> :nth-child(2)){
+    --strip-inset:20px;
+    --strip-gap:12px;
+    --visible-cards:1.3;
+    display:flex;
+    flex-flow:row nowrap;
+    justify-content:flex-start;
+    align-items:stretch;
+    column-gap:var(--strip-gap);
+    min-width:0;
+    margin-inline:calc(0px - var(--strip-inset));
+    padding-inline:var(--strip-inset);
+    border:0;
+    overflow-x:auto;
+    overscroll-behavior-x:contain;
+    scroll-snap-type:x proximity;
+    scroll-padding-inline:var(--strip-inset);
+    scrollbar-width:none;
+  }
+  .detail-card-strip::-webkit-scrollbar{display:none}
+  .detail-card-strip:has(> :nth-child(2)) > *{
+    flex:0 0 calc((100% + var(--strip-inset) - var(--strip-gap)) / var(--visible-cards));
+    min-width:0;
+    max-width:none;
+    overflow-wrap:anywhere;
+    scroll-snap-align:start;
+  }
+  main.sub-page :is(.nd-steps,.ct-flow,.type-steps).detail-card-strip:has(> :nth-child(2)){--visible-cards:1.5}
+  .detail-card-strip:is(.nd-merit,.why,.phil-list)>li{border:1px solid var(--line)}
+  .band-g .detail-card-strip.nd-merit>li{border-color:rgba(255,255,255,.18)}
+  .nd-areas.detail-card-strip .a{display:flex;flex-direction:column;gap:12px}
+}
 /* Light-gray sections use white cards for clear separation. */
 .nd-block.band-w .nd-merit>li,.nd-block.band-w .nd-card{background:#fff}
 </style>
@@ -1368,7 +1430,7 @@ body.is-authed .ba-lock{display:none}
   <ul><li><a class="on" aria-current="page" href="eye-double.html">쌍꺼풀</a></li><li><a href="eye-ptosis.html">눈매교정</a></li><li><a href="eye-canthus.html">트임성형</a></li><li><a href="eye-upper.html">상안검성형</a></li><li><a href="eye-lower.html">하안검성형</a></li><li><a href="eye-dark.html">다크서클/눈밑지방</a></li><li><a href="eye-revision.html">눈재수술</a></li></ul>
 </nav>
 <section class="sec nd-eye" id="double"><div class="wrap">
-<div class="nd-block"><div class="nd-sp"><div class="tx"><div class="nd-h"><span class="k">What</span><h3><b>쌍꺼풀</b>이란?</h3></div><p class="nd-lead">눈은 쌍꺼풀의 유무, 모양, 크기 등에 따라 이미지가 달라집니다. 작고 답답해 보이던 눈을 <b>자신에게 맞는 쌍꺼풀 라인 만들게 되면 눈이 확 트여 시원스럽고 또렷한 인상</b>을 주어 많은 이들에게 호감을 살 수 있습니다.</p><p class="nd-tx">쌍꺼풀 수술법은 눈의 상태와 본인 원하는 바에 따라 다르게 적용됩니다. 수술한 표시가 전혀 나지 않은 자연스런 눈을 선호하는 분은 멀티 유착법이 적합합니다. 눈꺼풀에 지방이 많거나, 눈꺼풀 처짐이 심한경우, 풀리지 않는 쌍꺼풀을 원하는 경우는 절개법이 적합합니다. 자연스런 쌍꺼풀과 지방제거를 함께 원할 경우는 부분절개를 선택하기도 합니다.</p></div><div class="vis"><figure class="pic"><img src="assets/web-a00bb8ed9e1dd5af.jpg" alt="쌍꺼풀 대표 이미지" loading="lazy"></figure></div></div><dl class="nd-info"><div><dt>수술시간</dt><dd>30분~1시간 정도</dd></div><div><dt>마취방법</dt><dd>수면마취</dd></div><div><dt>입원치료</dt><dd>불필요</dd></div><div><dt>실밥제거</dt><dd>3~7일 후</dd></div><div><dt>내원치료</dt><dd>1~2회</dd></div><div><dt>회복기간</dt><dd>3~7일 후</dd></div></dl></div><div class="nd-block band-w"><div class="nd-sp rev"><div class="tx"><div class="nd-h"><span class="k">Who</span><h3><b>쌍꺼풀</b> 수술대상</h3></div><p class="nd-sub">쌍꺼풀, 이런 분들에게 추천합니다.</p><ul class="nd-chk"><li>시원한 눈매를 원하는 경우</li><li>또렷하고 큰 눈을 원하는 경우</li><li>자연스러운 쌍꺼풀을 원하는 경우</li><li>양쪽 눈이 짝짝이인 경우</li><li>눈꺼풀 주름이 여러 개인 경우</li></ul></div><div class="vis"><figure class="pic"><img src="assets/web-0e79c435046cf00c.jpg" alt="쌍꺼풀 수술대상 이미지" loading="lazy"></figure></div></div></div><div class="nd-block "><div class="nd-h"><span class="k">Type</span><h3><b>쌍꺼풀 수술</b>의 종류</h3></div><p class="nd-lead">쌍꺼풀의 크기나 모양에 따라 <b>인라인, 인아웃라인, 아웃라인</b>으로 환자의 상태와 요구조건에 따라 맞춤 눈성형이 가능합니다.</p><p class="nd-tx">최대한 자연스런 속쌍꺼풀 스타일을 선호하는 분은 인라인이 적합하고, 자연스러우면서 어느 정도 크기가 있는 쌍꺼풀을 원하는 분은 인아웃라인이 적합하며, 시원하고 또렷한 쌍꺼풀을 원하는 분, 눈이 최대한 커 보이길 원하는 분은 아웃라인이 적합합니다.</p><figure class="nd-fig nd-eyefig"><img src="assets/web-f297aac3d6fc941a.jpg" alt="쌍꺼풀 라인의 종류 — 인아웃라인 · 인라인 · 아웃라인" loading="lazy"></figure></div><div class="nd-block "><div class="nd-h"><span class="k">How</span><h3><b>쌍꺼풀</b> 수술방법</h3></div><div class="nd-how"><div class="m"><div class="t"><span class="n">Method 01</span><h4>멀티유착법(매몰법)</h4><p>멀티유착법은 쌍꺼풀 라인의 자연유착을 유도하여 자연스럽고 잘 풀리지 않는 쌍꺼풀 라인을 만들어 주는 수술방법입니다. 과거의 매몰법 수술의 단점을 보완한 방법으로, 수술시간과 회복기간이 짧으며 자연스러운 쌍꺼풀이 된다는 장점이 있습니다. 멀티유착법으로 만든 쌍꺼풀은 눈을 감아도 성형한 티가 거의 나지 않아 많은 분들이 선호합니다.</p></div><div class="fig"><img src="assets/web-4a53668408fbaed3.jpg" alt="멀티유착법(매몰법) 그림" loading="lazy"></div></div><div class="m"><div class="t"><span class="n">Method 02</span><h4>부분절개법</h4><p>부분절개법은 매몰법과 절개법 중간 형태의 수술방법이라고 할 수 있습니다. 2~3mm정도의 절개창을 2~3군데 정도 만들고 이를 통해 지방을 적당히 제거합니다. 절개법과 같이 진피와 근막을 직접 확인하면서 고정해 주기 때문에 매몰법 보다 좀 더 확실하게 쌍꺼풀 라인을 만들 수 있고, 절개법에 비해 부기와 흉터가 적은 방법입니다.</p></div><div class="fig"><img src="assets/web-55530e19c540ac4b.jpg" alt="부분절개법 그림" loading="lazy"></div></div><div class="m"><div class="t"><span class="n">Method 03</span><h4>절개법</h4><p>피부제거와 근육제거, 지방제거를 통해 눈 크기증대와 함께 눈이 시원해지는 효과를 함께 낼 수 있습니다. 올리브의 절개법은 인위적이지 않은 자연스런 라인이 특징입니다.</p></div><div class="fig"><img src="assets/web-35ae3a9f38766920.jpg" alt="절개법 그림" loading="lazy"></div></div></div></div><div class="nd-block band-g"><div class="nd-h"><span class="k">Merit</span><h3><b>쌍꺼풀</b> 수술의 특징</h3></div><p class="nd-sub">개인별 맞춤 쌍꺼풀 디자인으로 또렷하고 시원한 인상을 만듭니다.</p><ol class="nd-merit"><li><span class="n">01</span><h4>자연스러운 쌍꺼풀 라인</h4><p>자연 쌍꺼풀 처럼 티나지 않고 자연스럽습니다.</p></li><li><span class="n">02</span><h4>시원하고 또렷한 눈매</h4><p>자신에게 맞는 크고 또렷한 눈매가 완성됩니다.</p></li><li><span class="n">03</span><h4>개인별 맞춤형 수술</h4><p>얼굴전체 비율을 고려하여 맞춤 쌍꺼풀 수술을 시행합니다.</p></li><li><span class="n">04</span><h4>얼굴 전체와의 조화와 균형</h4><p>자신의 얼굴과 잘 어울리는 조화로운 눈매가 완성됩니다.</p></li></ol></div><div class="nd-block "><div class="nd-h"><span class="k">Before &amp; After</span><h3><b>쌍꺼풀</b> 수술 전후</h3></div><div class="nd-ba eye"><figure class="ba-pic free"><img src="assets/web-46e6d7b8554c3f7c.jpg" alt="눈성형 수술 전후 사진" loading="lazy"><figcaption>눈성형</figcaption></figure><figure class="ba-pic free"><img src="assets/web-3e077517da83bee9.jpg" alt="눈성형 수술 전후 사진" loading="lazy"><figcaption>눈성형</figcaption></figure><figure class="ba-pic free"><img src="assets/web-f479eeafa516938f.jpg" alt="눈성형 수술 전후 사진" loading="lazy"><figcaption>눈성형</figcaption></figure></div><p class="nd-more-link"><a class="btn btn-line" href="ba.html#eye">전후사진 더 보기</a></p></div>
+<div class="nd-block"><div class="nd-sp"><div class="tx"><div class="nd-h"><span class="k">What</span><h3><b>쌍꺼풀</b>이란?</h3></div><p class="nd-lead">눈은 쌍꺼풀의 유무, 모양, 크기 등에 따라 이미지가 달라집니다. 작고 답답해 보이던 눈을 <b>자신에게 맞는 쌍꺼풀 라인 만들게 되면 눈이 확 트여 시원스럽고 또렷한 인상</b>을 주어 많은 이들에게 호감을 살 수 있습니다.</p><p class="nd-tx">쌍꺼풀 수술법은 눈의 상태와 본인 원하는 바에 따라 다르게 적용됩니다. 수술한 표시가 전혀 나지 않은 자연스런 눈을 선호하는 분은 멀티 유착법이 적합합니다. 눈꺼풀에 지방이 많거나, 눈꺼풀 처짐이 심한경우, 풀리지 않는 쌍꺼풀을 원하는 경우는 절개법이 적합합니다. 자연스런 쌍꺼풀과 지방제거를 함께 원할 경우는 부분절개를 선택하기도 합니다.</p></div><div class="vis"><figure class="pic"><img src="assets/web-a00bb8ed9e1dd5af.jpg" alt="쌍꺼풀 대표 이미지" loading="lazy"></figure></div></div><dl class="nd-info"><div><dt>수술시간</dt><dd>30분~1시간 정도</dd></div><div><dt>마취방법</dt><dd>수면마취</dd></div><div><dt>입원치료</dt><dd>불필요</dd></div><div><dt>실밥제거</dt><dd>3~7일 후</dd></div><div><dt>내원치료</dt><dd>1~2회</dd></div><div><dt>회복기간</dt><dd>3~7일 후</dd></div></dl></div><div class="nd-block band-w"><div class="nd-sp rev"><div class="tx"><div class="nd-h"><span class="k">Who</span><h3><b>쌍꺼풀</b> 수술대상</h3></div><p class="nd-sub">쌍꺼풀, 이런 분들에게 추천합니다.</p><ul class="nd-chk"><li>시원한 눈매를 원하는 경우</li><li>또렷하고 큰 눈을 원하는 경우</li><li>자연스러운 쌍꺼풀을 원하는 경우</li><li>양쪽 눈이 짝짝이인 경우</li><li>눈꺼풀 주름이 여러 개인 경우</li></ul></div><div class="vis"><figure class="pic"><img src="assets/web-0e79c435046cf00c.jpg" alt="쌍꺼풀 수술대상 이미지" loading="lazy"></figure></div></div></div><div class="nd-block "><div class="nd-h"><span class="k">Type</span><h3><b>쌍꺼풀 수술</b>의 종류</h3></div><p class="nd-lead">쌍꺼풀의 크기나 모양에 따라 <b>인라인, 인아웃라인, 아웃라인</b>으로 환자의 상태와 요구조건에 따라 맞춤 눈성형이 가능합니다.</p><p class="nd-tx">최대한 자연스런 속쌍꺼풀 스타일을 선호하는 분은 인라인이 적합하고, 자연스러우면서 어느 정도 크기가 있는 쌍꺼풀을 원하는 분은 인아웃라인이 적합하며, 시원하고 또렷한 쌍꺼풀을 원하는 분, 눈이 최대한 커 보이길 원하는 분은 아웃라인이 적합합니다.</p><figure class="nd-fig nd-eyefig"><img src="assets/web-f297aac3d6fc941a.jpg" alt="쌍꺼풀 라인의 종류 — 인아웃라인 · 인라인 · 아웃라인" loading="lazy"></figure></div><div class="nd-block "><div class="nd-h"><span class="k">How</span><h3><b>쌍꺼풀</b> 수술방법</h3></div><div class="nd-how"><div class="m"><div class="t"><span class="n">Method 01</span><h4>멀티유착법(매몰법)</h4><p>멀티유착법은 쌍꺼풀 라인의 자연유착을 유도하여 자연스럽고 잘 풀리지 않는 쌍꺼풀 라인을 만들어 주는 수술방법입니다. 과거의 매몰법 수술의 단점을 보완한 방법으로, 수술시간과 회복기간이 짧으며 자연스러운 쌍꺼풀이 된다는 장점이 있습니다. 멀티유착법으로 만든 쌍꺼풀은 눈을 감아도 성형한 티가 거의 나지 않아 많은 분들이 선호합니다.</p></div><div class="fig"><img src="assets/web-4a53668408fbaed3.jpg" alt="멀티유착법(매몰법) 그림" loading="lazy"></div></div><div class="m"><div class="t"><span class="n">Method 02</span><h4>부분절개법</h4><p>부분절개법은 매몰법과 절개법 중간 형태의 수술방법이라고 할 수 있습니다. 2~3mm정도의 절개창을 2~3군데 정도 만들고 이를 통해 지방을 적당히 제거합니다. 절개법과 같이 진피와 근막을 직접 확인하면서 고정해 주기 때문에 매몰법 보다 좀 더 확실하게 쌍꺼풀 라인을 만들 수 있고, 절개법에 비해 부기와 흉터가 적은 방법입니다.</p></div><div class="fig"><img src="assets/web-55530e19c540ac4b.jpg" alt="부분절개법 그림" loading="lazy"></div></div><div class="m"><div class="t"><span class="n">Method 03</span><h4>절개법</h4><p>피부제거와 근육제거, 지방제거를 통해 눈 크기증대와 함께 눈이 시원해지는 효과를 함께 낼 수 있습니다. 올리브의 절개법은 인위적이지 않은 자연스런 라인이 특징입니다.</p></div><div class="fig"><img src="assets/web-35ae3a9f38766920.jpg" alt="절개법 그림" loading="lazy"></div></div></div></div><div class="nd-block band-g"><div class="nd-h"><span class="k">Merit</span><h3><b>쌍꺼풀</b> 수술의 특징</h3></div><p class="nd-sub">개인별 맞춤 쌍꺼풀 디자인으로 또렷하고 시원한 인상을 만듭니다.</p><ol class="nd-merit detail-card-strip" tabindex="0"><li><span class="n">01</span><h4>자연스러운 쌍꺼풀 라인</h4><p>자연 쌍꺼풀 처럼 티나지 않고 자연스럽습니다.</p></li><li><span class="n">02</span><h4>시원하고 또렷한 눈매</h4><p>자신에게 맞는 크고 또렷한 눈매가 완성됩니다.</p></li><li><span class="n">03</span><h4>개인별 맞춤형 수술</h4><p>얼굴전체 비율을 고려하여 맞춤 쌍꺼풀 수술을 시행합니다.</p></li><li><span class="n">04</span><h4>얼굴 전체와의 조화와 균형</h4><p>자신의 얼굴과 잘 어울리는 조화로운 눈매가 완성됩니다.</p></li></ol></div><div class="nd-block "><div class="nd-h"><span class="k">Before &amp; After</span><h3><b>쌍꺼풀</b> 수술 전후</h3></div><div class="nd-ba eye" tabindex="0" role="region" aria-label="수술 전후 사례"><figure class="ba-pic free"><img src="assets/web-46e6d7b8554c3f7c.jpg" alt="눈성형 수술 전후 사진" loading="lazy"><figcaption>눈성형</figcaption></figure><figure class="ba-pic free"><img src="assets/web-3e077517da83bee9.jpg" alt="눈성형 수술 전후 사진" loading="lazy"><figcaption>눈성형</figcaption></figure><figure class="ba-pic free"><img src="assets/web-f479eeafa516938f.jpg" alt="눈성형 수술 전후 사진" loading="lazy"><figcaption>눈성형</figcaption></figure></div><p class="nd-more-link"><a class="btn btn-line" href="ba.html#eye">전후사진 더 보기</a></p></div>
 </div></section>
 
 <!-- 상담 -->

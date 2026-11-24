@@ -467,9 +467,13 @@ body.nav-open .mnav-in{transform:none}
   .snb a.on::after{left:20px;right:20px}
 }
 @media (max-width:860px){
-  .sv{margin-top:64px;height:300px}
+  .sub-page{padding-top:64px}
+  /* Keep the page heading available to screen readers inside the collapsed banner. */
+  .sub-page > .sv{height:0;margin:0;overflow:hidden}
+  .sub-page > .sv::before,.sub-page > .sv::after,.sub-page > .sv p{display:none}
   .snb{top:64px}
-  .snb ul{justify-content:flex-start;overflow-x:auto;padding:0 8px}
+  .snb ul{justify-content:flex-start;overflow-x:auto;padding:0 8px;scrollbar-width:none}
+  .snb ul::-webkit-scrollbar{display:none}
   .snb a{padding:16px 14px;font-size:14.5px}
   .snb a.on::after{left:14px;right:14px}
 }
@@ -548,6 +552,8 @@ body.nav-open .mnav-in{transform:none}
 @media (max-width:1180px){.nd-info{grid-template-columns:repeat(3,1fr)}.nd-info div:nth-child(4){border-left:0}.nd-info div:nth-child(n+4){border-top:1px solid rgba(255,255,255,.14)}.nd-merit{grid-template-columns:1fr 1fr}.nd-merit li:nth-child(2n+1){border-left:0}.nd-merit li:nth-child(n+3){border-top:1px solid var(--line)}}
 @media (max-width:860px){
   .nd-tabs{flex-wrap:nowrap;overflow-x:auto;justify-content:flex-start;margin:32px -20px 0;padding:0 20px}
+  :is(.nd-tabs,.ba-tabs,.tabs,.snb ul,.gal-thumbs,[role="tablist"]){scrollbar-width:none}
+  :is(.nd-tabs,.ba-tabs,.tabs,.snb ul,.gal-thumbs,[role="tablist"])::-webkit-scrollbar{display:none}
   .nd-tabs button,.nd-tabs a{flex:none;height:40px;padding:0 16px}
   .nd-block{padding:56px 0}
   .nd-h{flex-direction:column;gap:10px;margin-bottom:20px}
@@ -643,7 +649,24 @@ main section [id]{scroll-margin-top:150px}
   .nd-how .m{grid-template-columns:1fr;gap:18px;padding:28px 0}
   .nd-how .fig{padding:16px}
   .nd-chk li{padding:14px 16px}
-  .nd-ba{grid-template-columns:1fr 1fr;gap:8px}.nd-ba .ph:nth-child(3){display:none}
+  .nd-ba{grid-template-columns:minmax(0,1fr)}
+  .sub-page .nd-ba:has(> :nth-child(2)){
+    --inset:20px;
+    --gap:12px;
+    grid-template-columns:none;
+    grid-auto-flow:column;
+    grid-auto-columns:calc((100% + var(--inset) - var(--gap)) / 1.3);
+    gap:var(--gap);
+    margin-inline:calc(0px - var(--inset));
+    padding-inline:var(--inset);
+    overflow-x:auto;
+    overscroll-behavior-x:contain;
+    scroll-padding-inline:var(--inset);
+    scroll-snap-type:x proximity;
+    scrollbar-width:none;
+  }
+  .nd-ba::-webkit-scrollbar{display:none}
+  .nd-ba > *{min-width:0;scroll-snap-align:start}
   .ph span{display:none}
 }
 /* 원장 칼럼 사진 */
@@ -732,7 +755,6 @@ main section [id]{scroll-margin-top:150px}
 .nd-ba.eye .ba-pic img{aspect-ratio:3/1}
 .nd-case .nd-card img{aspect-ratio:auto;object-fit:contain;background:#fff;border-bottom:1px solid var(--line)}
 @media (max-width:860px){
-  .nd-ba.eye{grid-template-columns:1fr}
   .nd-vs{font-size:13px}.nd-vs td,.nd-vs tbody th{padding:10px 6px}
 }
 
@@ -1280,6 +1302,12 @@ body.is-authed .ba-lock{display:none}
 #safety .safety-reason-grid>li{border:0}
 @media(min-width:861px){#safety .safety-reason-grid>li:nth-child(2),#safety .safety-reason-grid>li:nth-child(3),#safety .safety-reason-grid>li:nth-child(5){border-left:1px solid rgba(255,255,255,.18)}#safety .safety-reason-grid>li:nth-child(n+4){border-top:1px solid rgba(255,255,255,.18)}}
 @media(max-width:860px){#safety .safety-reason-grid>li+li{border-top:1px solid rgba(255,255,255,.18)}}
+@media(max-width:860px){
+  .sub-page :is(.nd-card .b,.nd-who>li,.nd-merit>li,.ct-case-copy,.ct-flow>li,
+    .safety-card>div,.safety-method article,.safety-checks article,.safety-guide-points article,
+    .tr-body,.cc,.why>li,.sp-end){padding:18px 16px}
+}
+
 
 /* Individually framed illustrations retain original clinical drawings. */
 .nd-how .fig.type-steps{padding:0;background:transparent;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;align-items:start}
@@ -1303,6 +1331,40 @@ body.is-authed .ba-lock{display:none}
 @media(max-width:860px){#men .nd-lead+.nd-who{margin-top:24px}.men-line-photo svg{max-height:300px}}
 .men-line-photo svg{overflow:hidden}
 .men-line-photo svg{width:min(100%,285px);height:auto;max-height:none;margin-inline:auto}
+
+@media(max-width:860px){
+  main.sub-page .detail-card-strip:has(> :nth-child(2)){
+    --strip-inset:20px;
+    --strip-gap:12px;
+    --visible-cards:1.3;
+    display:flex;
+    flex-flow:row nowrap;
+    justify-content:flex-start;
+    align-items:stretch;
+    column-gap:var(--strip-gap);
+    min-width:0;
+    margin-inline:calc(0px - var(--strip-inset));
+    padding-inline:var(--strip-inset);
+    border:0;
+    overflow-x:auto;
+    overscroll-behavior-x:contain;
+    scroll-snap-type:x proximity;
+    scroll-padding-inline:var(--strip-inset);
+    scrollbar-width:none;
+  }
+  .detail-card-strip::-webkit-scrollbar{display:none}
+  .detail-card-strip:has(> :nth-child(2)) > *{
+    flex:0 0 calc((100% + var(--strip-inset) - var(--strip-gap)) / var(--visible-cards));
+    min-width:0;
+    max-width:none;
+    overflow-wrap:anywhere;
+    scroll-snap-align:start;
+  }
+  main.sub-page :is(.nd-steps,.ct-flow,.type-steps).detail-card-strip:has(> :nth-child(2)){--visible-cards:1.5}
+  .detail-card-strip:is(.nd-merit,.why,.phil-list)>li{border:1px solid var(--line)}
+  .band-g .detail-card-strip.nd-merit>li{border-color:rgba(255,255,255,.18)}
+  .nd-areas.detail-card-strip .a{display:flex;flex-direction:column;gap:12px}
+}
 /* Light-gray sections use white cards for clear separation. */
 .nd-block.band-w .nd-merit>li,.nd-block.band-w .nd-card{background:#fff}
 </style>
@@ -1368,7 +1430,7 @@ body.is-authed .ba-lock{display:none}
   <ul><li><a href="eye-upper.html">중년 눈성형</a></li><li><a href="anti-facelift.html">페이스리프팅</a></li><li><a href="anti-brow.html">이마거상술</a></li><li><a href="anti-thread.html">실리프팅</a></li><li><a class="on" aria-current="page" href="anti-fat.html">지방이식</a></li><li><a href="anti-lipo.html">얼굴지방흡입</a></li></ul>
 </nav>
 <section class="sec nd-eye" id="fat"><div class="wrap">
-<div class="nd-block"><div class="nd-sp"><div class="tx"><div class="nd-h"><span class="k">What</span><h3><b>지방이식</b>이란?</h3></div><p class="nd-lead">지방이식이란 허벅지나 배 에서 지방을 흡입한 후, <b>순수한 지방을 분리</b>하여 이를 다른부위에 주사하는 시술로, <b>꺼진 부위를 보강해 주고 강조해 줄 부위에 볼륨감</b>을 줄 수 있습니다.</p><p class="nd-tx">복부나 허벅지 등의 불필요한 지방이 있는 부위에서 지방을 채취한 뒤 줄기세포인자를 함께 주입합니다. 이렇게 함으로써 줄기세포의 영향으로 일반 지방이식에 비해 생착률을 올려주고 이식된 지방이 오래 지속 될 수 있게 만들어 줍니다.</p><p class="nd-tx">지방이식은 시술 자체가 간단하고 안전성이 높아 여러면에서 매우 좋은 성형수술이라 할 수 있습니다. 올리브성형외과에서는 차별화된 초미세 지방이식술을 통해 지방의 생존률을 높이고 부작용이 적으면서 반영구적인 효과가 가능 하도록 시술하고 있습니다.</p></div><div class="vis"><figure class="pic"><img src="assets/web-032e914e6277809a.jpg" alt="지방이식 대표 이미지" loading="lazy"></figure></div></div><dl class="nd-info"><div><dt>수술시간</dt><dd>1시간 정도</dd></div><div><dt>마취방법</dt><dd>수면/부분마취</dd></div><div><dt>입원치료</dt><dd>불필요</dd></div><div><dt>실밥제거</dt><dd>3~7일 후</dd></div><div><dt>내원치료</dt><dd>1~2회</dd></div><div><dt>회복기간</dt><dd>3~7일 후</dd></div></dl></div><div class="nd-block band-w"><div class="nd-sp rev"><div class="tx"><div class="nd-h"><span class="k">Who</span><h3><b>지방이식</b> 수술대상</h3></div><p class="nd-sub">지방이식, 이런 분들에게 추천합니다.</p><ul class="nd-chk"><li>볼에 살이없어 얼굴이 왜소해 보이거나 말라 보이는 경우</li><li>꺼진 눈으로 인해 눈이 푹 들어가 보이는 경우</li><li>이마, 코끝, 미간 등 함몰된 부분을 개선하고 싶은 경우</li><li>보형물의 부작용이 걱정되는 경우</li><li>경제적인 비용으로 얼굴에 변화를 주고싶은 경우</li></ul></div><div class="vis"><figure class="pic"><img src="assets/web-96eccd7a10e32291.jpg" alt="지방이식 수술대상 이미지" loading="lazy"></figure></div></div></div><div class="nd-block band-w"><div class="nd-h"><span class="k">Where</span><h3><b>지방이식</b> 적용부위</h3></div><figure class="nd-fig nd-eyefig nd-where-fig"><img src="assets/web-4632e2bf94a491e7.jpg" alt="지방이식 적용부위 그림" loading="lazy"></figure><ul class="nd-where"><li><b>미간</b><p>피부가 얇아 주름이 쉽게 생기는 미간에 지방을 이식하여 주름 고민을 해결할 수 있습니다.</p></li><li><b>이마</b><p>밋밋하거나 주름으로 울룩불룩한 경우 지방이식으로 예쁜 이마를 만들 수 있습니다. 볼록한 이마는 코와 연결되어 더 입체적으로 보이게 합니다.</p></li><li><b>꺼진눈</b><p>눈두덩이가 꺼져 움푹 들어가면 나이가 들어 보이며 피곤하거나 인상이 좋지 않아 보이는데 미세지방이식술로 매우 효과적으로 교정할 수 있습니다.</p></li><li><b>관자놀이</b><p>관자놀이가 들어가서 광대뼈가 두드러져 보이거나 이마가 좁아 보이는 경우 미세지방 이식술이 도움이 될 수 있습니다.</p></li><li><b>코</b><p>전체적으로 코가 너무 낮다면 코성형 수술을 받아야겠지만 적당하게 높혀주고 싶을때, 혹은 코끝을 살짝 세우고 싶을때 지방이식을 합니다.</p></li><li><b>볼살</b><p>볼이 야위어 있으면 피곤해 보이고 나이가 들어 보이는데 미세지방이식술로 건강해 보이는 동안얼굴을 얻을 수 있습니다.</p></li><li><b>팔자주름</b><p>팔자주름 주변이 깊게 움푹 파이면 빈곤해 보인다고 합니다. 아주 심한 경우는 보형물을 사용하는 것이 적당하지만 미세지방이식으로도 좋은 결과를 얻을 수 있습니다.</p></li><li><b>턱끝</b><p>턱끝이 약간 작고 들어가 있는 경우, 아주 심한 편이 아니라면 미세지방이식술로 적당한 크기의 턱을 만들 수 있습니다.</p></li></ul></div><div class="nd-block "><div class="nd-h"><span class="k">How</span><h3><b>지방이식</b> 수술방법</h3></div><div class="nd-how"><div class="m"><div class="t"><span class="n">Method 01</span><h4>초미세 지방이식</h4><p>올리브성형외과에서는 초미세흡입관을 통해 1mm이하의 초미세 지방입자를 분리하여 이식하는 방식으로 수술해드립니다. 지방이식에서 지방입자의 크기는 상당히 중요합니다. 지방입자가 작아지면, 생착율이 높아져 반영구적 효과가 가능하고, 지방이 뭉치거나 울퉁불퉁해지는 문제가 거의 없어 지게 됩니다. 지방이식의 기술력에서 핵심적인 것은 양질의 미세한 지방입자를 분리하는 것과 이를 섬세하고 고르게 주입하는 것입니다.</p></div><div class="fig"><img src="assets/web-6661d2629298b983.jpg" alt="초미세 지방이식 그림" loading="lazy"></div></div><div class="m"><div class="t"><span class="n">Method 02</span><h4>나노 지방이식</h4><p>흡입된 지방을 별도의 나노처리과정으로 처리, 더욱 세밀한 나노지방입자로 만든 후 주입하는 방식입니다. 지방생존률이 높고 이식 후 울퉁불퉁해지거나 지방이 뭉치는 현상을 예방할 수 있습니다. 눈 주변 피부가 얇은 부위의 지방이식이나 다크서클 개선에 매우 효과적입니다.</p></div><div class="fig"><img src="assets/web-4ded759e713b4a98.jpg" alt="나노 지방이식 그림" loading="lazy"></div></div></div></div><div class="nd-block "><div class="nd-h"><span class="k">Special</span><h3>올리브 <b>지방이식</b>의 특별함</h3></div><div class="nd-sp"><div class="tx"><h4 class="nd-h4">지방이식은 <em>디자인이 중요</em>합니다.</h4><p class="nd-tx">지방이식을 디자인할 때 주의할 점은 과다주입되어 너무 인위적으로 보이지 않아야 하며, 얼굴의 아래쪽으로 주입하여 얼굴이 오히려 처져보이는 현상이 없도록 해야 합니다. 잘 디자인된 지방이식은 매우 자연스럽고 조화로우며, 얼굴이 리프팅되어 보이고 어려 보입니다. 또한 피부톤 개선효과, 주름개선효과가 동반되어 나타나기도 합니다.</p></div><div class="vis"><figure class="pic"><img src="assets/web-1d2b06d79041431e.jpg" alt="지방이식 디자인 상담 장면" loading="lazy"></figure></div></div><div class="nd-sp rev" style="margin-top:56px"><div class="tx"><h4 class="nd-h4">지방이식은 <em>매우 안전</em>합니다.</h4><p class="nd-tx">수 많은 성형수술들을 시행하고 있지만 자가 지방이식은 가장 부작용이 적은 수술 중 하나라고 생각됩니다. 자가조직을 사용하는 수술이고 큰 절개 없이 작은 구멍만으로 지방을 흡입하고 주입하므로 매우 안전하고 부작용 가능성이 거의 없는 수준입니다.</p></div><div class="vis"><figure class="pic"><img src="assets/web-ca4f5e9e9a66072f.jpg" alt="안전을 뜻하는 십자 아이콘" loading="lazy"></figure></div></div></div><div class="nd-block band-g"><div class="nd-h"><span class="k">Merit</span><h3><b>지방이식</b> 수술의 특징</h3></div><p class="nd-sub">지방이식으로 보다 자연스럽게 입체감 있는 얼굴형을 만듭니다.</p><ol class="nd-merit"><li><span class="n">01</span><h4>입체적인 얼굴라인</h4><p>볼륨을 더해 입체적인 얼굴로 완성합니다.</p></li><li><span class="n">02</span><h4>동안효과</h4><p>피부탄력과 주름개선으로 동안효과를 얻을 수 있습니다.</p></li><li><span class="n">03</span><h4>높은 생착률, 반영구적 효과</h4><p>높은 생착률과 반영구적 효과를 기대할 수 있습니다.</p></li><li><span class="n">04</span><h4>부드러운 인상</h4><p>꺼진 부위를 채워 부드러운 인상으로 만듭니다.</p></li></ol></div><div class="nd-block "><div class="nd-h"><span class="k">Before &amp; After</span><h3><b>지방이식</b> 수술 전후</h3></div><div class="nd-ba eye"><figure class="ba-pic free"><img src="assets/web-32a1dad9bde60bc8.jpg" alt="지방이식얼굴 수술 전후 사진" loading="lazy"><figcaption>지방이식얼굴</figcaption></figure><figure class="ba-pic free"><img src="assets/web-a1cd177cf88fc79b.jpg" alt="지방이식 눈밑/다크써클 수술 전후 사진" loading="lazy"><figcaption>지방이식 눈밑/다크써클</figcaption></figure><figure class="ba-pic free"><img src="assets/web-2fc0bcebe9a39bd1.jpg" alt="이마지방이식 수술 전후 사진" loading="lazy"><figcaption>이마지방이식</figcaption></figure></div><p class="nd-more-link"><a class="btn btn-line" href="ba.html#anti">전후사진 더 보기</a></p></div>
+<div class="nd-block"><div class="nd-sp"><div class="tx"><div class="nd-h"><span class="k">What</span><h3><b>지방이식</b>이란?</h3></div><p class="nd-lead">지방이식이란 허벅지나 배 에서 지방을 흡입한 후, <b>순수한 지방을 분리</b>하여 이를 다른부위에 주사하는 시술로, <b>꺼진 부위를 보강해 주고 강조해 줄 부위에 볼륨감</b>을 줄 수 있습니다.</p><p class="nd-tx">복부나 허벅지 등의 불필요한 지방이 있는 부위에서 지방을 채취한 뒤 줄기세포인자를 함께 주입합니다. 이렇게 함으로써 줄기세포의 영향으로 일반 지방이식에 비해 생착률을 올려주고 이식된 지방이 오래 지속 될 수 있게 만들어 줍니다.</p><p class="nd-tx">지방이식은 시술 자체가 간단하고 안전성이 높아 여러면에서 매우 좋은 성형수술이라 할 수 있습니다. 올리브성형외과에서는 차별화된 초미세 지방이식술을 통해 지방의 생존률을 높이고 부작용이 적으면서 반영구적인 효과가 가능 하도록 시술하고 있습니다.</p></div><div class="vis"><figure class="pic"><img src="assets/web-032e914e6277809a.jpg" alt="지방이식 대표 이미지" loading="lazy"></figure></div></div><dl class="nd-info"><div><dt>수술시간</dt><dd>1시간 정도</dd></div><div><dt>마취방법</dt><dd>수면/부분마취</dd></div><div><dt>입원치료</dt><dd>불필요</dd></div><div><dt>실밥제거</dt><dd>3~7일 후</dd></div><div><dt>내원치료</dt><dd>1~2회</dd></div><div><dt>회복기간</dt><dd>3~7일 후</dd></div></dl></div><div class="nd-block band-w"><div class="nd-sp rev"><div class="tx"><div class="nd-h"><span class="k">Who</span><h3><b>지방이식</b> 수술대상</h3></div><p class="nd-sub">지방이식, 이런 분들에게 추천합니다.</p><ul class="nd-chk"><li>볼에 살이없어 얼굴이 왜소해 보이거나 말라 보이는 경우</li><li>꺼진 눈으로 인해 눈이 푹 들어가 보이는 경우</li><li>이마, 코끝, 미간 등 함몰된 부분을 개선하고 싶은 경우</li><li>보형물의 부작용이 걱정되는 경우</li><li>경제적인 비용으로 얼굴에 변화를 주고싶은 경우</li></ul></div><div class="vis"><figure class="pic"><img src="assets/web-96eccd7a10e32291.jpg" alt="지방이식 수술대상 이미지" loading="lazy"></figure></div></div></div><div class="nd-block band-w"><div class="nd-h"><span class="k">Where</span><h3><b>지방이식</b> 적용부위</h3></div><figure class="nd-fig nd-eyefig nd-where-fig"><img src="assets/web-4632e2bf94a491e7.jpg" alt="지방이식 적용부위 그림" loading="lazy"></figure><ul class="nd-where"><li><b>미간</b><p>피부가 얇아 주름이 쉽게 생기는 미간에 지방을 이식하여 주름 고민을 해결할 수 있습니다.</p></li><li><b>이마</b><p>밋밋하거나 주름으로 울룩불룩한 경우 지방이식으로 예쁜 이마를 만들 수 있습니다. 볼록한 이마는 코와 연결되어 더 입체적으로 보이게 합니다.</p></li><li><b>꺼진눈</b><p>눈두덩이가 꺼져 움푹 들어가면 나이가 들어 보이며 피곤하거나 인상이 좋지 않아 보이는데 미세지방이식술로 매우 효과적으로 교정할 수 있습니다.</p></li><li><b>관자놀이</b><p>관자놀이가 들어가서 광대뼈가 두드러져 보이거나 이마가 좁아 보이는 경우 미세지방 이식술이 도움이 될 수 있습니다.</p></li><li><b>코</b><p>전체적으로 코가 너무 낮다면 코성형 수술을 받아야겠지만 적당하게 높혀주고 싶을때, 혹은 코끝을 살짝 세우고 싶을때 지방이식을 합니다.</p></li><li><b>볼살</b><p>볼이 야위어 있으면 피곤해 보이고 나이가 들어 보이는데 미세지방이식술로 건강해 보이는 동안얼굴을 얻을 수 있습니다.</p></li><li><b>팔자주름</b><p>팔자주름 주변이 깊게 움푹 파이면 빈곤해 보인다고 합니다. 아주 심한 경우는 보형물을 사용하는 것이 적당하지만 미세지방이식으로도 좋은 결과를 얻을 수 있습니다.</p></li><li><b>턱끝</b><p>턱끝이 약간 작고 들어가 있는 경우, 아주 심한 편이 아니라면 미세지방이식술로 적당한 크기의 턱을 만들 수 있습니다.</p></li></ul></div><div class="nd-block "><div class="nd-h"><span class="k">How</span><h3><b>지방이식</b> 수술방법</h3></div><div class="nd-how"><div class="m"><div class="t"><span class="n">Method 01</span><h4>초미세 지방이식</h4><p>올리브성형외과에서는 초미세흡입관을 통해 1mm이하의 초미세 지방입자를 분리하여 이식하는 방식으로 수술해드립니다. 지방이식에서 지방입자의 크기는 상당히 중요합니다. 지방입자가 작아지면, 생착율이 높아져 반영구적 효과가 가능하고, 지방이 뭉치거나 울퉁불퉁해지는 문제가 거의 없어 지게 됩니다. 지방이식의 기술력에서 핵심적인 것은 양질의 미세한 지방입자를 분리하는 것과 이를 섬세하고 고르게 주입하는 것입니다.</p></div><div class="fig"><img src="assets/web-6661d2629298b983.jpg" alt="초미세 지방이식 그림" loading="lazy"></div></div><div class="m"><div class="t"><span class="n">Method 02</span><h4>나노 지방이식</h4><p>흡입된 지방을 별도의 나노처리과정으로 처리, 더욱 세밀한 나노지방입자로 만든 후 주입하는 방식입니다. 지방생존률이 높고 이식 후 울퉁불퉁해지거나 지방이 뭉치는 현상을 예방할 수 있습니다. 눈 주변 피부가 얇은 부위의 지방이식이나 다크서클 개선에 매우 효과적입니다.</p></div><div class="fig"><img src="assets/web-4ded759e713b4a98.jpg" alt="나노 지방이식 그림" loading="lazy"></div></div></div></div><div class="nd-block "><div class="nd-h"><span class="k">Special</span><h3>올리브 <b>지방이식</b>의 특별함</h3></div><div class="nd-sp"><div class="tx"><h4 class="nd-h4">지방이식은 <em>디자인이 중요</em>합니다.</h4><p class="nd-tx">지방이식을 디자인할 때 주의할 점은 과다주입되어 너무 인위적으로 보이지 않아야 하며, 얼굴의 아래쪽으로 주입하여 얼굴이 오히려 처져보이는 현상이 없도록 해야 합니다. 잘 디자인된 지방이식은 매우 자연스럽고 조화로우며, 얼굴이 리프팅되어 보이고 어려 보입니다. 또한 피부톤 개선효과, 주름개선효과가 동반되어 나타나기도 합니다.</p></div><div class="vis"><figure class="pic"><img src="assets/web-1d2b06d79041431e.jpg" alt="지방이식 디자인 상담 장면" loading="lazy"></figure></div></div><div class="nd-sp rev" style="margin-top:56px"><div class="tx"><h4 class="nd-h4">지방이식은 <em>매우 안전</em>합니다.</h4><p class="nd-tx">수 많은 성형수술들을 시행하고 있지만 자가 지방이식은 가장 부작용이 적은 수술 중 하나라고 생각됩니다. 자가조직을 사용하는 수술이고 큰 절개 없이 작은 구멍만으로 지방을 흡입하고 주입하므로 매우 안전하고 부작용 가능성이 거의 없는 수준입니다.</p></div><div class="vis"><figure class="pic"><img src="assets/web-ca4f5e9e9a66072f.jpg" alt="안전을 뜻하는 십자 아이콘" loading="lazy"></figure></div></div></div><div class="nd-block band-g"><div class="nd-h"><span class="k">Merit</span><h3><b>지방이식</b> 수술의 특징</h3></div><p class="nd-sub">지방이식으로 보다 자연스럽게 입체감 있는 얼굴형을 만듭니다.</p><ol class="nd-merit detail-card-strip" tabindex="0"><li><span class="n">01</span><h4>입체적인 얼굴라인</h4><p>볼륨을 더해 입체적인 얼굴로 완성합니다.</p></li><li><span class="n">02</span><h4>동안효과</h4><p>피부탄력과 주름개선으로 동안효과를 얻을 수 있습니다.</p></li><li><span class="n">03</span><h4>높은 생착률, 반영구적 효과</h4><p>높은 생착률과 반영구적 효과를 기대할 수 있습니다.</p></li><li><span class="n">04</span><h4>부드러운 인상</h4><p>꺼진 부위를 채워 부드러운 인상으로 만듭니다.</p></li></ol></div><div class="nd-block "><div class="nd-h"><span class="k">Before &amp; After</span><h3><b>지방이식</b> 수술 전후</h3></div><div class="nd-ba eye" tabindex="0" role="region" aria-label="수술 전후 사례"><figure class="ba-pic free"><img src="assets/web-32a1dad9bde60bc8.jpg" alt="지방이식얼굴 수술 전후 사진" loading="lazy"><figcaption>지방이식얼굴</figcaption></figure><figure class="ba-pic free"><img src="assets/web-a1cd177cf88fc79b.jpg" alt="지방이식 눈밑/다크써클 수술 전후 사진" loading="lazy"><figcaption>지방이식 눈밑/다크써클</figcaption></figure><figure class="ba-pic free"><img src="assets/web-2fc0bcebe9a39bd1.jpg" alt="이마지방이식 수술 전후 사진" loading="lazy"><figcaption>이마지방이식</figcaption></figure></div><p class="nd-more-link"><a class="btn btn-line" href="ba.html#anti">전후사진 더 보기</a></p></div>
 </div></section>
 
 <!-- 상담 -->

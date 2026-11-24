@@ -467,9 +467,13 @@ body.nav-open .mnav-in{transform:none}
   .snb a.on::after{left:20px;right:20px}
 }
 @media (max-width:860px){
-  .sv{margin-top:64px;height:300px}
+  .sub-page{padding-top:64px}
+  /* Keep the page heading available to screen readers inside the collapsed banner. */
+  .sub-page > .sv{height:0;margin:0;overflow:hidden}
+  .sub-page > .sv::before,.sub-page > .sv::after,.sub-page > .sv p{display:none}
   .snb{top:64px}
-  .snb ul{justify-content:flex-start;overflow-x:auto;padding:0 8px}
+  .snb ul{justify-content:flex-start;overflow-x:auto;padding:0 8px;scrollbar-width:none}
+  .snb ul::-webkit-scrollbar{display:none}
   .snb a{padding:16px 14px;font-size:14.5px}
   .snb a.on::after{left:14px;right:14px}
 }
@@ -548,6 +552,8 @@ body.nav-open .mnav-in{transform:none}
 @media (max-width:1180px){.nd-info{grid-template-columns:repeat(3,1fr)}.nd-info div:nth-child(4){border-left:0}.nd-info div:nth-child(n+4){border-top:1px solid rgba(255,255,255,.14)}.nd-merit{grid-template-columns:1fr 1fr}.nd-merit li:nth-child(2n+1){border-left:0}.nd-merit li:nth-child(n+3){border-top:1px solid var(--line)}}
 @media (max-width:860px){
   .nd-tabs{flex-wrap:nowrap;overflow-x:auto;justify-content:flex-start;margin:32px -20px 0;padding:0 20px}
+  :is(.nd-tabs,.ba-tabs,.tabs,.snb ul,.gal-thumbs,[role="tablist"]){scrollbar-width:none}
+  :is(.nd-tabs,.ba-tabs,.tabs,.snb ul,.gal-thumbs,[role="tablist"])::-webkit-scrollbar{display:none}
   .nd-tabs button,.nd-tabs a{flex:none;height:40px;padding:0 16px}
   .nd-block{padding:56px 0}
   .nd-h{flex-direction:column;gap:10px;margin-bottom:20px}
@@ -1280,6 +1286,12 @@ body.is-authed .ba-lock{display:none}
 #safety .safety-reason-grid>li{border:0}
 @media(min-width:861px){#safety .safety-reason-grid>li:nth-child(2),#safety .safety-reason-grid>li:nth-child(3),#safety .safety-reason-grid>li:nth-child(5){border-left:1px solid rgba(255,255,255,.18)}#safety .safety-reason-grid>li:nth-child(n+4){border-top:1px solid rgba(255,255,255,.18)}}
 @media(max-width:860px){#safety .safety-reason-grid>li+li{border-top:1px solid rgba(255,255,255,.18)}}
+@media(max-width:860px){
+  .sub-page :is(.nd-card .b,.nd-who>li,.nd-merit>li,.ct-case-copy,.ct-flow>li,
+    .safety-card>div,.safety-method article,.safety-checks article,.safety-guide-points article,
+    .tr-body,.cc,.why>li,.sp-end){padding:18px 16px}
+}
+
 
 /* Individually framed illustrations retain original clinical drawings. */
 .nd-how .fig.type-steps{padding:0;background:transparent;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;align-items:start}
@@ -1303,6 +1315,40 @@ body.is-authed .ba-lock{display:none}
 @media(max-width:860px){#men .nd-lead+.nd-who{margin-top:24px}.men-line-photo svg{max-height:300px}}
 .men-line-photo svg{overflow:hidden}
 .men-line-photo svg{width:min(100%,285px);height:auto;max-height:none;margin-inline:auto}
+
+@media(max-width:860px){
+  main.sub-page .detail-card-strip:has(> :nth-child(2)){
+    --strip-inset:20px;
+    --strip-gap:12px;
+    --visible-cards:1.3;
+    display:flex;
+    flex-flow:row nowrap;
+    justify-content:flex-start;
+    align-items:stretch;
+    column-gap:var(--strip-gap);
+    min-width:0;
+    margin-inline:calc(0px - var(--strip-inset));
+    padding-inline:var(--strip-inset);
+    border:0;
+    overflow-x:auto;
+    overscroll-behavior-x:contain;
+    scroll-snap-type:x proximity;
+    scroll-padding-inline:var(--strip-inset);
+    scrollbar-width:none;
+  }
+  .detail-card-strip::-webkit-scrollbar{display:none}
+  .detail-card-strip:has(> :nth-child(2)) > *{
+    flex:0 0 calc((100% + var(--strip-inset) - var(--strip-gap)) / var(--visible-cards));
+    min-width:0;
+    max-width:none;
+    overflow-wrap:anywhere;
+    scroll-snap-align:start;
+  }
+  main.sub-page :is(.nd-steps,.ct-flow,.type-steps).detail-card-strip:has(> :nth-child(2)){--visible-cards:1.5}
+  .detail-card-strip:is(.nd-merit,.why,.phil-list)>li{border:1px solid var(--line)}
+  .band-g .detail-card-strip.nd-merit>li{border-color:rgba(255,255,255,.18)}
+  .nd-areas.detail-card-strip .a{display:flex;flex-direction:column;gap:12px}
+}
 /* Light-gray sections use white cards for clear separation. */
 .nd-block.band-w .nd-merit>li,.nd-block.band-w .nd-card{background:#fff}
 </style>
@@ -1368,7 +1414,7 @@ body.is-authed .ba-lock{display:none}
   <ul><li><a href="fc-square.html">사각턱</a></li><li><a href="fc-zygoma.html">광대축소</a></li><li><a href="fc-chin.html">무턱</a></li><li><a href="fc-jaw.html">주걱턱</a></li><li><a href="fc-mouth.html">돌출입</a></li><li><a href="fc-forehead.html">이마성형</a></li><li><a href="fc-nasal.html">귀족성형</a></li><li><a class="on" aria-current="page" href="fc-twojaw.html">양악수술</a></li></ul>
 </nav>
 <section class="sec nd-eye" id="twojaw"><div class="wrap">
-<div class="nd-block"><div class="nd-sp"><div class="tx"><div class="nd-h"><span class="k">What</span><h3><b>양악수술</b>이란?</h3></div><p class="nd-lead">양악은 양쪽 턱, 곧, 위턱과 아래턱을 통틀어 이르는 말입니다. 즉, 아주 간단하게 말하자면 양악수술은 양쪽 턱 뼈를 다루는 수술로 <b>위턱인 상악과 아래턱인 하악을 움직일 수 있게 잘라낸 후 위치나 모양을 변형시켜 교정</b>하는 것입니다.</p><p class="nd-tx">양악수술은 위턱과 아래턱 모두를 뒤로 밀어 넣어 후퇴시키는 수술입니다. 아래턱의 절골과 위턱의 절골을 함께 시행하며 윗니에서부터 코뼈 밑까지 절골해 전체적으로 얼굴의 길이를 줄이고 부정교합의 치아를 맞추는 수술입니다. 양악수술은 안면비대칭과 치아의 불규칙 교합을 동반하는 복합적인 원인이 있을 때 시행하게 됩니다.</p></div><div class="vis"><figure class="pic"><img src="assets/web-ebc7ebe909098d99.jpg" alt="양악수술 대표 이미지" loading="lazy"></figure></div></div><dl class="nd-info"><div><dt>수술시간</dt><dd>3시간 정도</dd></div><div><dt>마취방법</dt><dd>전신마취</dd></div><div><dt>입원치료</dt><dd>1일</dd></div><div><dt>실밥제거</dt><dd>2주 후</dd></div><div><dt>내원치료</dt><dd>1~2회</dd></div><div><dt>회복기간</dt><dd>2주 후</dd></div></dl></div><div class="nd-block band-w"><div class="nd-sp rev"><div class="tx"><div class="nd-h"><span class="k">Who</span><h3><b>양악수술</b> 수술대상</h3></div><p class="nd-sub">양악수술, 이런 분들에게 추천합니다.</p><ul class="nd-chk"><li>위, 아래 턱뼈가 잘 맞물리지 않는 경우</li><li>부정교합으로 치주질환이 생긴 경우</li><li>턱관절이 부딪치는 턱관절 장애가 생긴 경우</li><li>교정을 했지만 만족하지 못하는 경우</li></ul></div><div class="vis"><figure class="pic"><img src="assets/web-f53677e7e9bcd0ab.jpg" alt="양악수술 수술대상 이미지" loading="lazy"></figure></div></div></div><div class="nd-block "><div class="nd-h"><span class="k">How</span><h3><b>양악수술</b> 수술방법</h3></div><div class="nd-how"><div class="m"><div class="t"><span class="n">Method</span><p>양악 수술은 위턱과 아래턱 모두를 뒤로 밀어 넣어 후퇴시키는 수술입니다. 아래턱의 절골과 위턱의 절골을 함께 시행하며 윗니에서부터 코뼈 밑까지 절골해 전체적으로 얼굴의 길이를 줄이고 부정교합의 치아를 맞추는 수술입니다.</p></div><div class="fig"><img src="assets/web-385dbcd34d0269a1.jpg" alt="수술 방법 그림" loading="lazy"></div></div></div></div><div class="nd-block band-w merit-neutral"><div class="nd-h"><span class="k">Merit</span><h3><b>양악수술</b> 수술의 특징</h3></div><p class="nd-sub">기능적, 심미적 부분을 한번에 개선합니다.</p><ol class="nd-merit"><li><span class="n">01</span><h4>균형잡힌 얼굴</h4><p>얼굴전체와 조화를 이루면서 균형잡힌 얼굴을 완성합니다.</p></li><li><span class="n">02</span><h4>세련된 이미지</h4><p>투박해 보이던 인상을 세련된 이미지로 만들 수 있습니다.</p></li><li><span class="n">03</span><h4>자신감 있는 옆모습</h4><p>외모의 변화로 자신감이 상승합니다.</p></li><li><span class="n">04</span><h4>심미적, 기능적 개선</h4><p>미용 개선과 기능 개선이 동시에 가능합니다.</p></li></ol></div>
+<div class="nd-block"><div class="nd-sp"><div class="tx"><div class="nd-h"><span class="k">What</span><h3><b>양악수술</b>이란?</h3></div><p class="nd-lead">양악은 양쪽 턱, 곧, 위턱과 아래턱을 통틀어 이르는 말입니다. 즉, 아주 간단하게 말하자면 양악수술은 양쪽 턱 뼈를 다루는 수술로 <b>위턱인 상악과 아래턱인 하악을 움직일 수 있게 잘라낸 후 위치나 모양을 변형시켜 교정</b>하는 것입니다.</p><p class="nd-tx">양악수술은 위턱과 아래턱 모두를 뒤로 밀어 넣어 후퇴시키는 수술입니다. 아래턱의 절골과 위턱의 절골을 함께 시행하며 윗니에서부터 코뼈 밑까지 절골해 전체적으로 얼굴의 길이를 줄이고 부정교합의 치아를 맞추는 수술입니다. 양악수술은 안면비대칭과 치아의 불규칙 교합을 동반하는 복합적인 원인이 있을 때 시행하게 됩니다.</p></div><div class="vis"><figure class="pic"><img src="assets/web-ebc7ebe909098d99.jpg" alt="양악수술 대표 이미지" loading="lazy"></figure></div></div><dl class="nd-info"><div><dt>수술시간</dt><dd>3시간 정도</dd></div><div><dt>마취방법</dt><dd>전신마취</dd></div><div><dt>입원치료</dt><dd>1일</dd></div><div><dt>실밥제거</dt><dd>2주 후</dd></div><div><dt>내원치료</dt><dd>1~2회</dd></div><div><dt>회복기간</dt><dd>2주 후</dd></div></dl></div><div class="nd-block band-w"><div class="nd-sp rev"><div class="tx"><div class="nd-h"><span class="k">Who</span><h3><b>양악수술</b> 수술대상</h3></div><p class="nd-sub">양악수술, 이런 분들에게 추천합니다.</p><ul class="nd-chk"><li>위, 아래 턱뼈가 잘 맞물리지 않는 경우</li><li>부정교합으로 치주질환이 생긴 경우</li><li>턱관절이 부딪치는 턱관절 장애가 생긴 경우</li><li>교정을 했지만 만족하지 못하는 경우</li></ul></div><div class="vis"><figure class="pic"><img src="assets/web-f53677e7e9bcd0ab.jpg" alt="양악수술 수술대상 이미지" loading="lazy"></figure></div></div></div><div class="nd-block "><div class="nd-h"><span class="k">How</span><h3><b>양악수술</b> 수술방법</h3></div><div class="nd-how"><div class="m"><div class="t"><span class="n">Method</span><p>양악 수술은 위턱과 아래턱 모두를 뒤로 밀어 넣어 후퇴시키는 수술입니다. 아래턱의 절골과 위턱의 절골을 함께 시행하며 윗니에서부터 코뼈 밑까지 절골해 전체적으로 얼굴의 길이를 줄이고 부정교합의 치아를 맞추는 수술입니다.</p></div><div class="fig"><img src="assets/web-385dbcd34d0269a1.jpg" alt="수술 방법 그림" loading="lazy"></div></div></div></div><div class="nd-block band-w merit-neutral"><div class="nd-h"><span class="k">Merit</span><h3><b>양악수술</b> 수술의 특징</h3></div><p class="nd-sub">기능적, 심미적 부분을 한번에 개선합니다.</p><ol class="nd-merit detail-card-strip" tabindex="0"><li><span class="n">01</span><h4>균형잡힌 얼굴</h4><p>얼굴전체와 조화를 이루면서 균형잡힌 얼굴을 완성합니다.</p></li><li><span class="n">02</span><h4>세련된 이미지</h4><p>투박해 보이던 인상을 세련된 이미지로 만들 수 있습니다.</p></li><li><span class="n">03</span><h4>자신감 있는 옆모습</h4><p>외모의 변화로 자신감이 상승합니다.</p></li><li><span class="n">04</span><h4>심미적, 기능적 개선</h4><p>미용 개선과 기능 개선이 동시에 가능합니다.</p></li></ol></div>
 </div></section>
 
 <!-- 상담 -->

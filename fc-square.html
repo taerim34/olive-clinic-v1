@@ -467,9 +467,13 @@ body.nav-open .mnav-in{transform:none}
   .snb a.on::after{left:20px;right:20px}
 }
 @media (max-width:860px){
-  .sv{margin-top:64px;height:300px}
+  .sub-page{padding-top:64px}
+  /* Keep the page heading available to screen readers inside the collapsed banner. */
+  .sub-page > .sv{height:0;margin:0;overflow:hidden}
+  .sub-page > .sv::before,.sub-page > .sv::after,.sub-page > .sv p{display:none}
   .snb{top:64px}
-  .snb ul{justify-content:flex-start;overflow-x:auto;padding:0 8px}
+  .snb ul{justify-content:flex-start;overflow-x:auto;padding:0 8px;scrollbar-width:none}
+  .snb ul::-webkit-scrollbar{display:none}
   .snb a{padding:16px 14px;font-size:14.5px}
   .snb a.on::after{left:14px;right:14px}
 }
@@ -548,6 +552,8 @@ body.nav-open .mnav-in{transform:none}
 @media (max-width:1180px){.nd-info{grid-template-columns:repeat(3,1fr)}.nd-info div:nth-child(4){border-left:0}.nd-info div:nth-child(n+4){border-top:1px solid rgba(255,255,255,.14)}.nd-merit{grid-template-columns:1fr 1fr}.nd-merit li:nth-child(2n+1){border-left:0}.nd-merit li:nth-child(n+3){border-top:1px solid var(--line)}}
 @media (max-width:860px){
   .nd-tabs{flex-wrap:nowrap;overflow-x:auto;justify-content:flex-start;margin:32px -20px 0;padding:0 20px}
+  :is(.nd-tabs,.ba-tabs,.tabs,.snb ul,.gal-thumbs,[role="tablist"]){scrollbar-width:none}
+  :is(.nd-tabs,.ba-tabs,.tabs,.snb ul,.gal-thumbs,[role="tablist"])::-webkit-scrollbar{display:none}
   .nd-tabs button,.nd-tabs a{flex:none;height:40px;padding:0 16px}
   .nd-block{padding:56px 0}
   .nd-h{flex-direction:column;gap:10px;margin-bottom:20px}
@@ -1280,6 +1286,12 @@ body.is-authed .ba-lock{display:none}
 #safety .safety-reason-grid>li{border:0}
 @media(min-width:861px){#safety .safety-reason-grid>li:nth-child(2),#safety .safety-reason-grid>li:nth-child(3),#safety .safety-reason-grid>li:nth-child(5){border-left:1px solid rgba(255,255,255,.18)}#safety .safety-reason-grid>li:nth-child(n+4){border-top:1px solid rgba(255,255,255,.18)}}
 @media(max-width:860px){#safety .safety-reason-grid>li+li{border-top:1px solid rgba(255,255,255,.18)}}
+@media(max-width:860px){
+  .sub-page :is(.nd-card .b,.nd-who>li,.nd-merit>li,.ct-case-copy,.ct-flow>li,
+    .safety-card>div,.safety-method article,.safety-checks article,.safety-guide-points article,
+    .tr-body,.cc,.why>li,.sp-end){padding:18px 16px}
+}
+
 
 /* Individually framed illustrations retain original clinical drawings. */
 .nd-how .fig.type-steps{padding:0;background:transparent;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;align-items:start}
@@ -1303,6 +1315,40 @@ body.is-authed .ba-lock{display:none}
 @media(max-width:860px){#men .nd-lead+.nd-who{margin-top:24px}.men-line-photo svg{max-height:300px}}
 .men-line-photo svg{overflow:hidden}
 .men-line-photo svg{width:min(100%,285px);height:auto;max-height:none;margin-inline:auto}
+
+@media(max-width:860px){
+  main.sub-page .detail-card-strip:has(> :nth-child(2)){
+    --strip-inset:20px;
+    --strip-gap:12px;
+    --visible-cards:1.3;
+    display:flex;
+    flex-flow:row nowrap;
+    justify-content:flex-start;
+    align-items:stretch;
+    column-gap:var(--strip-gap);
+    min-width:0;
+    margin-inline:calc(0px - var(--strip-inset));
+    padding-inline:var(--strip-inset);
+    border:0;
+    overflow-x:auto;
+    overscroll-behavior-x:contain;
+    scroll-snap-type:x proximity;
+    scroll-padding-inline:var(--strip-inset);
+    scrollbar-width:none;
+  }
+  .detail-card-strip::-webkit-scrollbar{display:none}
+  .detail-card-strip:has(> :nth-child(2)) > *{
+    flex:0 0 calc((100% + var(--strip-inset) - var(--strip-gap)) / var(--visible-cards));
+    min-width:0;
+    max-width:none;
+    overflow-wrap:anywhere;
+    scroll-snap-align:start;
+  }
+  main.sub-page :is(.nd-steps,.ct-flow,.type-steps).detail-card-strip:has(> :nth-child(2)){--visible-cards:1.5}
+  .detail-card-strip:is(.nd-merit,.why,.phil-list)>li{border:1px solid var(--line)}
+  .band-g .detail-card-strip.nd-merit>li{border-color:rgba(255,255,255,.18)}
+  .nd-areas.detail-card-strip .a{display:flex;flex-direction:column;gap:12px}
+}
 /* Light-gray sections use white cards for clear separation. */
 .nd-block.band-w .nd-merit>li,.nd-block.band-w .nd-card{background:#fff}
 </style>
@@ -1368,7 +1414,7 @@ body.is-authed .ba-lock{display:none}
   <ul><li><a class="on" aria-current="page" href="fc-square.html">사각턱</a></li><li><a href="fc-zygoma.html">광대축소</a></li><li><a href="fc-chin.html">무턱</a></li><li><a href="fc-jaw.html">주걱턱</a></li><li><a href="fc-mouth.html">돌출입</a></li><li><a href="fc-forehead.html">이마성형</a></li><li><a href="fc-nasal.html">귀족성형</a></li><li><a href="fc-twojaw.html">양악수술</a></li></ul>
 </nav>
 <section class="sec nd-eye" id="square"><div class="wrap">
-<div class="nd-block"><div class="nd-sp"><div class="tx"><div class="nd-h"><span class="k">What</span><h3><b>사각턱</b>이란?</h3></div><p class="nd-lead">사각턱은 <b>아래턱뼈의 크기가 크고 직각</b>으로 각이져서 정면에서 보았을때 <b>사각형으로 보이는 얼굴형</b>을 말합니다.</p><p class="nd-tx">사각턱이 발달되면 남성처럼 거친 이미지와 딱딱한 느낌을 주고, 얼굴을 커 보이게 만듭니다. 사각턱은 아래턱뼈가 발달한 경우와 근육이 발달한 경우, 두가지가 복합된 경우로 나눌 수 있습니다. 근육만 발달한 경우는 보톡스만으로 좋은 결과를 얻을 수 있지만 아래턱이 발달한 경우나 복합된 경우는 수술을 통해 각진 턱을 개선하여 얼굴을 전체적으로 갸름하면서 부드러운 이미지의 얼굴로 만들 수 있습니다.</p></div><div class="vis"><figure class="pic"><img src="assets/web-8c23c21a9312bf4e.jpg" alt="사각턱 대표 이미지" loading="lazy"></figure></div></div><dl class="nd-info"><div><dt>수술시간</dt><dd>1시간~1시간 30분 정도</dd></div><div><dt>마취방법</dt><dd>전신마취</dd></div><div><dt>입원치료</dt><dd>당일퇴원 또는 하루 입원</dd></div><div><dt>실밥제거</dt><dd>1주 후</dd></div><div><dt>내원치료</dt><dd>1~2회</dd></div><div><dt>회복기간</dt><dd>1주 후</dd></div></dl></div><div class="nd-block band-w"><div class="nd-h"><span class="k">Special</span><h3>올리브의 <b>3D 입체 사각턱수술</b> 무엇이 다른가?</h3></div><ol class="nd-rows"><li><span class="n">01</span><h4>최대효과를 지향합니다.</h4><p>사각턱수술은 축소효과가 최우선입니다. 간단하게 살짝하는 방식은 거의 대부분 나중에 아쉬움을 남기게 됩니다.</p></li><li><span class="n">02</span><h4>피질골제거가 기본적으로 포함됩니다.</h4><p>피질골제거는 최대효과와 정면효과를 위해 반드시 필요한 부분입니다. 피질골제거를 하고 안하고는 차이가 많이 납니다. 올리브는 모든 사각턱 수술에 기본적으로 피질골 제거를 해드리고 있습니다.</p></li><li><span class="n">03</span><h4>뼈를 자르는 라인이 턱끝신경선(입꼬리선상) 앞쪽까지 연장됩니다.</h4><p>역시 최대효과를 위해서는 뼈를 최대한 앞쪽까지 깍아주어야 합니다. 턱끝신경의 아래로 뼈를 깨끗하게 자르는 것은 매우 고난이도의 기법입니다.</p></li><li><span class="n">04</span><h4>하나의 커브로 군더더기 없이 매끄럽게 자릅니다.</h4><p>절골라인에 2차각이나 울퉁불퉁함이 없으며 이는 풍부한 경험과 실력이 바탕이 되어야 가능한 것입니다.</p></li><li><span class="n">05</span><h4>당일 퇴원이 가능합니다.</h4><p>이는 수술결과에 자신이 있어야 가능한 사항으로 20년간 마취사고 주요사고 제로일 정도의 안전성을 자부합니다.</p></li><li><span class="n">06</span><h4>통증이 거의 없습니다.</h4><p>수술 숙련도가 높으므로 수술이 깔끔하게 이루어지고 따라서 통증이 거의 없습니다.</p></li></ol></div><div class="nd-block band-w"><div class="nd-sp rev"><div class="tx"><div class="nd-h"><span class="k">Who</span><h3><b>사각턱</b> 수술대상</h3></div><p class="nd-sub">사각턱, 이런 분들에게 추천합니다.</p><ul class="nd-chk"><li>각진 얼굴로 인상이 사나워 보이는 경우</li><li>얼굴이 전체적으로 크면서 각져 보이는 경우</li><li>얼굴의 여백이 심하게 넓어 보이는 경우</li><li>앞턱이 넓고 뭉툭해 보이는 경우</li></ul></div><div class="vis"><figure class="pic"><img src="assets/web-bd682196aaae62f5.jpg" alt="사각턱 수술대상 이미지" loading="lazy"></figure></div></div></div><div class="nd-block "><div class="nd-h"><span class="k">How</span><h3><b>사각턱</b> 수술방법</h3></div><div class="nd-how"><div class="m"><div class="t"><span class="n">Method 01</span><h4>하악각 절제술</h4><p>귀밑에 바로 보이는 각진 부분을 하악각이라 말합니다. 귀밑의 턱뼈가 발달하여 각진 얼굴의 경우 입안절개로 턱뼈를 절제하여 부드러운 턱선을 만들어 줍니다.</p></div><div class="fig"><img src="assets/web-52d2a3e51532d64d.jpg" alt="하악각 절제술 그림" loading="lazy"></div></div><div class="m"><div class="t"><span class="n">Method 02</span><h4>피질골 절제술</h4><p>정면에서 봤을 때 얼굴이 넓어 보이는 경우 입안절개를 통해 뼈의 가장 바깥쪽 외피질골을 잘라내어 턱뼈의 두께를 줄여줍니다. 넓어 보이는 얼굴형을 갸름하게 만들어 줍니다.</p></div><div class="fig"><img src="assets/web-a4acca5e8d6623c0.jpg" alt="피질골 절제술 그림" loading="lazy"></div></div><div class="m"><div class="t"><span class="n">Method 03</span><h4>보톡스</h4><p>저작근육의 발달로 인한 사각턱인 경우 뼈를 절제하지 않고 보톡스만으로 효과를 볼 수 있습니다. 보톡스는 근육을 퇴화시켜 각진 턱라인을 매끄럽게 만들어 줍니다.</p></div><div class="fig"><img src="assets/web-d1f19fe350a9cde2.jpg" alt="보톡스 그림" loading="lazy"></div></div></div></div><div class="nd-block band-w merit-neutral"><div class="nd-h"><span class="k">Merit</span><h3><b>사각턱</b> 수술의 특징</h3></div><p class="nd-sub">각지고 넓은 사각턱에서 갸름한 V라인 턱선</p><ol class="nd-merit"><li><span class="n">01</span><h4>작고 갸름한 얼굴라인</h4><p>크고 각진 턱을 작고 갸름하게 만들어 매끈한 얼굴라인으로 개선됩니다.</p></li><li><span class="n">02</span><h4>부드럽고 세련된 이미지</h4><p>강한 이미지를 부드럽고 세련된 이미지로 개선할 수 있습니다.</p></li><li><span class="n">03</span><h4>정면, 측면 모두 자신있는 얼굴</h4><p>어느 각도에서나 자신있는 얼굴라인으로 자신감이 상승합니다.</p></li><li><span class="n">04</span><h4>목 라인을 살려주는 효과</h4><p>턱선뿐 아니라 목라인까지 살려주는 효과를 얻을 수 있습니다.</p></li></ol></div>
+<div class="nd-block"><div class="nd-sp"><div class="tx"><div class="nd-h"><span class="k">What</span><h3><b>사각턱</b>이란?</h3></div><p class="nd-lead">사각턱은 <b>아래턱뼈의 크기가 크고 직각</b>으로 각이져서 정면에서 보았을때 <b>사각형으로 보이는 얼굴형</b>을 말합니다.</p><p class="nd-tx">사각턱이 발달되면 남성처럼 거친 이미지와 딱딱한 느낌을 주고, 얼굴을 커 보이게 만듭니다. 사각턱은 아래턱뼈가 발달한 경우와 근육이 발달한 경우, 두가지가 복합된 경우로 나눌 수 있습니다. 근육만 발달한 경우는 보톡스만으로 좋은 결과를 얻을 수 있지만 아래턱이 발달한 경우나 복합된 경우는 수술을 통해 각진 턱을 개선하여 얼굴을 전체적으로 갸름하면서 부드러운 이미지의 얼굴로 만들 수 있습니다.</p></div><div class="vis"><figure class="pic"><img src="assets/web-8c23c21a9312bf4e.jpg" alt="사각턱 대표 이미지" loading="lazy"></figure></div></div><dl class="nd-info"><div><dt>수술시간</dt><dd>1시간~1시간 30분 정도</dd></div><div><dt>마취방법</dt><dd>전신마취</dd></div><div><dt>입원치료</dt><dd>당일퇴원 또는 하루 입원</dd></div><div><dt>실밥제거</dt><dd>1주 후</dd></div><div><dt>내원치료</dt><dd>1~2회</dd></div><div><dt>회복기간</dt><dd>1주 후</dd></div></dl></div><div class="nd-block band-w"><div class="nd-h"><span class="k">Special</span><h3>올리브의 <b>3D 입체 사각턱수술</b> 무엇이 다른가?</h3></div><ol class="nd-rows"><li><span class="n">01</span><h4>최대효과를 지향합니다.</h4><p>사각턱수술은 축소효과가 최우선입니다. 간단하게 살짝하는 방식은 거의 대부분 나중에 아쉬움을 남기게 됩니다.</p></li><li><span class="n">02</span><h4>피질골제거가 기본적으로 포함됩니다.</h4><p>피질골제거는 최대효과와 정면효과를 위해 반드시 필요한 부분입니다. 피질골제거를 하고 안하고는 차이가 많이 납니다. 올리브는 모든 사각턱 수술에 기본적으로 피질골 제거를 해드리고 있습니다.</p></li><li><span class="n">03</span><h4>뼈를 자르는 라인이 턱끝신경선(입꼬리선상) 앞쪽까지 연장됩니다.</h4><p>역시 최대효과를 위해서는 뼈를 최대한 앞쪽까지 깍아주어야 합니다. 턱끝신경의 아래로 뼈를 깨끗하게 자르는 것은 매우 고난이도의 기법입니다.</p></li><li><span class="n">04</span><h4>하나의 커브로 군더더기 없이 매끄럽게 자릅니다.</h4><p>절골라인에 2차각이나 울퉁불퉁함이 없으며 이는 풍부한 경험과 실력이 바탕이 되어야 가능한 것입니다.</p></li><li><span class="n">05</span><h4>당일 퇴원이 가능합니다.</h4><p>이는 수술결과에 자신이 있어야 가능한 사항으로 20년간 마취사고 주요사고 제로일 정도의 안전성을 자부합니다.</p></li><li><span class="n">06</span><h4>통증이 거의 없습니다.</h4><p>수술 숙련도가 높으므로 수술이 깔끔하게 이루어지고 따라서 통증이 거의 없습니다.</p></li></ol></div><div class="nd-block band-w"><div class="nd-sp rev"><div class="tx"><div class="nd-h"><span class="k">Who</span><h3><b>사각턱</b> 수술대상</h3></div><p class="nd-sub">사각턱, 이런 분들에게 추천합니다.</p><ul class="nd-chk"><li>각진 얼굴로 인상이 사나워 보이는 경우</li><li>얼굴이 전체적으로 크면서 각져 보이는 경우</li><li>얼굴의 여백이 심하게 넓어 보이는 경우</li><li>앞턱이 넓고 뭉툭해 보이는 경우</li></ul></div><div class="vis"><figure class="pic"><img src="assets/web-bd682196aaae62f5.jpg" alt="사각턱 수술대상 이미지" loading="lazy"></figure></div></div></div><div class="nd-block "><div class="nd-h"><span class="k">How</span><h3><b>사각턱</b> 수술방법</h3></div><div class="nd-how"><div class="m"><div class="t"><span class="n">Method 01</span><h4>하악각 절제술</h4><p>귀밑에 바로 보이는 각진 부분을 하악각이라 말합니다. 귀밑의 턱뼈가 발달하여 각진 얼굴의 경우 입안절개로 턱뼈를 절제하여 부드러운 턱선을 만들어 줍니다.</p></div><div class="fig"><img src="assets/web-52d2a3e51532d64d.jpg" alt="하악각 절제술 그림" loading="lazy"></div></div><div class="m"><div class="t"><span class="n">Method 02</span><h4>피질골 절제술</h4><p>정면에서 봤을 때 얼굴이 넓어 보이는 경우 입안절개를 통해 뼈의 가장 바깥쪽 외피질골을 잘라내어 턱뼈의 두께를 줄여줍니다. 넓어 보이는 얼굴형을 갸름하게 만들어 줍니다.</p></div><div class="fig"><img src="assets/web-a4acca5e8d6623c0.jpg" alt="피질골 절제술 그림" loading="lazy"></div></div><div class="m"><div class="t"><span class="n">Method 03</span><h4>보톡스</h4><p>저작근육의 발달로 인한 사각턱인 경우 뼈를 절제하지 않고 보톡스만으로 효과를 볼 수 있습니다. 보톡스는 근육을 퇴화시켜 각진 턱라인을 매끄럽게 만들어 줍니다.</p></div><div class="fig"><img src="assets/web-d1f19fe350a9cde2.jpg" alt="보톡스 그림" loading="lazy"></div></div></div></div><div class="nd-block band-w merit-neutral"><div class="nd-h"><span class="k">Merit</span><h3><b>사각턱</b> 수술의 특징</h3></div><p class="nd-sub">각지고 넓은 사각턱에서 갸름한 V라인 턱선</p><ol class="nd-merit detail-card-strip" tabindex="0"><li><span class="n">01</span><h4>작고 갸름한 얼굴라인</h4><p>크고 각진 턱을 작고 갸름하게 만들어 매끈한 얼굴라인으로 개선됩니다.</p></li><li><span class="n">02</span><h4>부드럽고 세련된 이미지</h4><p>강한 이미지를 부드럽고 세련된 이미지로 개선할 수 있습니다.</p></li><li><span class="n">03</span><h4>정면, 측면 모두 자신있는 얼굴</h4><p>어느 각도에서나 자신있는 얼굴라인으로 자신감이 상승합니다.</p></li><li><span class="n">04</span><h4>목 라인을 살려주는 효과</h4><p>턱선뿐 아니라 목라인까지 살려주는 효과를 얻을 수 있습니다.</p></li></ol></div>
 </div></section>
 
 <!-- 상담 -->

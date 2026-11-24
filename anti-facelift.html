@@ -467,9 +467,13 @@ body.nav-open .mnav-in{transform:none}
   .snb a.on::after{left:20px;right:20px}
 }
 @media (max-width:860px){
-  .sv{margin-top:64px;height:300px}
+  .sub-page{padding-top:64px}
+  /* Keep the page heading available to screen readers inside the collapsed banner. */
+  .sub-page > .sv{height:0;margin:0;overflow:hidden}
+  .sub-page > .sv::before,.sub-page > .sv::after,.sub-page > .sv p{display:none}
   .snb{top:64px}
-  .snb ul{justify-content:flex-start;overflow-x:auto;padding:0 8px}
+  .snb ul{justify-content:flex-start;overflow-x:auto;padding:0 8px;scrollbar-width:none}
+  .snb ul::-webkit-scrollbar{display:none}
   .snb a{padding:16px 14px;font-size:14.5px}
   .snb a.on::after{left:14px;right:14px}
 }
@@ -548,6 +552,8 @@ body.nav-open .mnav-in{transform:none}
 @media (max-width:1180px){.nd-info{grid-template-columns:repeat(3,1fr)}.nd-info div:nth-child(4){border-left:0}.nd-info div:nth-child(n+4){border-top:1px solid rgba(255,255,255,.14)}.nd-merit{grid-template-columns:1fr 1fr}.nd-merit li:nth-child(2n+1){border-left:0}.nd-merit li:nth-child(n+3){border-top:1px solid var(--line)}}
 @media (max-width:860px){
   .nd-tabs{flex-wrap:nowrap;overflow-x:auto;justify-content:flex-start;margin:32px -20px 0;padding:0 20px}
+  :is(.nd-tabs,.ba-tabs,.tabs,.snb ul,.gal-thumbs,[role="tablist"]){scrollbar-width:none}
+  :is(.nd-tabs,.ba-tabs,.tabs,.snb ul,.gal-thumbs,[role="tablist"])::-webkit-scrollbar{display:none}
   .nd-tabs button,.nd-tabs a{flex:none;height:40px;padding:0 16px}
   .nd-block{padding:56px 0}
   .nd-h{flex-direction:column;gap:10px;margin-bottom:20px}
@@ -1280,6 +1286,12 @@ body.is-authed .ba-lock{display:none}
 #safety .safety-reason-grid>li{border:0}
 @media(min-width:861px){#safety .safety-reason-grid>li:nth-child(2),#safety .safety-reason-grid>li:nth-child(3),#safety .safety-reason-grid>li:nth-child(5){border-left:1px solid rgba(255,255,255,.18)}#safety .safety-reason-grid>li:nth-child(n+4){border-top:1px solid rgba(255,255,255,.18)}}
 @media(max-width:860px){#safety .safety-reason-grid>li+li{border-top:1px solid rgba(255,255,255,.18)}}
+@media(max-width:860px){
+  .sub-page :is(.nd-card .b,.nd-who>li,.nd-merit>li,.ct-case-copy,.ct-flow>li,
+    .safety-card>div,.safety-method article,.safety-checks article,.safety-guide-points article,
+    .tr-body,.cc,.why>li,.sp-end){padding:18px 16px}
+}
+
 
 /* Individually framed illustrations retain original clinical drawings. */
 .nd-how .fig.type-steps{padding:0;background:transparent;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;align-items:start}
@@ -1303,6 +1315,40 @@ body.is-authed .ba-lock{display:none}
 @media(max-width:860px){#men .nd-lead+.nd-who{margin-top:24px}.men-line-photo svg{max-height:300px}}
 .men-line-photo svg{overflow:hidden}
 .men-line-photo svg{width:min(100%,285px);height:auto;max-height:none;margin-inline:auto}
+
+@media(max-width:860px){
+  main.sub-page .detail-card-strip:has(> :nth-child(2)){
+    --strip-inset:20px;
+    --strip-gap:12px;
+    --visible-cards:1.3;
+    display:flex;
+    flex-flow:row nowrap;
+    justify-content:flex-start;
+    align-items:stretch;
+    column-gap:var(--strip-gap);
+    min-width:0;
+    margin-inline:calc(0px - var(--strip-inset));
+    padding-inline:var(--strip-inset);
+    border:0;
+    overflow-x:auto;
+    overscroll-behavior-x:contain;
+    scroll-snap-type:x proximity;
+    scroll-padding-inline:var(--strip-inset);
+    scrollbar-width:none;
+  }
+  .detail-card-strip::-webkit-scrollbar{display:none}
+  .detail-card-strip:has(> :nth-child(2)) > *{
+    flex:0 0 calc((100% + var(--strip-inset) - var(--strip-gap)) / var(--visible-cards));
+    min-width:0;
+    max-width:none;
+    overflow-wrap:anywhere;
+    scroll-snap-align:start;
+  }
+  main.sub-page :is(.nd-steps,.ct-flow,.type-steps).detail-card-strip:has(> :nth-child(2)){--visible-cards:1.5}
+  .detail-card-strip:is(.nd-merit,.why,.phil-list)>li{border:1px solid var(--line)}
+  .band-g .detail-card-strip.nd-merit>li{border-color:rgba(255,255,255,.18)}
+  .nd-areas.detail-card-strip .a{display:flex;flex-direction:column;gap:12px}
+}
 /* Light-gray sections use white cards for clear separation. */
 .nd-block.band-w .nd-merit>li,.nd-block.band-w .nd-card{background:#fff}
 </style>
@@ -1368,7 +1414,7 @@ body.is-authed .ba-lock{display:none}
   <ul><li><a href="eye-upper.html">중년 눈성형</a></li><li><a class="on" aria-current="page" href="anti-facelift.html">페이스리프팅</a></li><li><a href="anti-brow.html">이마거상술</a></li><li><a href="anti-thread.html">실리프팅</a></li><li><a href="anti-fat.html">지방이식</a></li><li><a href="anti-lipo.html">얼굴지방흡입</a></li></ul>
 </nav>
 <section class="sec nd-eye" id="facelift"><div class="wrap">
-<div class="nd-block"><div class="nd-sp"><div class="tx"><div class="nd-h"><span class="k">What</span><h3><b>페이스리프팅</b>이란?</h3></div><p class="nd-lead">젊은 시절 팽팽 하고 윤기가 있던 피부는 세월이 흐름에 따라 피부노화가 시작하여 피부를 유지해주던 <b>콜라겐 섬유가 줄어들고 퇴화</b>되어 <b>탄력을 잃고 피부가 건조하고 위축되어 주름살</b>이 생기게 됩니다.</p><p class="nd-tx">안면거상술은 처진 볼을 위로 올려주어 입주변의 팔자주름과 목주름, 심술주머니 등 모두 없애주는 시술입니다. 양쪽귀의 앞과 귀뒤쪽을 절개하므로 대부분의 수술 흔적이 귀주변의 주름선이나 머리카락 속에 가려지게 되어 흉터는 걱정하지 않으셔도 됩니다.</p></div><div class="vis"><figure class="pic"><img src="assets/web-f0ba93bfc86a439b.jpg" alt="페이스리프팅 대표 이미지" loading="lazy"></figure></div></div><dl class="nd-info"><div><dt>수술시간</dt><dd>2~3시간 정도</dd></div><div><dt>마취방법</dt><dd>부분마취</dd></div><div><dt>입원치료</dt><dd>불필요</dd></div><div><dt>실밥제거</dt><dd>1~2주 후</dd></div><div><dt>내원치료</dt><dd>2회</dd></div><div><dt>회복기간</dt><dd>1~2주 후</dd></div></dl></div><div class="nd-block band-w"><div class="nd-sp rev"><div class="tx"><div class="nd-h"><span class="k">Who</span><h3><b>페이스리프팅</b> 수술대상</h3></div><p class="nd-sub">페이스리프팅, 이런 분들에게 추천합니다.</p><ul class="nd-chk"><li>얼굴 전체가 주름진 경우</li><li>살이 많이 처진 경우</li><li>확실한 효과를 원하시는 경우</li><li>실리프팅으로 개선이 어려우신 경우</li></ul></div><div class="vis"><figure class="pic"><img src="assets/web-5ac7281ecd93942f.jpg" alt="페이스리프팅 수술대상 이미지" loading="lazy"></figure></div></div></div><div class="nd-block "><div class="nd-h"><span class="k">How</span><h3><b>페이스리프팅</b> 수술방법</h3></div><div class="nd-how"><div class="m"><div class="t"><span class="n">Method</span><h4>단순한 절제와 봉합아닌 조직의 재배치 및 타이트닝 효과가 중요합니다.</h4><p>처진 뺨을 올려주면서 입가 팔자 주름, 처진 턱선, 늘어진 목주름 등을 개선하기 위해 얼굴의 늘어진 피부를 당겨주는 수술입니다. 양쪽 귀 앞 또는 귀 뒤쪽을 절개하여 늘어진 피부를 당겨주는 방식입니다. 올리브 성형외과의 안면거상은 피부뿐 아니라 피부 안쪽의 근육과 근막층을 함께 당겨주어 효과가 뛰어나고 결과가 더 오래 유지됩니다.</p></div><div class="fig"><img src="assets/web-e1e826bf6baa9cb0.jpg" alt="단순한 절제와 봉합아닌 조직의 재배치 및 타이트닝 효과가 중요합니다. 그림" loading="lazy"></div></div></div></div><div class="nd-block band-w merit-neutral"><div class="nd-h"><span class="k">Merit</span><h3><b>페이스리프팅</b> 수술의 특징</h3></div><p class="nd-sub">확실한 주름제거 효과로 세월의 흔적을 지우세요</p><ol class="nd-merit"><li><span class="n">01</span><h4>얼굴주름, 피부처짐 개선</h4><p>늘어진 피부를 위로 끌어 당겨 강력하게 주름을 개선합니다.</p></li><li><span class="n">02</span><h4>노화방지 효과</h4><p>노화의 근본적인 원인을 제거함으로써 오랜시간 노화를 방지할 수 있습니다.</p></li><li><span class="n">03</span><h4>피부탄력, 피부톤 증대</h4><p>얼굴 전체적인 주름을 끌어당겨 피부의 탄력과 피부톤을 개선합니다.</p></li><li><span class="n">04</span><h4>동안효과</h4><p>처진피부를 당겨 동안 얼굴을 완성합니다.</p></li></ol></div>
+<div class="nd-block"><div class="nd-sp"><div class="tx"><div class="nd-h"><span class="k">What</span><h3><b>페이스리프팅</b>이란?</h3></div><p class="nd-lead">젊은 시절 팽팽 하고 윤기가 있던 피부는 세월이 흐름에 따라 피부노화가 시작하여 피부를 유지해주던 <b>콜라겐 섬유가 줄어들고 퇴화</b>되어 <b>탄력을 잃고 피부가 건조하고 위축되어 주름살</b>이 생기게 됩니다.</p><p class="nd-tx">안면거상술은 처진 볼을 위로 올려주어 입주변의 팔자주름과 목주름, 심술주머니 등 모두 없애주는 시술입니다. 양쪽귀의 앞과 귀뒤쪽을 절개하므로 대부분의 수술 흔적이 귀주변의 주름선이나 머리카락 속에 가려지게 되어 흉터는 걱정하지 않으셔도 됩니다.</p></div><div class="vis"><figure class="pic"><img src="assets/web-f0ba93bfc86a439b.jpg" alt="페이스리프팅 대표 이미지" loading="lazy"></figure></div></div><dl class="nd-info"><div><dt>수술시간</dt><dd>2~3시간 정도</dd></div><div><dt>마취방법</dt><dd>부분마취</dd></div><div><dt>입원치료</dt><dd>불필요</dd></div><div><dt>실밥제거</dt><dd>1~2주 후</dd></div><div><dt>내원치료</dt><dd>2회</dd></div><div><dt>회복기간</dt><dd>1~2주 후</dd></div></dl></div><div class="nd-block band-w"><div class="nd-sp rev"><div class="tx"><div class="nd-h"><span class="k">Who</span><h3><b>페이스리프팅</b> 수술대상</h3></div><p class="nd-sub">페이스리프팅, 이런 분들에게 추천합니다.</p><ul class="nd-chk"><li>얼굴 전체가 주름진 경우</li><li>살이 많이 처진 경우</li><li>확실한 효과를 원하시는 경우</li><li>실리프팅으로 개선이 어려우신 경우</li></ul></div><div class="vis"><figure class="pic"><img src="assets/web-5ac7281ecd93942f.jpg" alt="페이스리프팅 수술대상 이미지" loading="lazy"></figure></div></div></div><div class="nd-block "><div class="nd-h"><span class="k">How</span><h3><b>페이스리프팅</b> 수술방법</h3></div><div class="nd-how"><div class="m"><div class="t"><span class="n">Method</span><h4>단순한 절제와 봉합아닌 조직의 재배치 및 타이트닝 효과가 중요합니다.</h4><p>처진 뺨을 올려주면서 입가 팔자 주름, 처진 턱선, 늘어진 목주름 등을 개선하기 위해 얼굴의 늘어진 피부를 당겨주는 수술입니다. 양쪽 귀 앞 또는 귀 뒤쪽을 절개하여 늘어진 피부를 당겨주는 방식입니다. 올리브 성형외과의 안면거상은 피부뿐 아니라 피부 안쪽의 근육과 근막층을 함께 당겨주어 효과가 뛰어나고 결과가 더 오래 유지됩니다.</p></div><div class="fig"><img src="assets/web-e1e826bf6baa9cb0.jpg" alt="단순한 절제와 봉합아닌 조직의 재배치 및 타이트닝 효과가 중요합니다. 그림" loading="lazy"></div></div></div></div><div class="nd-block band-w merit-neutral"><div class="nd-h"><span class="k">Merit</span><h3><b>페이스리프팅</b> 수술의 특징</h3></div><p class="nd-sub">확실한 주름제거 효과로 세월의 흔적을 지우세요</p><ol class="nd-merit detail-card-strip" tabindex="0"><li><span class="n">01</span><h4>얼굴주름, 피부처짐 개선</h4><p>늘어진 피부를 위로 끌어 당겨 강력하게 주름을 개선합니다.</p></li><li><span class="n">02</span><h4>노화방지 효과</h4><p>노화의 근본적인 원인을 제거함으로써 오랜시간 노화를 방지할 수 있습니다.</p></li><li><span class="n">03</span><h4>피부탄력, 피부톤 증대</h4><p>얼굴 전체적인 주름을 끌어당겨 피부의 탄력과 피부톤을 개선합니다.</p></li><li><span class="n">04</span><h4>동안효과</h4><p>처진피부를 당겨 동안 얼굴을 완성합니다.</p></li></ol></div>
 </div></section>
 
 <!-- 상담 -->

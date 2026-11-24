@@ -467,9 +467,13 @@ body.nav-open .mnav-in{transform:none}
   .snb a.on::after{left:20px;right:20px}
 }
 @media (max-width:860px){
-  .sv{margin-top:64px;height:300px}
+  .sub-page{padding-top:64px}
+  /* Keep the page heading available to screen readers inside the collapsed banner. */
+  .sub-page > .sv{height:0;margin:0;overflow:hidden}
+  .sub-page > .sv::before,.sub-page > .sv::after,.sub-page > .sv p{display:none}
   .snb{top:64px}
-  .snb ul{justify-content:flex-start;overflow-x:auto;padding:0 8px}
+  .snb ul{justify-content:flex-start;overflow-x:auto;padding:0 8px;scrollbar-width:none}
+  .snb ul::-webkit-scrollbar{display:none}
   .snb a{padding:16px 14px;font-size:14.5px}
   .snb a.on::after{left:14px;right:14px}
 }
@@ -548,6 +552,8 @@ body.nav-open .mnav-in{transform:none}
 @media (max-width:1180px){.nd-info{grid-template-columns:repeat(3,1fr)}.nd-info div:nth-child(4){border-left:0}.nd-info div:nth-child(n+4){border-top:1px solid rgba(255,255,255,.14)}.nd-merit{grid-template-columns:1fr 1fr}.nd-merit li:nth-child(2n+1){border-left:0}.nd-merit li:nth-child(n+3){border-top:1px solid var(--line)}}
 @media (max-width:860px){
   .nd-tabs{flex-wrap:nowrap;overflow-x:auto;justify-content:flex-start;margin:32px -20px 0;padding:0 20px}
+  :is(.nd-tabs,.ba-tabs,.tabs,.snb ul,.gal-thumbs,[role="tablist"]){scrollbar-width:none}
+  :is(.nd-tabs,.ba-tabs,.tabs,.snb ul,.gal-thumbs,[role="tablist"])::-webkit-scrollbar{display:none}
   .nd-tabs button,.nd-tabs a{flex:none;height:40px;padding:0 16px}
   .nd-block{padding:56px 0}
   .nd-h{flex-direction:column;gap:10px;margin-bottom:20px}
@@ -1280,6 +1286,12 @@ body.is-authed .ba-lock{display:none}
 #safety .safety-reason-grid>li{border:0}
 @media(min-width:861px){#safety .safety-reason-grid>li:nth-child(2),#safety .safety-reason-grid>li:nth-child(3),#safety .safety-reason-grid>li:nth-child(5){border-left:1px solid rgba(255,255,255,.18)}#safety .safety-reason-grid>li:nth-child(n+4){border-top:1px solid rgba(255,255,255,.18)}}
 @media(max-width:860px){#safety .safety-reason-grid>li+li{border-top:1px solid rgba(255,255,255,.18)}}
+@media(max-width:860px){
+  .sub-page :is(.nd-card .b,.nd-who>li,.nd-merit>li,.ct-case-copy,.ct-flow>li,
+    .safety-card>div,.safety-method article,.safety-checks article,.safety-guide-points article,
+    .tr-body,.cc,.why>li,.sp-end){padding:18px 16px}
+}
+
 
 /* Individually framed illustrations retain original clinical drawings. */
 .nd-how .fig.type-steps{padding:0;background:transparent;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;align-items:start}
@@ -1303,6 +1315,40 @@ body.is-authed .ba-lock{display:none}
 @media(max-width:860px){#men .nd-lead+.nd-who{margin-top:24px}.men-line-photo svg{max-height:300px}}
 .men-line-photo svg{overflow:hidden}
 .men-line-photo svg{width:min(100%,285px);height:auto;max-height:none;margin-inline:auto}
+
+@media(max-width:860px){
+  main.sub-page .detail-card-strip:has(> :nth-child(2)){
+    --strip-inset:20px;
+    --strip-gap:12px;
+    --visible-cards:1.3;
+    display:flex;
+    flex-flow:row nowrap;
+    justify-content:flex-start;
+    align-items:stretch;
+    column-gap:var(--strip-gap);
+    min-width:0;
+    margin-inline:calc(0px - var(--strip-inset));
+    padding-inline:var(--strip-inset);
+    border:0;
+    overflow-x:auto;
+    overscroll-behavior-x:contain;
+    scroll-snap-type:x proximity;
+    scroll-padding-inline:var(--strip-inset);
+    scrollbar-width:none;
+  }
+  .detail-card-strip::-webkit-scrollbar{display:none}
+  .detail-card-strip:has(> :nth-child(2)) > *{
+    flex:0 0 calc((100% + var(--strip-inset) - var(--strip-gap)) / var(--visible-cards));
+    min-width:0;
+    max-width:none;
+    overflow-wrap:anywhere;
+    scroll-snap-align:start;
+  }
+  main.sub-page :is(.nd-steps,.ct-flow,.type-steps).detail-card-strip:has(> :nth-child(2)){--visible-cards:1.5}
+  .detail-card-strip:is(.nd-merit,.why,.phil-list)>li{border:1px solid var(--line)}
+  .band-g .detail-card-strip.nd-merit>li{border-color:rgba(255,255,255,.18)}
+  .nd-areas.detail-card-strip .a{display:flex;flex-direction:column;gap:12px}
+}
 /* Light-gray sections use white cards for clear separation. */
 .nd-block.band-w .nd-merit>li,.nd-block.band-w .nd-card{background:#fff}
 </style>
@@ -1368,7 +1414,7 @@ body.is-authed .ba-lock{display:none}
   <ul><li><a href="petit-botox.html">보톡스</a></li><li><a href="petit-filler.html">필러</a></li><li><a href="petit-skin.html">스킨보톡스</a></li><li><a href="petit-rejuran.html">리쥬란</a></li><li><a class="on" aria-current="page" href="petit-juvelook.html">쥬베룩</a></li></ul>
 </nav>
 <section class="sec nd-eye" id="juvelook"><div class="wrap">
-<div class="nd-block"><div class="nd-sp"><div class="tx"><div class="nd-h"><span class="k">What</span><h3><b>쥬베룩</b>이란?</h3></div><p class="nd-lead">쥬베룩은 면역세포를 자극해 <b>콜라겐 생성을 유도하여 볼륨이 증대되고 여드름 개선, 피부 재생 및 속 건조 개선에 높은 효과</b>를 기대할 수 있습니다.</p><p class="nd-tx">고분자 PLA와 히알루론산(HA) 성분이 결합된 쥬베룩은 FDA, KFDA에 승인받은 안전한 제품으로 자가조직 재생 기능이 있어 피부 속 새로운 콜라겐 생성을 촉진합니다. 부작용이나 인위적인 필러 대신 피부 탄력을 자연스럽게 개선하며, 볼륨을 채우는 쥬베룩은 모공, 흉터 개선까지 기대할 수 있습니다.</p></div><div class="vis"><figure class="pic"><img src="assets/web-5afbd2e7ee588d4c.jpg" alt="쥬베룩 대표 이미지" loading="lazy"></figure></div></div><dl class="nd-info"><div><dt>시술시간</dt><dd>5~10분</dd></div><div><dt>마취방법</dt><dd>연고마취</dd></div><div><dt>입원치료</dt><dd>불필요</dd></div><div><dt>실밥제거</dt><dd>불필요</dd></div><div><dt>내원치료</dt><dd>불필요</dd></div><div><dt>회복기간</dt><dd>바로 일상생활 가능</dd></div></dl></div><div class="nd-block band-w"><div class="nd-sp rev"><div class="tx"><div class="nd-h"><span class="k">Who</span><h3><b>쥬베룩</b> 시술대상</h3></div><p class="nd-sub">쥬베룩, 이런 분들에게 추천합니다.</p><ul class="nd-chk"><li>얼굴에 볼륨이 없어 고민이신 경우</li><li>점점 늘어가는 잔주름으로 고민이신 경우</li><li>필러로 볼륨감을 채우는게 부담스러운 경우</li><li>모공/흉터/패인자국이 고민인 경우</li><li>전체적인 피부결 개선이 필요한 경우</li></ul></div><div class="vis"><figure class="pic"><img src="assets/web-9525bc6dc182bd61.jpg" alt="쥬베룩 시술대상 이미지" loading="lazy"></figure></div></div></div><div class="nd-block "><div class="nd-h"><span class="k">Type</span><h3><b>쥬베룩</b> 종류</h3></div><div class="nd-cards nd-prod c2"><article class="nd-card"><img src="assets/web-3867f2f8e5e095f6.jpg" alt="쥬베룩 제품 사진" loading="lazy"><div class="b"><h4>쥬베룩</h4><p>피부결, 색소, 홍조, 잔주름, 모공, 흉터 등을 자연스럽게 개선시켜 줍니다.</p></div></article><article class="nd-card"><img src="assets/web-50f5349f8938456c.jpg" alt="쥬베룩 볼륨 제품 사진" loading="lazy"><div class="b"><h4>쥬베룩 볼륨</h4><p>볼륨, 깊은 주름, 리프팅, 타이트닝 등을 자연스럽게 개선시켜 줍니다.</p></div></article></div></div><div class="nd-block band-w"><div class="nd-sp"><div class="tx"><div class="nd-h"><span class="k">Point</span><h3><b>쥬베룩</b> 장점</h3></div><ol class="nd-point"><li><span class="n">01</span>모공 수축</li><li><span class="n">02</span>흉터 개선</li><li><span class="n">03</span>탄력 UP</li><li><span class="n">04</span>잔주름 완화</li><li><span class="n">05</span>피부 재생</li><li><span class="n">06</span>피부결 개선</li></ol></div><div class="vis"><figure class="pic"><img src="assets/web-13ec107ed515db9c.jpg" alt="쥬베룩 제품 이미지" loading="lazy"></figure></div></div></div><div class="nd-block "><div class="nd-h"><span class="k">How</span><h3><b>쥬베룩</b> 시술방법</h3></div><p class="nd-lead">쥬베룩 시술을 통해 콜라겐 생성을 유도하여 볼륨이 증가하고 피부 재생, 속 건조 개선, 여드름 개선 등 다양한 효과를 볼 수 있습니다.</p><figure class="nd-fig nd-eyefig nd-round"><img src="assets/web-7184bcdb0fc19bca.jpg" alt="쥬베룩 시술 장면" loading="lazy"></figure><ol class="nd-steps c4" style="margin-top:24px"><li><span class="n">01</span><p>충분한 상담 후 쥬베룩 시술이 필요한 부위를 디자인합니다.</p></li><li><span class="n">02</span><p>연고마취 후 필요한 부위에 쥬베룩을 주입합니다.</p></li><li><span class="n">03</span><p>시술 부위에 따라 조금씩 다르기는 하나 약 10분 이내에 시술은 끝납니다.</p></li><li><span class="n">04</span><p>7~10일경에 효과를 정확히 알 수 있습니다.</p></li></ol></div><div class="nd-block band-w merit-neutral"><div class="nd-h"><span class="k">Merit</span><h3><b>쥬베룩</b> 시술의 특징</h3></div><ol class="nd-merit"><li><span class="n">01</span><h4>자연스러운 볼륨 효과</h4><p>자가 콜라겐 생성으로 자연스럽게 볼륨이 증가합니다.</p></li><li><span class="n">02</span><h4>피부 재생 능력 활성화</h4><p>피부의 자가조직 재생 능력을 활성화합니다.</p></li><li><span class="n">03</span><h4>탄력 있는 건강한 피부</h4><p>피부 속부터 재생하여 탄력 있는 건강한 피부로 변화합니다.</p></li><li><span class="n">04</span><h4>피부 속 건조 개선으로 촉촉한 피부</h4><p>피부 속 건조에도 효과가 있어 물광 피부로 변화합니다.</p></li></ol></div>
+<div class="nd-block"><div class="nd-sp"><div class="tx"><div class="nd-h"><span class="k">What</span><h3><b>쥬베룩</b>이란?</h3></div><p class="nd-lead">쥬베룩은 면역세포를 자극해 <b>콜라겐 생성을 유도하여 볼륨이 증대되고 여드름 개선, 피부 재생 및 속 건조 개선에 높은 효과</b>를 기대할 수 있습니다.</p><p class="nd-tx">고분자 PLA와 히알루론산(HA) 성분이 결합된 쥬베룩은 FDA, KFDA에 승인받은 안전한 제품으로 자가조직 재생 기능이 있어 피부 속 새로운 콜라겐 생성을 촉진합니다. 부작용이나 인위적인 필러 대신 피부 탄력을 자연스럽게 개선하며, 볼륨을 채우는 쥬베룩은 모공, 흉터 개선까지 기대할 수 있습니다.</p></div><div class="vis"><figure class="pic"><img src="assets/web-5afbd2e7ee588d4c.jpg" alt="쥬베룩 대표 이미지" loading="lazy"></figure></div></div><dl class="nd-info"><div><dt>시술시간</dt><dd>5~10분</dd></div><div><dt>마취방법</dt><dd>연고마취</dd></div><div><dt>입원치료</dt><dd>불필요</dd></div><div><dt>실밥제거</dt><dd>불필요</dd></div><div><dt>내원치료</dt><dd>불필요</dd></div><div><dt>회복기간</dt><dd>바로 일상생활 가능</dd></div></dl></div><div class="nd-block band-w"><div class="nd-sp rev"><div class="tx"><div class="nd-h"><span class="k">Who</span><h3><b>쥬베룩</b> 시술대상</h3></div><p class="nd-sub">쥬베룩, 이런 분들에게 추천합니다.</p><ul class="nd-chk"><li>얼굴에 볼륨이 없어 고민이신 경우</li><li>점점 늘어가는 잔주름으로 고민이신 경우</li><li>필러로 볼륨감을 채우는게 부담스러운 경우</li><li>모공/흉터/패인자국이 고민인 경우</li><li>전체적인 피부결 개선이 필요한 경우</li></ul></div><div class="vis"><figure class="pic"><img src="assets/web-9525bc6dc182bd61.jpg" alt="쥬베룩 시술대상 이미지" loading="lazy"></figure></div></div></div><div class="nd-block "><div class="nd-h"><span class="k">Type</span><h3><b>쥬베룩</b> 종류</h3></div><div class="nd-cards nd-prod c2 detail-card-strip" tabindex="0"><article class="nd-card"><img src="assets/web-3867f2f8e5e095f6.jpg" alt="쥬베룩 제품 사진" loading="lazy"><div class="b"><h4>쥬베룩</h4><p>피부결, 색소, 홍조, 잔주름, 모공, 흉터 등을 자연스럽게 개선시켜 줍니다.</p></div></article><article class="nd-card"><img src="assets/web-50f5349f8938456c.jpg" alt="쥬베룩 볼륨 제품 사진" loading="lazy"><div class="b"><h4>쥬베룩 볼륨</h4><p>볼륨, 깊은 주름, 리프팅, 타이트닝 등을 자연스럽게 개선시켜 줍니다.</p></div></article></div></div><div class="nd-block band-w"><div class="nd-sp"><div class="tx"><div class="nd-h"><span class="k">Point</span><h3><b>쥬베룩</b> 장점</h3></div><ol class="nd-point"><li><span class="n">01</span>모공 수축</li><li><span class="n">02</span>흉터 개선</li><li><span class="n">03</span>탄력 UP</li><li><span class="n">04</span>잔주름 완화</li><li><span class="n">05</span>피부 재생</li><li><span class="n">06</span>피부결 개선</li></ol></div><div class="vis"><figure class="pic"><img src="assets/web-13ec107ed515db9c.jpg" alt="쥬베룩 제품 이미지" loading="lazy"></figure></div></div></div><div class="nd-block "><div class="nd-h"><span class="k">How</span><h3><b>쥬베룩</b> 시술방법</h3></div><p class="nd-lead">쥬베룩 시술을 통해 콜라겐 생성을 유도하여 볼륨이 증가하고 피부 재생, 속 건조 개선, 여드름 개선 등 다양한 효과를 볼 수 있습니다.</p><figure class="nd-fig nd-eyefig nd-round"><img src="assets/web-7184bcdb0fc19bca.jpg" alt="쥬베룩 시술 장면" loading="lazy"></figure><ol class="nd-steps c4 detail-card-strip" tabindex="0" style="margin-top:24px"><li><span class="n">01</span><p>충분한 상담 후 쥬베룩 시술이 필요한 부위를 디자인합니다.</p></li><li><span class="n">02</span><p>연고마취 후 필요한 부위에 쥬베룩을 주입합니다.</p></li><li><span class="n">03</span><p>시술 부위에 따라 조금씩 다르기는 하나 약 10분 이내에 시술은 끝납니다.</p></li><li><span class="n">04</span><p>7~10일경에 효과를 정확히 알 수 있습니다.</p></li></ol></div><div class="nd-block band-w merit-neutral"><div class="nd-h"><span class="k">Merit</span><h3><b>쥬베룩</b> 시술의 특징</h3></div><ol class="nd-merit detail-card-strip" tabindex="0"><li><span class="n">01</span><h4>자연스러운 볼륨 효과</h4><p>자가 콜라겐 생성으로 자연스럽게 볼륨이 증가합니다.</p></li><li><span class="n">02</span><h4>피부 재생 능력 활성화</h4><p>피부의 자가조직 재생 능력을 활성화합니다.</p></li><li><span class="n">03</span><h4>탄력 있는 건강한 피부</h4><p>피부 속부터 재생하여 탄력 있는 건강한 피부로 변화합니다.</p></li><li><span class="n">04</span><h4>피부 속 건조 개선으로 촉촉한 피부</h4><p>피부 속 건조에도 효과가 있어 물광 피부로 변화합니다.</p></li></ol></div>
 </div></section>
 
 <!-- 상담 -->
